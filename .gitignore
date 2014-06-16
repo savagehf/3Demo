@@ -213,3 +213,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+*.manifest
+*.idb
+temp/3Demo.exe.embed.manifest.res
+temp/3Demo.res

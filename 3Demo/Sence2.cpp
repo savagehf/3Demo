@@ -286,11 +286,11 @@ BOOL CSence2::Draw()
   float s3 = s_at[2];
 
   // set up the modelview matrix according to this viewer orientation
-//    glLoadIdentity();
-//    gluLookAt(s_eye[0], s_eye[1]+20, s_eye[2],
-//      s_at[0], s_at[1], s_at[2],
-//      0.0, 1.0, 0.0
-//      );
+    glLoadIdentity();
+    gluLookAt(s_eye[0], s_eye[1]+20, s_eye[2],
+      s_at[0], s_at[1], s_at[2],
+      0.0, 1.0, 0.0
+      );
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -299,7 +299,7 @@ BOOL CSence2::Draw()
 // 		{
 // 			glEnable(GL_TEXTURE_2D);
 // 		}
-		glTranslatef(-400, -29, 400);
+//		glTranslatef(-400, -29, 400);
 
 		DrawSand();
 		DrawCacti();
