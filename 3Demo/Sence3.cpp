@@ -1567,7 +1567,7 @@ void CSence3::SetStartExp(BOOL bStart)
 void CSence3::SetStartPlane(BOOL bStart)
 {
 	m_bStartCollData = bStart;
-	SetTimer(m_hWnd, TIMER_GET_DATA, 3500, NULL);
+	//SetTimer(m_hWnd, TIMER_GET_DATA, 3500, NULL);
 }
 BOOL CSence3::LoadPlaneModel()
 {
@@ -1607,7 +1607,7 @@ void CSence3::CleanUp()
 	KillTimer(m_hWnd, TIMER_DRAW_EXP);
 	KillTimer(m_hWnd, TIMER_DRAW_PLANE);
 	KillTimer(m_hWnd, TIMER_EXP_OVER);
-	KillTimer(m_hWnd, TIMER_GET_DATA);
+	//KillTimer(m_hWnd, TIMER_GET_DATA);
 
 	ReleaseRes();
 }

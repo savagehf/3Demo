@@ -30,4 +30,7 @@ protected:
 	double m_dYValue;
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedStartExplore1();
+	afx_msg void OnBnClickedStartExplore2();
 };

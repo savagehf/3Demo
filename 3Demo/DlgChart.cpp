@@ -40,6 +40,8 @@ void CDlgChart::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDlgChart, CDialog)
 	ON_WM_TIMER()
 	ON_WM_CREATE()
+	ON_BN_CLICKED(IDC_START_EXPLORE_1, &CDlgChart::OnBnClickedStartExplore1)
+	ON_BN_CLICKED(IDC_START_EXPLORE_2, &CDlgChart::OnBnClickedStartExplore2)
 END_MESSAGE_MAP()
 
 
@@ -157,3 +159,13 @@ void CDlgChart::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
+
+void CDlgChart::OnBnClickedStartExplore1()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CDlgChart::OnBnClickedStartExplore2()
+{
+	// TODO: Add your control notification handler code here
+}
