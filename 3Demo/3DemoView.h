@@ -5,6 +5,7 @@ class CSence1;
 class CSence2;
 class CSence3;
 
+class C3DemoDoc;
 class C3DemoView : public CView
 {
 public:
@@ -23,6 +24,9 @@ public:
 	BOOL RenderSence2();
 	BOOL RenderSence3();
 	void StartDrawPlane();
+
+	void StartTask1();
+	void StartTask2();
 
 protected: 
 	DECLARE_DYNCREATE(C3DemoView)

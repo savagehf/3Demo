@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "3Demo.h"
 #include "DlgChart.h"
-
+#include "MainFrm.h"
 #include "chartctrl/ChartAxisLabel.h"
 #include "ChartCtrl/ChartXYSerie.h"
 #include "ChartCtrl/ChartLineSerie.h"
@@ -162,10 +162,18 @@ void CDlgChart::OnTimer(UINT_PTR nIDEvent)
 
 void CDlgChart::OnBnClickedStartExplore1()
 {
-	// TODO: Add your control notification handler code here
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (pFrame != NULL)
+	{
+		pFrame->PostMessage(WM_START_TASK_1);
+	}
 }
 
 void CDlgChart::OnBnClickedStartExplore2()
 {
-	// TODO: Add your control notification handler code here
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->PostMessage(WM_START_TASK_2);
+	}
 }

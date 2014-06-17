@@ -469,3 +469,19 @@ void C3DemoView::OnExportCsv()
 		pFrame->PostMessage(WM_EXPORT_AS_CSV);
 	}
 }
+
+void C3DemoView::StartTask1()
+{
+	if (NULL != m_pSence3)
+	{
+		m_pSence3->StartFlyTask1();
+	}
+}
+
+void C3DemoView::StartTask2()
+{
+	if (NULL != m_pSence3)
+	{
+		m_pSence3->StartFlyTask2();
+	}
+}

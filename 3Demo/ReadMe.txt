@@ -137,3 +137,10 @@ redistributing Visual C++ applications in MSDN documentation.
   lookat和translate是相反的操作，将draw函数中的lookat替换掉了，但是 飞机模型绘制不出来。
   可能原因是飞机的位置和地形的差别太大？在花点时间调试下draw函数吧。
   
+  
+  2014年6月17日23:25:02
+  1.加入了自由飞行状态
+  2.加入了相关任务1,2的飞行状态的控制，
+  to do：根据用户点击的”启动飞行1“，设置当前的状态为模拟状态m_bStartSimulateFly=TRUE。
+  开始任务1的绘制，具体的绘制又分解成多个场景的绘制。接下里的任务就是完成这些。
+  绘制线条闪烁，飞行，采样，飞行，采样。。。到终点，绘制平面。终止。

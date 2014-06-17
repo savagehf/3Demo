@@ -9,6 +9,9 @@
 #define WM_EXPORT_AS_TEXT	WM_USER+201
 #define WM_EXPORT_AS_CSV	WM_USER+202
 
+#define WM_START_TASK_1		WM_USER+210
+#define WM_START_TASK_2		WM_USER+211
+
 class CMainFrame : public CFrameWndEx
 {
 	
@@ -46,6 +49,8 @@ protected:  // control bar embedded members
 // Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg LRESULT OnStartTask1(WPARAM W, LPARAM l);
+	afx_msg LRESULT OnStartTask2(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnAddOneData(WPARAM wp, LPARAM lp);
 	afx_msg LRESULT OnExportAsText(WPARAM wp, LPARAM lp);
 	afx_msg LRESULT OnExportAsCSV(WPARAM wp, LPARAM lp);

@@ -118,6 +118,8 @@ CSence3::CSence3(HWND hWnd)
 	m_bDrawPane3 = FALSE;
 	m_bDrawPane4 = FALSE;
 	m_bIsGettingData = FALSE;
+	m_bStartSimulateFly = FALSE;
+	m_eTaskType = eTaskNone;
 
 	m_bStartCollData  = FALSE;
 	m_bStartExplosion = FALSE;
@@ -1447,20 +1449,21 @@ void CSence3::OnTimer(UINT nIDEvent)
 	}
 	else if(nIDEvent == TIMER_DRAW_PLANE)
 	{
-		if (!m_bIsGettingData)
+		//没有进行任何任务飞行===>自由飞行状态
+		if (!m_bStartSimulateFly)
 		{
 			if (m_eDir == 0)
 			{
 				//-x---->+x
 				if (m_fFlyStep + START_X_POS >= MAX_X_POS)
 				{
-					m_bIsGettingData = TRUE;
-					//绘制4s的signal
-					SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+					//m_bIsGettingData = TRUE;
+					////绘制4s的signal
+					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
+					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
 					m_eDir = 1;
 					m_fFlyStep = 0.0;
-					m_bDrawPane1 = TRUE;
+					//m_bDrawPane1 = TRUE;
 				}
 			}
 			else if (m_eDir == 1)
@@ -1468,14 +1471,14 @@ void CSence3::OnTimer(UINT nIDEvent)
 				//+z---->-z
 				if (START_Z_POS +(-m_fFlyStep) <= MAX_Z_POS)
 				{
-					m_bIsGettingData = TRUE;
-					//绘制4s的signal
-					SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+					//m_bIsGettingData = TRUE;
+					////绘制4s的signal
+					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
+					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
 
 					m_eDir = 2;
 					m_fFlyStep = 0.0f;
-					m_bDrawPane2 = TRUE;
+					//m_bDrawPane2 = TRUE;
 				}
 			}
 			else if (m_eDir == 2)
@@ -1483,14 +1486,14 @@ void CSence3::OnTimer(UINT nIDEvent)
 				//+x---->-x
 				if (MAX_X_POS-m_fFlyStep <= START_X_POS)
 				{
-					m_bIsGettingData = TRUE;
-					//绘制4s的signal
-					SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+					//m_bIsGettingData = TRUE;
+					////绘制4s的signal
+					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
+					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
 
 					m_eDir = 3;
 					m_fFlyStep = 0.0f;
-					m_bDrawPane3 = TRUE;
+					//m_bDrawPane3 = TRUE;
 				}
 			}
 			else if (m_eDir == 3)
@@ -1498,18 +1501,39 @@ void CSence3::OnTimer(UINT nIDEvent)
 				//-z---->+z
 				if (MAX_Z_POS+m_fFlyStep >= START_Z_POS)
 				{
-					m_bIsGettingData = TRUE;
-					//绘制4s的signal
-					SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+					//m_bIsGettingData = TRUE;
+					////绘制4s的signal
+					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
+					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
 
 					m_eDir = 0;
 					m_fFlyStep = 0.0f;
-					m_bDrawPane4 = TRUE;
+					//m_bDrawPane4 = TRUE;
 				}
 			}	
 
 			m_fFlyStep += 0.5f;
+		}
+		//在执行任务飞行一、二模拟。
+		else
+		{
+			//如果在执行飞行任务1
+			if (eTask1 == m_eTaskType)
+			{
+				//1.轨迹线闪烁绘制，
+				//2.飞行绘制，
+				//3.暂停+信号线绘制，
+				//4.终点到了，就停止绘制
+
+			}
+			//如果在执行飞行任务2
+			else if (eTask2 == m_eTaskType)
+			{
+				//1.轨迹线闪烁绘制，
+				//2.飞行绘制，
+				//3.暂停+信号线绘制，
+				//4.终点到了，就停止绘制
+			}
 		}
 	}
 	else if (nIDEvent == TIMER_SIGNAL_EXPIRE)
