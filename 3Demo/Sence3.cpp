@@ -14,6 +14,11 @@
 #define START_Y_POS			6.0
 #define SCALE_FACTOR		0.0002
 
+//////////////////////////////////////////////////////////////////////////
+#define TIMER_ROUTE_1_OVER	3000	//绘制闪烁信号线。
+
+#define TIMER_ROUTE_2_OVER	3001	//绘制闪烁信号线。
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -112,14 +117,18 @@ CSence3::CSence3(HWND hWnd)
 	m_bPlaneLoaded = FALSE;
 	m_fSignalStep = 0.0;
 	m_fFlyStep = 0.0;
+	
 	m_eDir = 0;
-	m_bDrawPane1 = FALSE;
+	m_eState = eState_Free;
+	m_bColorChange = FALSE;
+
+	//m_bDrawPane1 = FALSE;
 	m_bDrawPane2 = FALSE;
 	m_bDrawPane3 = FALSE;
-	m_bDrawPane4 = FALSE;
-	m_bIsGettingData = FALSE;
-	m_bStartSimulateFly = FALSE;
-	m_eTaskType = eTaskNone;
+	//m_bDrawPane4 = FALSE;
+	//m_bIsGettingData = FALSE;
+	//m_bStartSimulateFly = FALSE;
+	//m_eTaskType = eTaskNone;
 
 	m_bStartCollData  = FALSE;
 	m_bStartExplosion = FALSE;
@@ -493,18 +502,48 @@ void CSence3::Draw()
 	//因为有深度测试，如果下面代码放在前面，就会出现北京不透明的效果
 	if (m_bStartCollData)
 	{
-		
-		if (m_bIsGettingData)
+		switch(m_eState)
+		{
+		case eState_Free:
+			{
+				DrawFlyFree();
+			}
+			break;
+		case eState_Route_1:
+			{
+				DrawRoute1();
+			}
+			break;
+		case eState_Coll_Data_1:
+			{
+				DrawCollData1();
+			}
+			break;
+		case eState_Route_2:
+			{
+				DrawRoute2();
+			}
+			break;
+		case eState_Coll_Data_2:
+			{
+				DrawCollData2();
+			}
+			break;
+		default:
+			break;
+		}
+
+		/*if (m_bIsGettingData)
 		{
 			DrawStaticPlaneAndSignal();
 		}
 		else
 		{
 			DrawPlane();
-		}
+		}*/
 
 		//必须禁用深度测试否则就会出现后面的屏幕被前面的遮住。
-		glDisable(GL_DEPTH_TEST);
+		/*glDisable(GL_DEPTH_TEST);
  		if (m_bDrawPane1)
  		{
  			DrawClippane1();
@@ -521,7 +560,7 @@ void CSence3::Draw()
 		{
 			DrawClippane4();
 		}
-		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);*/
 	}
 
 
@@ -1023,31 +1062,30 @@ void CSence3::DrawExplosion()
 			//glDisable(GL_TEXTURE_2D);
 }
 
-void CSence3::DrawClippane1()
-{
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
-	glPushMatrix();
-	glColor4f(0.5, 0.0, 0.5, 0.4);
-	//glTranslatef();
-	glBegin(GL_POLYGON);
-	glVertex3f(START_X_POS, START_Y_POS-8.0, START_Z_POS);
-	glVertex3f(MAX_X_POS,	START_Y_POS-8.0, START_Z_POS);
-	glVertex3f(MAX_X_POS,	START_Y_POS,	 START_Z_POS);
-	glVertex3f(START_X_POS, START_Y_POS,	 START_Z_POS);
-	glEnd();
-	glPopMatrix();
-
-	glDisable(GL_BLEND);
-}
-
+//void CSence3::DrawClippane1()
+//{
+//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//	glEnable(GL_BLEND);
+//	glPushMatrix();
+//	glColor4f(0.5, 0.0, 0.5, 0.4);
+//	//glTranslatef();
+//	glBegin(GL_POLYGON);
+//	glVertex3f(START_X_POS, START_Y_POS-8.0, START_Z_POS);
+//	glVertex3f(MAX_X_POS,	START_Y_POS-8.0, START_Z_POS);
+//	glVertex3f(MAX_X_POS,	START_Y_POS,	 START_Z_POS);
+//	glVertex3f(START_X_POS, START_Y_POS,	 START_Z_POS);
+//	glEnd();
+//	glPopMatrix();
+//
+//	glDisable(GL_BLEND);
+//}
+//
 void CSence3::DrawClippane3()
 {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glPushMatrix();
 	glColor4f(0.0, 0.5, 0.5, 0.4);
-	//glTranslatef();
 	glBegin(GL_POLYGON);
 	glVertex3f(START_X_POS, START_Y_POS-8.0, MAX_Z_POS);
 	glVertex3f(MAX_X_POS,	START_Y_POS-8.0, MAX_Z_POS);
@@ -1063,8 +1101,8 @@ void CSence3::DrawClippane2()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glPushMatrix();
-	glColor4f(0.5, 0.5, 0.0, 0.3);
-	//glRotatef(-10.0f, 0.0f,1.0f,0.0f);
+	glColor4f(0.5, 0.0, 0.5, 0.3);
+
 	glBegin(GL_POLYGON);
 	glVertex3f(MAX_X_POS, START_Y_POS-8.0, START_Z_POS);
 	glVertex3f(MAX_X_POS, START_Y_POS-8.0, MAX_Z_POS);
@@ -1074,23 +1112,23 @@ void CSence3::DrawClippane2()
 	glPopMatrix();
 	glDisable(GL_BLEND);
 }
-void CSence3::DrawClippane4()
-{
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
-	glPushMatrix();
-	glColor4f(0.5, 0.1, 0.1, 0.3);
-	glBegin(GL_POLYGON);
-	glVertex3f(START_X_POS, START_Y_POS-8.0, START_Z_POS);
-	glVertex3f(START_X_POS, START_Y_POS-8.0, MAX_Z_POS);
-	glVertex3f(START_X_POS, START_Y_POS,	   MAX_Z_POS);
-	glVertex3f(START_X_POS, START_Y_POS,	   START_Z_POS);
-	glEnd();
-	glPopMatrix();
-	glDisable(GL_BLEND);
-}
+//void CSence3::DrawClippane4()
+//{
+//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//	glEnable(GL_BLEND);
+//	glPushMatrix();
+//	glColor4f(0.5, 0.1, 0.1, 0.3);
+//	glBegin(GL_POLYGON);
+//	glVertex3f(START_X_POS, START_Y_POS-8.0, START_Z_POS);
+//	glVertex3f(START_X_POS, START_Y_POS-8.0, MAX_Z_POS);
+//	glVertex3f(START_X_POS, START_Y_POS,	   MAX_Z_POS);
+//	glVertex3f(START_X_POS, START_Y_POS,	   START_Z_POS);
+//	glEnd();
+//	glPopMatrix();
+//	glDisable(GL_BLEND);
+//}
 
-void CSence3::DrawPlane()
+void CSence3::DrawFlyFree()
 {
 	glPushMatrix();
 
@@ -1136,71 +1174,259 @@ void CSence3::DrawPlane()
 
 }
 
-//注意：此函数需要在GL-depth_test Enable状态下才会显示信号线正常。
-//否则信号线看起来总是在2D平面绘制的效果。
-void CSence3::DrawStaticPlaneAndSignal()
+void CSence3::DrawRoute1()
 {
-	float xPos = 0.0f;
-	float zPos = 0.0f;
-	float yPos = START_Y_POS;
-
-	//1.draw static plane.
+	//draw plane static
 	glPushMatrix();
-	if (m_eDir == 0)
-	{
-		xPos = START_X_POS;
-		zPos = START_Z_POS;
-		glTranslated (START_X_POS, START_Y_POS, START_Z_POS);
-
-	}
-	else if (m_eDir == 1)
-	{
-		xPos = MAX_X_POS;
-		zPos = START_Z_POS;
+		//glTranslated (START_X_POS, START_Y_POS, START_Z_POS);
 		glTranslated(MAX_X_POS, START_Y_POS, START_Z_POS);
-	}
-	else if (m_eDir == 2)
-	{
-		xPos = MAX_X_POS;
-		zPos = MAX_Z_POS;
-		glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
-	}
-	else if (m_eDir == 3)
-	{
-		xPos = START_X_POS;
-		zPos = MAX_Z_POS;
-		glTranslated(START_X_POS, START_Y_POS, MAX_Z_POS);
-	}
 
-	glEnable( GL_COLOR_MATERIAL); 
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+		glEnable( GL_COLOR_MATERIAL); 
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
 
-	glRotatef(90*m_eDir, 0,1,0);
-	glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
-	glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
-	glScalef(0.0002,0.0002,0.0002);
-	if (m_bPlaneLoaded)
-	{
-		m_planeModel.drawGL();
-	}
-	glDisable(GL_LIGHTING);
+		glRotatef(90*1, 0,1,0);
+		glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+		glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+		glScalef(SCALE_FACTOR,SCALE_FACTOR,SCALE_FACTOR);
+		if (m_bPlaneLoaded)
+		{
+			m_planeModel.drawGL();
+		}
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
+	glPopMatrix();
 
+	//draw route.
+	glPushMatrix();
+		if (m_bColorChange)
+		{
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		else
+		{
+			glColor3f(0.0, 1.0, 0.0);
+		}
+		
+		glBegin(GL_LINE_STRIP);
+			glVertex3f(MAX_X_POS, START_Y_POS,	   MAX_Z_POS);
+			glVertex3f(MAX_X_POS, START_Y_POS,	  START_Z_POS );
+		glEnd();
+	glPopMatrix();
+}
+
+void CSence3::DrawCollData1()
+{
+	//draw flash plane.
+	glPushMatrix();
+		//+z---->-z
+		glTranslated(MAX_X_POS, START_Y_POS, START_Z_POS-m_fFlyStep);
+
+		glEnable( GL_COLOR_MATERIAL); 
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+
+		glRotatef(90, 0,1,0);
+		glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+		glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+		glScalef(SCALE_FACTOR,SCALE_FACTOR,SCALE_FACTOR);
+		if (m_bPlaneLoaded)
+		{
+			m_planeModel.drawGL();
+		}
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
 	glPopMatrix();
 
 	//2.draw signal
+	float xPos = MAX_X_POS;
+	float yPos = START_Y_POS;
+	float zPos = START_Z_POS-m_fFlyStep;
+
 	Point3D ptstart(xPos,yPos, zPos);
 	Point3D ptend(xPos,yPos-6.0, zPos);
 	glPushMatrix();
-	DrawSignal(ptstart, ptend); 
+		DrawSignal(ptstart, ptend); 
 	glPopMatrix();
 
 	glPushMatrix();
-	drawCNString(xPos, yPos, zPos, " 获取采样数据");
+		drawCNString(xPos, yPos, zPos, " 获取采样数据");
 	glPopMatrix();
+
+	if (m_bDrawPane2)
+	{
+		DrawClippane2();
+	}
+
 }
+
+void CSence3::DrawRoute2()
+{
+	//draw plane static
+	glPushMatrix();
+		glTranslated (MAX_X_POS, START_Y_POS, MAX_Z_POS);
+
+		glEnable( GL_COLOR_MATERIAL); 
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+
+		glRotatef(90*2, 0,1,0);
+		glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+		glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+		glScalef(SCALE_FACTOR,SCALE_FACTOR,SCALE_FACTOR);
+		if (m_bPlaneLoaded)
+		{
+			m_planeModel.drawGL();
+		}
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
+	glPopMatrix();
+
+	//draw route 2.
+	glPushMatrix();
+		if (m_bColorChange)
+		{
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		else
+		{
+			glColor3f(0.0, 1.0, 0.0);
+		}
+
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(MAX_X_POS,	START_Y_POS, MAX_Z_POS);
+		glVertex3f(START_X_POS, START_Y_POS, MAX_Z_POS);
+		glEnd();
+	glPopMatrix();
+
+	if (m_bDrawPane2)
+	{
+		DrawClippane2();
+	}
+}
+
+void CSence3::DrawCollData2()
+{
+	//draw flash plane.
+	glPushMatrix();
+		//+x------>-x
+		glTranslated(MAX_X_POS-m_fFlyStep, START_Y_POS, MAX_Z_POS);
+
+		glEnable( GL_COLOR_MATERIAL); 
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+
+		glRotatef(90*2, 0,1,0);
+		glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+		glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+		glScalef(SCALE_FACTOR,SCALE_FACTOR,SCALE_FACTOR);
+		if (m_bPlaneLoaded)
+		{
+			m_planeModel.drawGL();
+		}
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
+	glPopMatrix();
+
+	//2.draw signal
+	float xPos = MAX_X_POS-m_fFlyStep;
+	float yPos = START_Y_POS;
+	float zPos = MAX_Z_POS;
+
+	Point3D ptstart(xPos,yPos, zPos);
+	Point3D ptend(xPos,yPos-6.0, zPos);
+	glPushMatrix();
+		DrawSignal(ptstart, ptend); 
+	glPopMatrix();
+
+	glPushMatrix();
+		drawCNString(xPos, yPos, zPos, " 获取采样数据");
+	glPopMatrix();
+
+	if (m_bDrawPane2)
+	{
+		DrawClippane2();
+	}
+	if (m_bDrawPane3)
+	{
+		DrawClippane3();
+	}
+
+}
+
+//注意：此函数需要在GL-depth_test Enable状态下才会显示信号线正常。
+//否则信号线看起来总是在2D平面绘制的效果。
+//void CSence3::DrawStaticPlaneAndSignal()
+//{
+//	float xPos = 0.0f;
+//	float zPos = 0.0f;
+//	float yPos = START_Y_POS;
+//
+//	//1.draw static plane.
+//	glPushMatrix();
+//	if (m_eDir == 0)
+//	{
+//		xPos = START_X_POS;
+//		zPos = START_Z_POS;
+//		glTranslated (START_X_POS, START_Y_POS, START_Z_POS);
+//
+//	}
+//	else if (m_eDir == 1)
+//	{
+//		xPos = MAX_X_POS;
+//		zPos = START_Z_POS;
+//		glTranslated(MAX_X_POS, START_Y_POS, START_Z_POS);
+//	}
+//	else if (m_eDir == 2)
+//	{
+//		xPos = MAX_X_POS;
+//		zPos = MAX_Z_POS;
+//		glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+//	}
+//	else if (m_eDir == 3)
+//	{
+//		xPos = START_X_POS;
+//		zPos = MAX_Z_POS;
+//		glTranslated(START_X_POS, START_Y_POS, MAX_Z_POS);
+//	}
+//
+//	glEnable( GL_COLOR_MATERIAL); 
+//	glShadeModel(GL_SMOOTH);
+//	glEnable(GL_LIGHTING);
+//	glEnable(GL_LIGHT0);
+//	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+//
+//	glRotatef(90*m_eDir, 0,1,0);
+//	glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+//	glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+//	glScalef(0.0002,0.0002,0.0002);
+//	if (m_bPlaneLoaded)
+//	{
+//		m_planeModel.drawGL();
+//	}
+//	glDisable(GL_LIGHTING);
+//
+//	glPopMatrix();
+//
+//	//2.draw signal
+//	Point3D ptstart(xPos,yPos, zPos);
+//	Point3D ptend(xPos,yPos-6.0, zPos);
+//	glPushMatrix();
+//	DrawSignal(ptstart, ptend); 
+//	glPopMatrix();
+//
+//	glPushMatrix();
+//	drawCNString(xPos, yPos, zPos, " 获取采样数据");
+//	glPopMatrix();
+//}
 void CSence3::DrawSignal( Point3D start, Point3D end) 
 {
 	float signalLength = 0.1f;
@@ -1450,105 +1676,118 @@ void CSence3::OnTimer(UINT nIDEvent)
 	else if(nIDEvent == TIMER_DRAW_PLANE)
 	{
 		//没有进行任何任务飞行===>自由飞行状态
-		if (!m_bStartSimulateFly)
+		switch(m_eState)
 		{
-			if (m_eDir == 0)
+		case eState_Free:
 			{
-				//-x---->+x
-				if (m_fFlyStep + START_X_POS >= MAX_X_POS)
+				if (m_eDir == 0)
 				{
-					//m_bIsGettingData = TRUE;
-					////绘制4s的signal
-					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
-					m_eDir = 1;
-					m_fFlyStep = 0.0;
-					//m_bDrawPane1 = TRUE;
+					//-x---->+x
+					if (m_fFlyStep + START_X_POS >= MAX_X_POS)
+					{
+						//m_bIsGettingData = TRUE;
+						////绘制4s的signal
+						//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
+						//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+						m_eDir = 1;
+						m_fFlyStep = 0.0;
+						//m_bDrawPane1 = TRUE;
+					}
 				}
+				else if (m_eDir == 1)
+				{
+					//+z---->-z
+					if (START_Z_POS +(-m_fFlyStep) <= MAX_Z_POS)
+					{
+						m_eDir = 2;
+						m_fFlyStep = 0.0f;
+					}
+				}
+				else if (m_eDir == 2)
+				{
+					//+x---->-x
+					if (MAX_X_POS-m_fFlyStep <= START_X_POS)
+					{
+						m_eDir = 3;
+						m_fFlyStep = 0.0f;
+					}
+				}
+				else if (m_eDir == 3)
+				{
+					//-z---->+z
+					if (MAX_Z_POS+m_fFlyStep >= START_Z_POS)
+					{
+						m_eDir = 0;
+						m_fFlyStep = 0.0f;
+
+					}
+				}	
+
+				m_fFlyStep += 0.5f;
 			}
-			else if (m_eDir == 1)
+			break;
+		case eState_Route_1: 
 			{
-				//+z---->-z
+				//更改线条颜色。
+				m_bColorChange = !m_bColorChange;	
+			}
+			break;
+		case eState_Coll_Data_1:
+			{
+				//-z--->+z
 				if (START_Z_POS +(-m_fFlyStep) <= MAX_Z_POS)
 				{
-					//m_bIsGettingData = TRUE;
-					////绘制4s的signal
-					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+					//绘制平面
+					m_bDrawPane2 = TRUE;
 
-					m_eDir = 2;
-					m_fFlyStep = 0.0f;
-					//m_bDrawPane2 = TRUE;
+					//走到底了，再从头走一遍
+					m_fFlyStep    = 0.0f;
+					m_fSignalStep = 0.0f;
 				}
+
+				m_fFlyStep += 0.5f;
 			}
-			else if (m_eDir == 2)
+			break;
+		case eState_Route_2:
+			{
+				//更改线条颜色。
+				m_bColorChange = !m_bColorChange;	
+			}
+			break;
+		case eState_Coll_Data_2:
 			{
 				//+x---->-x
 				if (MAX_X_POS-m_fFlyStep <= START_X_POS)
 				{
-					//m_bIsGettingData = TRUE;
-					////绘制4s的signal
-					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+					//绘制平面
+					m_bDrawPane3 = TRUE;
 
-					m_eDir = 3;
-					m_fFlyStep = 0.0f;
-					//m_bDrawPane3 = TRUE;
+					//走到底了，再从头走一遍
+					m_fFlyStep    = 0.0f;
+					m_fSignalStep = 0.0f;
 				}
-			}
-			else if (m_eDir == 3)
-			{
-				//-z---->+z
-				if (MAX_Z_POS+m_fFlyStep >= START_Z_POS)
-				{
-					//m_bIsGettingData = TRUE;
-					////绘制4s的signal
-					//SetTimer(m_hWnd, TIMER_SIGNAL_EXPIRE, 6000, NULL);
-					//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
 
-					m_eDir = 0;
-					m_fFlyStep = 0.0f;
-					//m_bDrawPane4 = TRUE;
-				}
-			}	
-
-			m_fFlyStep += 0.5f;
-		}
-		//在执行任务飞行一、二模拟。
-		else
-		{
-			//如果在执行飞行任务1
-			if (eTask1 == m_eTaskType)
-			{
-				//1.轨迹线闪烁绘制，
-				//2.飞行绘制，
-				//3.暂停+信号线绘制，
-				//4.终点到了，就停止绘制
-
+				m_fFlyStep += 0.5f;
 			}
-			//如果在执行飞行任务2
-			else if (eTask2 == m_eTaskType)
-			{
-				//1.轨迹线闪烁绘制，
-				//2.飞行绘制，
-				//3.暂停+信号线绘制，
-				//4.终点到了，就停止绘制
-			}
+			break;
+		default:
+			break;
 		}
 	}
-	else if (nIDEvent == TIMER_SIGNAL_EXPIRE)
+	//route 1的闪烁绘制该结束了。进入1的采集动画阶段
+	else if (nIDEvent == TIMER_ROUTE_1_OVER)
 	{
-		//停止绘制signal,开始移动飞机
-		m_bIsGettingData = FALSE;
-		m_fSignalStep = 0.0f;
-		KillTimer(m_hWnd, TIMER_SIGNAL_EXPIRE);
-		KillTimer(m_hWnd, TIMER_DRAW_SIGNAL);
+		m_eState = eState_Coll_Data_1;
+		
+		KillTimer(m_hWnd,TIMER_ROUTE_1_OVER);
+		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);//整个飞行阶段一直绘制信号线。以示采集。	
+	}
+	else if (nIDEvent == TIMER_ROUTE_2_OVER)
+	{
+		m_eState = eState_Coll_Data_2;
 
-		CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-		if (NULL != pFrame)
-		{
-			pFrame->PostMessage(WM_ADD_ONE_DATA);
-		}
+		KillTimer(m_hWnd, TIMER_ROUTE_2_OVER);
+		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
 	}
 	else if (nIDEvent == TIMER_DRAW_SIGNAL)
 	{
@@ -1561,6 +1800,21 @@ void CSence3::OnTimer(UINT nIDEvent)
 			m_fSignalStep += 0.5f;
 		}
 	}
+	//else if (nIDEvent == TIMER_SIGNAL_EXPIRE)
+	//{
+	//	//停止绘制signal,开始移动飞机
+	//	//m_bIsGettingData = FALSE;
+	//	m_fSignalStep = 0.0f;
+	//	KillTimer(m_hWnd, TIMER_SIGNAL_EXPIRE);
+	//	KillTimer(m_hWnd, TIMER_DRAW_SIGNAL);
+
+	//	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	//	if (NULL != pFrame)
+	//	{
+	//		pFrame->PostMessage(WM_ADD_ONE_DATA);
+	//	}
+	//}
+	
 }
 void CSence3::ResetExp()
 {
@@ -1666,3 +1920,30 @@ BOOL CSence3::ReleaseRes()
 	return TRUE;
 }
 
+void CSence3::StartFlyTask1()
+{
+	m_eState = eState_Route_1;
+	SetTimer(m_hWnd, TIMER_ROUTE_1_OVER, 3000, NULL);
+
+	//reset 
+	KillTimer(m_hWnd, TIMER_DRAW_SIGNAL);
+	m_fFlyStep = 0.0f;
+	m_fSignalStep = 0.0f;
+}
+void CSence3::StartFlyTask2()
+{
+	m_eState = eState_Route_2;
+	SetTimer(m_hWnd, TIMER_ROUTE_2_OVER, 3000, NULL);
+
+	//reset.
+	KillTimer(m_hWnd, TIMER_DRAW_SIGNAL);
+	m_fFlyStep = 0.0f;
+	m_fSignalStep = 0.0f;
+}
+
+void CSence3::CalcFirePostion()
+{
+	//计算位置。
+
+	//3d下闪烁脏弹位置。
+}

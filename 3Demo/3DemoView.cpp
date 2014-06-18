@@ -485,3 +485,11 @@ void C3DemoView::StartTask2()
 		m_pSence3->StartFlyTask2();
 	}
 }
+
+void C3DemoView::CalcPostion()
+{
+	if (NULL != m_pSence3)
+	{
+		m_pSence3->CalcFirePostion();
+	}
+}

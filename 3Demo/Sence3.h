@@ -11,11 +11,13 @@ class CSence3
 public:
 	CSence3(HWND hWnd);
 	~CSence3();
-	enum ETaskType
+	enum EState
 	{
-		eTaskNone	= 0,
-		eTask1		= 1,
-		eTask2		= 2,
+		eState_Free					= 0,	//自由飞行状态
+		eState_Route_1				= 1,	//任务1的闪烁线路阶段
+		eState_Coll_Data_1			= 2,	//任务1的采集数据阶段
+		eState_Route_2				= 3,	//任务2的闪烁路线阶段
+		eState_Coll_Data_2			= 4,	//任务2的采集数据阶段
 	};
 	//terrain.
 	BOOL Init();
@@ -32,18 +34,16 @@ public:
 	//说明：开始任务一的绘制，会分解：
 	//1.轨迹线闪烁绘制，2.飞行绘制，3.暂停+信号线绘制，4.终点到了，就停止绘制，不考虑循环了
 	//如果在进行任务二绘制，那么任务一就只绘制一个平面了。
-	void StartFlyTask1()
-	{
-		m_eTaskType = eTask1;
-	}
+	void StartFlyTask1();
 
 	//说明：开始任务二的绘制，分解如下：
 	//1.轨迹线的少说绘制，2.飞行绘制，3.暂停+信号线绘制，4.终点到了，就停止绘制。
 	//如果结束了，就绘制最终的静止状态的飞行平面。
-	void StartFlyTask2()
-	{
-		m_eTaskType = eTask2;
-	}
+	void StartFlyTask2();
+
+	//模拟切面，计算脏弹位置，并显示闪烁脏弹位置
+	void CalcFirePostion();
+	
 	
 
 protected:
@@ -68,14 +68,17 @@ protected:
 	void selectFont(int size, int charset, const char* face) ;
 	void drawCNString(float x, float y, float z, const char* str);
 	
-	void DrawPlane();					//自由飞行
-	void DrawPlaneInTask1();			//执行任务一
-	void DrawPlaneInTask2();			//执行任务二
-	void DrawStaticPlaneAndSignal();	//飞机静止状态下采集数据的信号模拟。
-	void DrawClippane1();
+	void DrawFlyFree();					//自由飞行
+	void DrawRoute1();					//第一阶段的路线闪烁
+	void DrawCollData1();				//第一阶段的数据采集
+	void DrawRoute2();					//第二接单的路线闪烁
+	void DrawCollData2();				//第二阶段的数据采集
+	
+	//void DrawStaticPlaneAndSignal();	//飞机静止状态下采集数据的信号模拟。
+	//void DrawClippane1();
 	void DrawClippane2();
 	void DrawClippane3();
-	void DrawClippane4();
+	//void DrawClippane4();
 
 	void CleanUp();
 	BOOL ReleaseRes();
@@ -118,33 +121,20 @@ protected:
 	CTriList m_planeModel;
 	BOOL m_bPlaneLoaded;
 
-	//自由飞行阶段的控制
+	EState m_eState;		
 	int   m_eDir;				//方向控制
 	float m_fFlyStep;			//每次飞行的步长
-	BOOL m_bStartSimulateFly;	//TRUE=TASK1/2的模拟飞行 ：FALSE=自由飞行。
-	
-	//区分Task1、2
-	ETaskType m_eTaskType;		
-	
-	//task1的飞行控制
-	BOOL m_bDrawLine1;			//task1的飞行轨迹绘制
-	BOOL m_bDrawTask1Pane;		//task1飞行结束了，绘制平面1
-
-
-	//task2的飞行控制
-	BOOL m_bDrawLine2;			//task2的飞行轨迹绘制
-	BOOL m_bDrawTask2Pane;		//task2飞行结束了，绘制平面2
+	BOOL	m_bColorChange;		//更改线条颜色
 	
 
 	//绘制信号线
 	float m_fSignalStep;
-	BOOL m_bIsGettingData;		//是否在暂停采集数据
 
 
-	BOOL m_bDrawPane1;
-	BOOL m_bDrawPane2;	
-	BOOL m_bDrawPane3;
-	BOOL m_bDrawPane4;
+// 	BOOL m_bDrawPane1;
+ 	BOOL m_bDrawPane2;	
+ 	BOOL m_bDrawPane3;
+// 	BOOL m_bDrawPane4;
 
 	//draw state flag.
 	BOOL m_bStartExplosion;

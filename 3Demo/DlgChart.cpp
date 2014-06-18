@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CDlgChart, CDialog)
 	ON_WM_CREATE()
 	ON_BN_CLICKED(IDC_START_EXPLORE_1, &CDlgChart::OnBnClickedStartExplore1)
 	ON_BN_CLICKED(IDC_START_EXPLORE_2, &CDlgChart::OnBnClickedStartExplore2)
+	ON_BN_CLICKED(IDC_BTN_GET_POSITION, &CDlgChart::OnBnClickedBtnGetPosition)
 END_MESSAGE_MAP()
 
 
@@ -175,5 +176,14 @@ void CDlgChart::OnBnClickedStartExplore2()
 	if (NULL != pFrame)
 	{
 		pFrame->PostMessage(WM_START_TASK_2);
+	}
+}
+
+void CDlgChart::OnBnClickedBtnGetPosition()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->PostMessage(WM_CALC_POSITION);
 	}
 }

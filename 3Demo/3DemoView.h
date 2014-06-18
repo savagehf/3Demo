@@ -27,6 +27,7 @@ public:
 
 	void StartTask1();
 	void StartTask2();
+	void CalcPostion();
 
 protected: 
 	DECLARE_DYNCREATE(C3DemoView)

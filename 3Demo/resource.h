@@ -70,7 +70,6 @@
 #define IDD_DLG_CHART                   311
 #define IDC_BUTTON1                     1000
 #define IDC_BUTTON_CALC                 1000
-#define IDC_START_EXPLORE_ONE           1000
 #define IDC_START_EXPLORE_1             1000
 #define IDC_LIST1                       1001
 #define IDC_LIST_SIMPLIE_RESULT         1001
@@ -82,6 +81,8 @@
 #define IDC_CHARTCTRL_2                 1007
 #define IDC_CHARTCTRL2                  1008
 #define IDC_START_EXPLORE_2             1009
+#define IDC_BUTTON2                     1010
+#define IDC_BTN_GET_POSITION            1010
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_START_EXPLOSION              32773
@@ -97,7 +98,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32783
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

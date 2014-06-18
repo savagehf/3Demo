@@ -144,3 +144,9 @@ redistributing Visual C++ applications in MSDN documentation.
   to do：根据用户点击的”启动飞行1“，设置当前的状态为模拟状态m_bStartSimulateFly=TRUE。
   开始任务1的绘制，具体的绘制又分解成多个场景的绘制。接下里的任务就是完成这些。
   绘制线条闪烁，飞行，采样，飞行，采样。。。到终点，绘制平面。终止。
+  
+  2014年6月19日02:28:13
+  1.确定了两个飞行平面
+  to do：计算脏弹位置，并闪烁显示。
+  chart空间中的数据模拟。要出现为弧形的形式。
+  

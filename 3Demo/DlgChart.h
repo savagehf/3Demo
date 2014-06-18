@@ -33,4 +33,5 @@ protected:
 public:
 	afx_msg void OnBnClickedStartExplore1();
 	afx_msg void OnBnClickedStartExplore2();
+	afx_msg void OnBnClickedBtnGetPosition();
 };

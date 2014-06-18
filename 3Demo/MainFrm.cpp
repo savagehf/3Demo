@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_MESSAGE(WM_START_TASK_1, OnStartTask1)
 	ON_MESSAGE(WM_START_TASK_2, OnStartTask2)
+	ON_MESSAGE(WM_CALC_POSITION, OnCalcPosition)
 	ON_MESSAGE(WM_ADD_ONE_DATA, OnAddOneData)
 	ON_MESSAGE(WM_EXPORT_AS_TEXT, OnExportAsText)
 	ON_MESSAGE(WM_EXPORT_AS_CSV, OnExportAsCSV)
@@ -406,8 +407,18 @@ LRESULT CMainFrame::OnStartTask2(WPARAM w, LPARAM l)
 	C3DemoView* pView = (C3DemoView*)GetActiveView();
 	if (NULL != pView)
 	{
-		pView->StartTask1();
+		pView->StartTask2();
 	}
 
+	return 0;
+}
+
+LRESULT CMainFrame::OnCalcPosition(WPARAM w, LPARAM l)
+{
+	C3DemoView* pView = (C3DemoView*)GetActiveView();
+	if (NULL != pView)
+	{
+		pView->CalcPostion();
+	}
 	return 0;
 }
