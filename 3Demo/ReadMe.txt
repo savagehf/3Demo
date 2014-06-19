@@ -150,3 +150,7 @@ redistributing Visual C++ applications in MSDN documentation.
   to do：计算脏弹位置，并闪烁显示。
   chart空间中的数据模拟。要出现为弧形的形式。
   
+  2014年6月19日15:39:34
+  1.加入了同步数据的框架函数。
+  2.to do：根据pos如何设置对应的Y轴的数据。是个抛物线的函数。y = x*x + b;
+  

@@ -1675,7 +1675,6 @@ void CSence3::OnTimer(UINT nIDEvent)
 	}
 	else if(nIDEvent == TIMER_DRAW_PLANE)
 	{
-		//没有进行任何任务飞行===>自由飞行状态
 		switch(m_eState)
 		{
 		case eState_Free:
@@ -1691,7 +1690,6 @@ void CSence3::OnTimer(UINT nIDEvent)
 						//SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
 						m_eDir = 1;
 						m_fFlyStep = 0.0;
-						//m_bDrawPane1 = TRUE;
 					}
 				}
 				else if (m_eDir == 1)
@@ -1768,6 +1766,9 @@ void CSence3::OnTimer(UINT nIDEvent)
 				}
 
 				m_fFlyStep += 0.5f;
+				//同步数据到Chartctrl
+				
+
 			}
 			break;
 		default:
@@ -1946,4 +1947,22 @@ void CSence3::CalcFirePostion()
 	//计算位置。
 
 	//3d下闪烁脏弹位置。
+}
+
+
+void CSence3::SendDataToChart1(float fCurPos, float fDensity /*= 0*/)
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->SendDataChart1(fCurPos, fDensity);
+	}
+}
+void CSence3::SendDataToChart2(float fCurPos, float fDensity /*= 0*/)
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->SendDataChart2(fCurPos, fDensity);
+	}
 }

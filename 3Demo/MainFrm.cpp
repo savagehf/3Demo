@@ -422,3 +422,13 @@ LRESULT CMainFrame::OnCalcPosition(WPARAM w, LPARAM l)
 	}
 	return 0;
 }
+
+void CMainFrame::SendDataChart1(float fCurPos, float fDensity)
+{
+	m_wndChartView.AddChart1Data(fCurPos, fDensity);
+}
+
+void CMainFrame::SendDataChart2(float fCurPos, float fDensity)
+{
+	m_wndChartView.AddChart2Data(fCurPos, fDensity);
+}

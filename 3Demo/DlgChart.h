@@ -14,10 +14,13 @@ public:
 
 	enum { IDD = IDD_DLG_CHART };
 
+	void AddData1(float fPos, float fDesity);
+	void AddData2(float fPos, float fDesity);
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    
 	virtual BOOL OnInitDialog();
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	//afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg int  OnCreate(LPCREATESTRUCT lpCreateStruct);
 protected:
 

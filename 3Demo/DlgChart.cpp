@@ -11,8 +11,6 @@
 #include "ChartCtrl/ChartPointsSerie.h"
 #include "chartctrl/ChartStandardAxis.h"
 
-#define TIMER_ADD_DATA 2100
-
 
 IMPLEMENT_DYNAMIC(CDlgChart, CDialog)
 
@@ -38,7 +36,7 @@ void CDlgChart::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDlgChart, CDialog)
-	ON_WM_TIMER()
+	//ON_WM_TIMER()
 	ON_WM_CREATE()
 	ON_BN_CLICKED(IDC_START_EXPLORE_1, &CDlgChart::OnBnClickedStartExplore1)
 	ON_BN_CLICKED(IDC_START_EXPLORE_2, &CDlgChart::OnBnClickedStartExplore2)
@@ -122,44 +120,38 @@ BOOL CDlgChart::OnInitDialog()
 	//m_ChartCtrlFisrt.RefreshCtrl();
 	//m_ChartCtrlSecond.RefreshCtrl();
 
-	SetTimer(TIMER_ADD_DATA, 3000, NULL);
-
 	return TRUE;
 }
 
 #define STEP_X 50
 #define STEP_Y 70
-void CDlgChart::OnTimer(UINT_PTR nIDEvent)
-{
-	if (nIDEvent == TIMER_ADD_DATA)
-	{
-		CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
-		CChartLineSerie* pLineSeries = (CChartLineSerie*)m_ChartCtrlSecond.GetSerie(m_nSecSerieID);
-		if (NULL != pPointSeries && NULL != pLineSeries)
-		{
-			if (m_dXValue>=500)
-			{
-				m_dXValue += STEP_X;
-				m_dYValue -= STEP_Y;
-				//int nYRand = rand()%100;
-				//m_dYValue -=nYRand;
-			}
-			else
-			{
-				m_dXValue += STEP_X;
-				m_dYValue += STEP_Y;
-// 				int nYRand = rand()%100;
-// 				m_dYValue += nYRand;
-			}
-
-			pPointSeries->AddPoint(m_dXValue, m_dYValue);
-			pLineSeries->AddPoint(m_dXValue, m_dYValue);
-			m_ChartCtrlFisrt.RefreshCtrl();
-			m_ChartCtrlSecond.RefreshCtrl();
-		}
-	}
-}
-
+//void CDlgChart::OnTimer(UINT_PTR nIDEvent)
+//{
+//	//if (nIDEvent == TIMER_ADD_DATA)
+//	{
+//		CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
+//		CChartLineSerie* pLineSeries = (CChartLineSerie*)m_ChartCtrlSecond.GetSerie(m_nSecSerieID);
+//		if (NULL != pPointSeries && NULL != pLineSeries)
+//		{
+//			if (m_dXValue>=500)
+//			{
+//				m_dXValue += STEP_X;
+//				m_dYValue -= STEP_Y;
+//			}
+//			else
+//			{
+//				m_dXValue += STEP_X;
+//				m_dYValue += STEP_Y;
+//			}
+//
+//			pPointSeries->AddPoint(m_dXValue, m_dYValue);
+//			pLineSeries->AddPoint(m_dXValue, m_dYValue);
+//			m_ChartCtrlFisrt.RefreshCtrl();
+//			m_ChartCtrlSecond.RefreshCtrl();
+//		}
+//	}
+//}
+//
 
 void CDlgChart::OnBnClickedStartExplore1()
 {
@@ -186,4 +178,17 @@ void CDlgChart::OnBnClickedBtnGetPosition()
 	{
 		pFrame->PostMessage(WM_CALC_POSITION);
 	}
+}
+
+//将fpos进行缩放到在X轴范围内。
+void CDlgChart::AddData1(float fPos, float fDesity)
+{
+	float fNewPos = fPos*50;
+	float fNewDes = fPos*fPos;
+	
+}
+
+void CDlgChart::AddData2(float fPos, float fDesity)
+{
+
 }

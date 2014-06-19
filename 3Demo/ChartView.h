@@ -9,6 +9,9 @@ public:
 	CChartView();
 	virtual ~CChartView();
 
+	void AddChart1Data(float fCurPos, float fDensity);
+	void AddChart2Data(float fCurPos, float fDensity);
+
 protected:
 	void AdjustLayout();
 	BOOL GetCurrentAppPath(CString& strAppPath);

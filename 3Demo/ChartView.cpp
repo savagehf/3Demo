@@ -103,3 +103,18 @@ BOOL CChartView::GetCurrentAppPath(CString& strAppPath)
 
 	return TRUE;
 }
+
+void CChartView::AddChart1Data(float fCurPos, float fDensity)
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->AddData1(fCurPos, fDensity);
+	}
+}
+void CChartView::AddChart2Data(float fCurPos, float fDensity)
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->AddData2(fCurPos, fDensity);
+	}
+}

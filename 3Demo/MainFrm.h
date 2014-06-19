@@ -20,13 +20,12 @@ protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
-// Attributes
-public:
 
-// Operations
 public:
+	void SendDataChart1(float fCurPos, float fDensity);
+	void SendDataChart2(float fCurPos, float fDensity);
 
-// Overrides
+
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);

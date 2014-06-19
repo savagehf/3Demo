@@ -80,6 +80,8 @@ protected:
 	void DrawClippane3();
 	//void DrawClippane4();
 
+	void SendDataToChart1(float fCurPos, float fDensity = 0);
+	void SendDataToChart2(float fCurPos, float fDensity = 0);
 	void CleanUp();
 	BOOL ReleaseRes();
 
