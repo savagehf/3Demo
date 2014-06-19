@@ -67,10 +67,10 @@ BOOL CDlgChart::OnInitDialog()
 	//Create first chartctrl
 	CChartStandardAxis* pBottomAxis = 
 		m_ChartCtrlFisrt.CreateStandardAxis(CChartCtrl::BottomAxis);
-	pBottomAxis->SetMinMax(0, 1000);
+	pBottomAxis->SetMinMax(0, 1600);
 	CChartStandardAxis* pLeftAxis =
 		m_ChartCtrlFisrt.CreateStandardAxis(CChartCtrl::LeftAxis);
-	pLeftAxis->SetMinMax(0, 1000);
+	pLeftAxis->SetMinMax(0, 120);
 
 	CChartXYSerie* pSeries = NULL;
 	CChartPointsSerie* pPointSeries = m_ChartCtrlFisrt.CreatePointsSerie(false, false);
@@ -86,10 +86,10 @@ BOOL CDlgChart::OnInitDialog()
 	//Create Second ChartCtrl;
 	CChartStandardAxis* pSecBottomAxis = 
 		m_ChartCtrlSecond.CreateStandardAxis(CChartCtrl::BottomAxis);
-	pSecBottomAxis->SetMinMax(0, 1000);
+	pSecBottomAxis->SetMinMax(0, 1600);
 	CChartStandardAxis* pSecLeftAxis =
 		m_ChartCtrlSecond.CreateStandardAxis(CChartCtrl::LeftAxis);
-	pSecLeftAxis->SetMinMax(0, 1000);
+	pSecLeftAxis->SetMinMax(0, 120);
 	CChartXYSerie* pSecSeries = NULL;
 	CChartLineSerie* pLineSeries = m_ChartCtrlSecond.CreateLineSerie(false,false);
 	pSecSeries = pLineSeries;
@@ -181,14 +181,32 @@ void CDlgChart::OnBnClickedBtnGetPosition()
 }
 
 //将fpos进行缩放到在X轴范围内。
+//magic number;8.0.这个值是在3D场景中，飞行的路径的长度值的/2 = 8.0，
+//如果3D中的坐标更改了，此处也需要更改哦。
+//函数方程：y = -(x-8.0)*(x-8.0) + 100;
 void CDlgChart::AddData1(float fPos, float fDesity)
 {
-	float fNewPos = fPos*50;
-	float fNewDes = fPos*fPos;
+	float fXPos = fPos*100;
+	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100;
+	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
+	
+	if (NULL != pPointSeries)
+	{
+		pPointSeries->AddPoint(fXPos, fYDes);	
+		m_ChartCtrlFisrt.RefreshCtrl();
+	}
 	
 }
 
 void CDlgChart::AddData2(float fPos, float fDesity)
 {
+	float fXPos = fPos*100;
+	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100;
+	CChartLineSerie* pLineSeries = (CChartLineSerie*)m_ChartCtrlSecond.GetSerie(m_nSecSerieID);
 
+	if (NULL != pLineSeries)
+	{
+		pLineSeries->AddPoint(fXPos, fYDes);
+		m_ChartCtrlSecond.RefreshCtrl();
+	}
 }

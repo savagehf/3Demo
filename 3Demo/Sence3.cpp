@@ -1085,10 +1085,10 @@ void CSence3::DrawClippane3()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glPushMatrix();
-	glColor4f(0.0, 0.5, 0.5, 0.4);
+	glColor4f(0.5, 0.5, 0.0, 0.4);
 	glBegin(GL_POLYGON);
-	glVertex3f(START_X_POS, START_Y_POS-8.0, MAX_Z_POS);
-	glVertex3f(MAX_X_POS,	START_Y_POS-8.0, MAX_Z_POS);
+	glVertex3f(START_X_POS, START_Y_POS-10.0, MAX_Z_POS);
+	glVertex3f(MAX_X_POS,	START_Y_POS-10.0, MAX_Z_POS);
 	glVertex3f(MAX_X_POS,	START_Y_POS,	 MAX_Z_POS);
 	glVertex3f(START_X_POS, START_Y_POS,	 MAX_Z_POS);
 	glEnd();
@@ -1104,8 +1104,8 @@ void CSence3::DrawClippane2()
 	glColor4f(0.5, 0.0, 0.5, 0.3);
 
 	glBegin(GL_POLYGON);
-	glVertex3f(MAX_X_POS, START_Y_POS-8.0, START_Z_POS);
-	glVertex3f(MAX_X_POS, START_Y_POS-8.0, MAX_Z_POS);
+	glVertex3f(MAX_X_POS, START_Y_POS-10.0, START_Z_POS);
+	glVertex3f(MAX_X_POS, START_Y_POS-10.0, MAX_Z_POS);
 	glVertex3f(MAX_X_POS, START_Y_POS,	   MAX_Z_POS);
 	glVertex3f(MAX_X_POS, START_Y_POS,	   START_Z_POS);
 	glEnd();
@@ -1254,7 +1254,7 @@ void CSence3::DrawCollData1()
 	glPopMatrix();
 
 	glPushMatrix();
-		drawCNString(xPos, yPos, zPos, " 获取采样数据");
+		drawCNString(xPos+2.0, yPos, zPos, " 获取采样数据");
 	glPopMatrix();
 
 	if (m_bDrawPane2)
@@ -1348,7 +1348,7 @@ void CSence3::DrawCollData2()
 	glPopMatrix();
 
 	glPushMatrix();
-		drawCNString(xPos, yPos, zPos, " 获取采样数据");
+		drawCNString(xPos, yPos+1.5, zPos, " 获取采样数据");
 	glPopMatrix();
 
 	if (m_bDrawPane2)
@@ -1744,6 +1744,8 @@ void CSence3::OnTimer(UINT nIDEvent)
 				}
 
 				m_fFlyStep += 0.5f;
+
+				SendDataToChart1(m_fFlyStep);
 			}
 			break;
 		case eState_Route_2:
@@ -1766,9 +1768,9 @@ void CSence3::OnTimer(UINT nIDEvent)
 				}
 
 				m_fFlyStep += 0.5f;
-				//同步数据到Chartctrl
 				
-
+				//同步数据到Chartctrl
+				SendDataToChart2(m_fFlyStep);
 			}
 			break;
 		default:
@@ -1781,14 +1783,14 @@ void CSence3::OnTimer(UINT nIDEvent)
 		m_eState = eState_Coll_Data_1;
 		
 		KillTimer(m_hWnd,TIMER_ROUTE_1_OVER);
-		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);//整个飞行阶段一直绘制信号线。以示采集。	
+		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 30, NULL);//整个飞行阶段一直绘制信号线。以示采集。	
 	}
 	else if (nIDEvent == TIMER_ROUTE_2_OVER)
 	{
 		m_eState = eState_Coll_Data_2;
 
 		KillTimer(m_hWnd, TIMER_ROUTE_2_OVER);
-		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 100, NULL);
+		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 30, NULL);
 	}
 	else if (nIDEvent == TIMER_DRAW_SIGNAL)
 	{
