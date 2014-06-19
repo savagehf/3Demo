@@ -5,7 +5,7 @@
 #include "MainFrm.h"
 #include "3DSREADER.H"
 
-#define FRAND   (((float)rand()-(float)rand())/RAND_MAX)
+//#define FRAND   (((float)rand()-(float)rand())/RAND_MAX)
 
 //////////////////////////////////////////////////////////////////////////
 #define START_X_POS			-8
@@ -15,10 +15,12 @@
 #define START_Y_POS			6.0
 #define SCALE_FACTOR		0.0002
 
+#define OFFSET_X_MAXPANE	6.5
+
 //////////////////////////////////////////////////////////////////////////
 #define TIMER_ROUTE_1_OVER	3000	//绘制闪烁信号线。
-
 #define TIMER_ROUTE_2_OVER	3001	//绘制闪烁信号线。
+#define TIMER_MAX_PLANE2	3002
 
 
 
@@ -528,6 +530,16 @@ void CSence3::Draw()
 		case eState_Coll_Data_2:
 			{
 				DrawCollData2();
+			}
+			break;
+		case eState_DrawMaxPane_1:
+			{
+				DrawCalcMaxPane1();
+			}
+			break;
+		case eState_DrawMaxPane_2:
+			{
+				DrawCalcMaxPane2();
 			}
 			break;
 		default:
@@ -1081,7 +1093,7 @@ void CSence3::DrawExplosion()
 //	glDisable(GL_BLEND);
 //}
 //
-void CSence3::DrawClippane3()
+void CSence3::DrawRoutePane2()
 {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -1097,7 +1109,7 @@ void CSence3::DrawClippane3()
 
 	glDisable(GL_BLEND);
 }
-void CSence3::DrawClippane2()
+void CSence3::DrawRoutePane1()
 {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -1262,7 +1274,7 @@ void CSence3::DrawCollData1()
 
 	if (m_bDrawPane2)
 	{
-		DrawClippane2();
+		DrawRoutePane1();
 	}
 
 }
@@ -1311,7 +1323,7 @@ void CSence3::DrawRoute2()
 
 	if (m_bDrawPane2)
 	{
-		DrawClippane2();
+		DrawRoutePane1();
 	}
 }
 
@@ -1357,14 +1369,164 @@ void CSence3::DrawCollData2()
 
 	if (m_bDrawPane2)
 	{
-		DrawClippane2();
+		DrawRoutePane1();
 	}
 	if (m_bDrawPane3)
 	{
-		DrawClippane3();
+		DrawRoutePane2();
 	}
 
 }
+
+void CSence3::DrawCalcMaxPane1()
+{
+	//draw flash plane.
+	glPushMatrix();
+		//+x------>-x
+		glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+
+		glEnable( GL_COLOR_MATERIAL); 
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+
+		glRotatef(90*2, 0,1,0);
+		glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+		glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+		glScalef(SCALE_FACTOR,SCALE_FACTOR,SCALE_FACTOR);
+		if (m_bPlaneLoaded)
+		{
+			m_planeModel.drawGL();
+		}
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
+	glPopMatrix();
+
+
+	if (m_bDrawPane2)
+	{
+		DrawRoutePane1();
+	}
+	if (m_bDrawPane3)
+	{
+		DrawRoutePane2();
+	}
+
+	DrawMaxPane1();
+	
+}
+void CSence3::DrawCalcMaxPane2()
+{
+	//draw flash plane.
+	glPushMatrix();
+		//+x------>-x
+		glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+
+		glEnable( GL_COLOR_MATERIAL); 
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+
+		glRotatef(90*2, 0,1,0);
+		glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+		glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+		glScalef(SCALE_FACTOR,SCALE_FACTOR,SCALE_FACTOR);
+		if (m_bPlaneLoaded)
+		{
+			m_planeModel.drawGL();
+		}
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
+	glPopMatrix();
+
+
+	if (m_bDrawPane2)
+	{
+		DrawRoutePane1();
+	}
+	if (m_bDrawPane3)
+	{
+		DrawRoutePane2();
+	}
+
+	DrawMaxPane1();
+	DrawMaxPane2();
+	DrawBlingLine();
+	DrawBlingBomb();
+
+}
+
+void CSence3::DrawMaxPane1()
+{
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glPushMatrix();
+		glColor4f(0.7, 0.1, 0.2, 0.4);
+		//glTranslatef();
+		glBegin(GL_POLYGON);
+		glVertex3f(START_X_POS+6.0, START_Y_POS-10.0, START_Z_POS-8.0);
+		glVertex3f(MAX_X_POS+6.0,	START_Y_POS-10.0, START_Z_POS-8.0);
+		glVertex3f(MAX_X_POS+6.0,	START_Y_POS-3.0,	 START_Z_POS-8.0);
+		glVertex3f(START_X_POS+6.0, START_Y_POS-3.0,	 START_Z_POS-8.0);
+		glEnd();
+	glPopMatrix();
+
+	glDisable(GL_BLEND);
+}
+
+void CSence3::DrawMaxPane2()
+{
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glPushMatrix();
+		glColor4f(0.0, 0.9, 0.0, 0.3);
+		glBegin(GL_POLYGON);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, START_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, MAX_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS+3.0,	   MAX_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS+3.0,	   START_Z_POS-6.0);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_BLEND);
+}
+void CSence3::DrawBlingLine()
+{
+	glPushMatrix();
+		if (m_bColorChange)
+		{
+			glColor3f(0.0, 1.0, 0.0);
+		}
+		else
+		{
+			glColor3f(0.0, 0.0, 1.0);
+		}
+		
+		//glLineWidth(3.0);
+		glBegin(GL_LINE_STRIP);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-3.0, START_Z_POS-8.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, START_Z_POS-8.0);
+		glEnd();
+	glPopMatrix();
+}
+
+void CSence3::DrawBlingBomb()
+{
+	glPushMatrix();
+		if (m_bColorChange)
+		{
+			glColor3f(0.0, 1.0, 1.0);
+		}
+		else
+		{
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		glTranslatef(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, START_Z_POS-8.0);
+		auxSolidSphere(0.3);
+	glPopMatrix();
+}
+
 
 //注意：此函数需要在GL-depth_test Enable状态下才会显示信号线正常。
 //否则信号线看起来总是在2D平面绘制的效果。
@@ -1777,6 +1939,12 @@ void CSence3::OnTimer(UINT nIDEvent)
 				SendDataToChart2(m_fFlyStep);
 			}
 			break;
+		case eState_DrawMaxPane_2:
+			{
+				//更改线条颜色。
+				m_bColorChange = !m_bColorChange;
+			}
+			break;
 		default:
 			break;
 		}
@@ -1806,6 +1974,11 @@ void CSence3::OnTimer(UINT nIDEvent)
 		{
 			m_fSignalStep += 0.5f;
 		}
+	}
+	else if (nIDEvent == TIMER_MAX_PLANE2)
+	{		
+		KillTimer(m_hWnd, TIMER_MAX_PLANE2);
+		m_eState = eState_DrawMaxPane_2;
 	}
 	//else if (nIDEvent == TIMER_SIGNAL_EXPIRE)
 	//{
@@ -1950,9 +2123,10 @@ void CSence3::StartFlyTask2()
 
 void CSence3::CalcFirePostion()
 {
-	//计算位置。
-
-	//3d下闪烁脏弹位置。
+	//绘制第一个max pane
+	m_eState = eState_DrawMaxPane_1;
+	//2s后绘制第二个max pane
+	SetTimer(m_hWnd, TIMER_MAX_PLANE2, 3000,NULL);
 }
 
 
