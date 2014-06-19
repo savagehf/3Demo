@@ -5,6 +5,7 @@
 #include "MainFrm.h"
 #include "3DSREADER.H"
 
+#define FRAND   (((float)rand()-(float)rand())/RAND_MAX)
 
 //////////////////////////////////////////////////////////////////////////
 #define START_X_POS			-8
@@ -1209,6 +1210,8 @@ void CSence3::DrawRoute1()
 		{
 			glColor3f(0.0, 1.0, 0.0);
 		}
+		glLineWidth(3.0);
+		
 		
 		glBegin(GL_LINE_STRIP);
 			glVertex3f(MAX_X_POS, START_Y_POS,	   MAX_Z_POS);
@@ -1299,6 +1302,7 @@ void CSence3::DrawRoute2()
 			glColor3f(0.0, 1.0, 0.0);
 		}
 
+		glLineWidth(3.0);
 		glBegin(GL_LINE_STRIP);
 		glVertex3f(MAX_X_POS,	START_Y_POS, MAX_Z_POS);
 		glVertex3f(START_X_POS, START_Y_POS, MAX_Z_POS);
