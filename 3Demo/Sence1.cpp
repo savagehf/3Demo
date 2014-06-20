@@ -3,7 +3,6 @@
 #include "Utility.h"
 #include "3DSREADER.H"
 #include "CommonDef.h"
-#include "MSModel.h"
 #include <time.h>
 #include "MainFrm.h"
 

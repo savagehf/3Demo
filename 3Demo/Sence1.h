@@ -14,7 +14,6 @@ enum eDirection
 	enmDir_X_asec = 2,
 	enmDir_Z_desc = 3,
 };
-class CModel;
 
 class CSence1
 {

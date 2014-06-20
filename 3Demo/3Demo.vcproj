@@ -424,18 +424,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="milkmodel"
-				>
-				<File
-					RelativePath=".\MSModel.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\MSModel.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="explosion"
 				>
 				<File

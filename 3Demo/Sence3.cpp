@@ -505,46 +505,49 @@ void CSence3::Draw()
 	//因为有深度测试，如果下面代码放在前面，就会出现北京不透明的效果
 	if (m_bStartCollData)
 	{
-		switch(m_eState)
-		{
-		case eState_Free:
+		glPushMatrix();
+			glRotatef(10.0, 0.0,1.0,0.0);
+			switch(m_eState)
 			{
-				DrawFlyFree();
+			case eState_Free:
+				{
+					DrawFlyFree();
+				}
+				break;
+			case eState_Route_1:
+				{
+					DrawRoute1();
+				}
+				break;
+			case eState_Coll_Data_1:
+				{
+					DrawCollData1();
+				}
+				break;
+			case eState_Route_2:
+				{
+					DrawRoute2();
+				}
+				break;
+			case eState_Coll_Data_2:
+				{
+					DrawCollData2();
+				}
+				break;
+			case eState_DrawMaxPane_1:
+				{
+					DrawCalcMaxPane1();
+				}
+				break;
+			case eState_DrawMaxPane_2:
+				{
+					DrawCalcMaxPane2();
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case eState_Route_1:
-			{
-				DrawRoute1();
-			}
-			break;
-		case eState_Coll_Data_1:
-			{
-				DrawCollData1();
-			}
-			break;
-		case eState_Route_2:
-			{
-				DrawRoute2();
-			}
-			break;
-		case eState_Coll_Data_2:
-			{
-				DrawCollData2();
-			}
-			break;
-		case eState_DrawMaxPane_1:
-			{
-				DrawCalcMaxPane1();
-			}
-			break;
-		case eState_DrawMaxPane_2:
-			{
-				DrawCalcMaxPane2();
-			}
-			break;
-		default:
-			break;
-		}
+		glPopMatrix();
 
 		/*if (m_bIsGettingData)
 		{
