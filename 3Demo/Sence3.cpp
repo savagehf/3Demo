@@ -506,7 +506,7 @@ void CSence3::Draw()
 	if (m_bStartCollData)
 	{
 		glPushMatrix();
-			glRotatef(10.0, 0.0,1.0,0.0);
+			//glRotatef(-10.0, 0.0,1.0,0.0);
 			switch(m_eState)
 			{
 			case eState_Free:
