@@ -37,7 +37,7 @@ BOOL C3DemoDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	m_strTitle = "Ôàµ¯Ì½Ñ°Ä£Äâ";
+	//m_strTitle = "Ôàµ¯Ì½Ñ°Ä£Äâ";
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)

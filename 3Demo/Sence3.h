@@ -23,6 +23,7 @@ public:
 		eState_Coll_Data_2			= 4,	//任务2的采集数据阶段
 		eState_DrawMaxPane_1		= 5,	//任务1的最大值切面
 		eState_DrawMaxPane_2		= 6,	//任务2的最大值切面
+		eState_DrawBomb				= 7,	//绘制闪烁脏弹
 	};
 	//terrain.
 	BOOL Init();
@@ -80,6 +81,7 @@ protected:
 	void DrawCollData2();				//第二阶段的数据采集
 	void DrawCalcMaxPane1();
 	void DrawCalcMaxPane2();
+	void DrawLastPosition();
 	void DrawRoute1Points();
 	void DrawRoute2Points();
 	

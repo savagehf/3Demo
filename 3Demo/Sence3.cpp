@@ -21,7 +21,8 @@
 //////////////////////////////////////////////////////////////////////////
 #define TIMER_ROUTE_1_OVER	3000	//绘制闪烁信号线。
 #define TIMER_ROUTE_2_OVER	3001	//绘制闪烁信号线。
-#define TIMER_MAX_PLANE2	3002
+#define TIMER_MAX_PLANE2	3002	//绘制第二个Max切面
+#define TIMER_DIRTY_BOMB	3003	//绘制脏弹闪烁
 
 
 
@@ -545,9 +546,14 @@ void CSence3::Draw()
 				break;
 			case eState_DrawMaxPane_2:
 				{
+					DrawCalcMaxPane2();
+				}
+				break;
+			case eState_DrawBomb:
+				{
 					glRotatef(-15.0, 0.0,1.0,0.0);
 					glTranslatef(-5.0, 0.0,0.0);
-					DrawCalcMaxPane2();
+					DrawLastPosition();
 				}
 				break;
 			default:
@@ -1488,9 +1494,53 @@ void CSence3::DrawCalcMaxPane1()
 	}
 
 	DrawMaxPane1();
+	DrawMaxBlingPoint1();
 	
 }
+
 void CSence3::DrawCalcMaxPane2()
+{
+	//draw flash plane.
+	glPushMatrix();
+	//+x------>-x
+	glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+
+	glEnable( GL_COLOR_MATERIAL); 
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+
+	glRotatef(90*2, 0,1,0);
+	glRotated(90.0,0.0,0.0,1.0);//2.绕飞机的箭头原点整个机身逆时针转90度。
+	glRotated(90.0,0.0,1.0,0.0);//1.先绕Y转个90度得到侧面。
+	glScalef(SCALE_FACTOR,SCALE_FACTOR,SCALE_FACTOR);
+	if (m_bPlaneLoaded)
+	{
+		m_planeModel.drawGL();
+	}
+	glDisable(GL_LIGHT0);
+	glDisable(GL_LIGHTING);
+	glPopMatrix();
+
+
+	if (m_bDrawPane2)
+	{
+		DrawRoutePane1();
+		DrawRoute1Points();
+	}
+	if (m_bDrawPane3)
+	{
+		DrawRoutePane2();
+		DrawRoute2Points();
+	}
+
+	DrawMaxPane1();
+	DrawMaxBlingPoint1();
+	DrawMaxPane2();
+	DrawMaxBlingPoint2();
+}
+void CSence3::DrawLastPosition()
 {
 	//draw flash plane.
 	glPushMatrix();
@@ -1541,10 +1591,10 @@ void CSence3::DrawMaxPane1()
 		glColor4f(0.2, 0.3, 0.7, 0.4);
 		//glTranslatef();
 		glBegin(GL_POLYGON);
-		glVertex3f(START_X_POS+6.0, START_Y_POS-10.0, START_Z_POS-8.0);
-		glVertex3f(MAX_X_POS+6.0,	START_Y_POS-10.0, START_Z_POS-8.0);
-		glVertex3f(MAX_X_POS+6.0,	START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
-		glVertex3f(START_X_POS+6.0, START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
+		glVertex3f(START_X_POS+5.0, START_Y_POS-10.0, START_Z_POS-8.0);
+		glVertex3f(MAX_X_POS+4.0,	START_Y_POS-10.0, START_Z_POS-8.0);
+		glVertex3f(MAX_X_POS+4.0,	START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
+		glVertex3f(START_X_POS+5.0, START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
 		glEnd();
 	glPopMatrix();
 
@@ -2094,9 +2144,19 @@ void CSence3::OnTimer(UINT nIDEvent)
 				SendDataToChart2(m_fFlyStep);
 			}
 			break;
-		case eState_DrawMaxPane_2:
+		case eState_DrawMaxPane_1:
 			{
 				//更改线条颜色。
+				m_bColorChange = !m_bColorChange;
+			}
+			break;
+		case eState_DrawMaxPane_2:
+			{
+				m_bColorChange = !m_bColorChange;
+			}
+			break;
+		case eState_DrawBomb:
+			{
 				m_bColorChange = !m_bColorChange;
 			}
 			break;
@@ -2133,7 +2193,13 @@ void CSence3::OnTimer(UINT nIDEvent)
 	else if (nIDEvent == TIMER_MAX_PLANE2)
 	{		
 		KillTimer(m_hWnd, TIMER_MAX_PLANE2);
+		SetTimer(m_hWnd, TIMER_DIRTY_BOMB, 4000, NULL);
 		m_eState = eState_DrawMaxPane_2;
+	}
+	else if (nIDEvent == TIMER_DIRTY_BOMB)
+	{
+		KillTimer(m_hWnd, TIMER_DIRTY_BOMB);
+		m_eState = eState_DrawBomb;
 	}
 	//else if (nIDEvent == TIMER_SIGNAL_EXPIRE)
 	//{
@@ -2288,7 +2354,7 @@ void CSence3::CalcFirePostion()
 {
 	//绘制第一个max pane
 	m_eState = eState_DrawMaxPane_1;
-	//2s后绘制第二个max pane
+	//3s后绘制第二个max pane
 	SetTimer(m_hWnd, TIMER_MAX_PLANE2, 3000,NULL);
 
 	//Init route 2 points array.hard code.
