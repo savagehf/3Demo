@@ -15,7 +15,8 @@
 #define START_Y_POS			6.0
 #define SCALE_FACTOR		0.0002
 
-#define OFFSET_X_MAXPANE	7.5
+#define OFFSET_X_MAXPANE2	7.5
+#define OFFSET_X_MAXPANE1	3.0
 
 //////////////////////////////////////////////////////////////////////////
 #define TIMER_ROUTE_1_OVER	3000	//ªÊ÷∆…¡À∏–≈∫≈œﬂ°£
@@ -544,7 +545,8 @@ void CSence3::Draw()
 				break;
 			case eState_DrawMaxPane_2:
 				{
-					glRotatef(-8.0, 0.0,1.0,0.0);
+					glRotatef(-15.0, 0.0,1.0,0.0);
+					glTranslatef(-5.0, 0.0,0.0);
 					DrawCalcMaxPane2();
 				}
 				break;
@@ -1630,10 +1632,10 @@ void CSence3::DrawMaxPane2()
 	glPushMatrix();
 		glColor4f(0.0, 0.9, 0.0, 0.3);
 		glBegin(GL_POLYGON);
-		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, START_Z_POS-6.0);
-		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, MAX_Z_POS-6.0);
-		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS+3.0,	   MAX_Z_POS-6.0);
-		glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS+3.0,	   START_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, MAX_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*+3.0*/,	   MAX_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*+3.0*/,	   START_Z_POS-6.0);
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_BLEND);
@@ -1654,8 +1656,8 @@ void CSence3::DrawBlingLine()
 		
 		//glLineWidth(3.0);
 		glBegin(GL_LINE_STRIP);
-			glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS/*-3.0*/, START_Z_POS-8.0);
-			glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, START_Z_POS-8.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*-3.0*/, START_Z_POS-8.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS-8.0);
 		glEnd();
 	glPopMatrix();
 }
@@ -1671,7 +1673,7 @@ void CSence3::DrawBlingBomb()
 		{
 			glColor3f(1.0, 0.0, 0.0);
 		}
-		glTranslatef(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, START_Z_POS-8.0);
+		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS-8.0);
 		auxSolidSphere(0.3);
 	glPopMatrix();
 }
