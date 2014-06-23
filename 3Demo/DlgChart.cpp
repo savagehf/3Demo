@@ -206,6 +206,7 @@ void CDlgChart::AddData2(float fPos, float fDesity)
 
 	if (NULL != pLineSeries)
 	{
+		pLineSeries->SetWidth(2.0);
 		pLineSeries->AddPoint(fXPos, fYDes);
 		m_ChartCtrlSecond.RefreshCtrl();
 	}

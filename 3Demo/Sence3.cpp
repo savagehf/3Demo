@@ -15,7 +15,7 @@
 #define START_Y_POS			6.0
 #define SCALE_FACTOR		0.0002
 
-#define OFFSET_X_MAXPANE	6.5
+#define OFFSET_X_MAXPANE	7.5
 
 //////////////////////////////////////////////////////////////////////////
 #define TIMER_ROUTE_1_OVER	3000	//»æÖÆÉÁË¸ÐÅºÅÏß¡£
@@ -509,7 +509,7 @@ void CSence3::Draw()
 	if (m_bStartCollData)
 	{
 		glPushMatrix();
-			//glRotatef(-10.0, 0.0,1.0,0.0);
+			
 			switch(m_eState)
 			{
 			case eState_Free:
@@ -544,6 +544,7 @@ void CSence3::Draw()
 				break;
 			case eState_DrawMaxPane_2:
 				{
+					glRotatef(-8.0, 0.0,1.0,0.0);
 					DrawCalcMaxPane2();
 				}
 				break;
@@ -1228,7 +1229,7 @@ void CSence3::DrawRoute1()
 		{
 			glColor3f(0.0, 1.0, 0.0);
 		}
-		glLineWidth(3.0);
+		glLineWidth(2.0);
 		
 		
 		glBegin(GL_LINE_STRIP);
@@ -1351,7 +1352,7 @@ void CSence3::DrawRoute2()
 			glColor3f(0.0, 1.0, 0.0);
 		}
 
-		glLineWidth(3.0);
+		glLineWidth(2.0);
 		glBegin(GL_LINE_STRIP);
 		glVertex3f(MAX_X_POS,	START_Y_POS, MAX_Z_POS);
 		glVertex3f(START_X_POS, START_Y_POS, MAX_Z_POS);
@@ -1528,7 +1529,6 @@ void CSence3::DrawCalcMaxPane2()
 	DrawMaxPane2();
 	DrawBlingLine();
 	DrawBlingBomb();
-
 }
 
 void CSence3::DrawMaxPane1()
@@ -1536,17 +1536,91 @@ void CSence3::DrawMaxPane1()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glPushMatrix();
-		glColor4f(0.7, 0.1, 0.2, 0.4);
+		glColor4f(0.2, 0.3, 0.7, 0.4);
 		//glTranslatef();
 		glBegin(GL_POLYGON);
 		glVertex3f(START_X_POS+6.0, START_Y_POS-10.0, START_Z_POS-8.0);
 		glVertex3f(MAX_X_POS+6.0,	START_Y_POS-10.0, START_Z_POS-8.0);
-		glVertex3f(MAX_X_POS+6.0,	START_Y_POS-3.0,	 START_Z_POS-8.0);
-		glVertex3f(START_X_POS+6.0, START_Y_POS-3.0,	 START_Z_POS-8.0);
+		glVertex3f(MAX_X_POS+6.0,	START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
+		glVertex3f(START_X_POS+6.0, START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
 		glEnd();
 	glPopMatrix();
 
 	glDisable(GL_BLEND);
+
+	DrawMaxBlingPoint1();
+}
+
+void CSence3::DrawMaxBlingPoint1()
+{
+	//draw points
+	int nCount = m_vecRoute1Points.size();
+	if (nCount > 0)
+	{
+		glEnable ( GL_DEPTH_TEST );
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST); // Make round points, not square points
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);  // Antialias the lines
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		if (m_bColorChange)
+		{
+			glColor3f(1.0, 0.0, 1.0);
+		}
+		else
+		{
+			glColor3f(1.0, 1.0, 0.0);
+		}
+
+		float fZPos = m_vecRoute1Points[16];
+
+		glPointSize(6.0);
+		glPushMatrix();
+		glBegin(GL_POINTS);
+		glVertex3f(MAX_X_POS, START_Y_POS, START_Z_POS-fZPos);
+		glEnd();
+		glPopMatrix();
+		
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
+	}
+}
+
+void CSence3::DrawMaxBlingPoint2()
+{
+	//draw points
+	int nCount = m_vecRoute2Points.size();
+	if (nCount > 0)
+	{
+		glEnable ( GL_DEPTH_TEST );
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST); // Make round points, not square points
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);  // Antialias the lines
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		if (m_bColorChange)
+		{
+			glColor3f(1.0, 0.0, 1.0);
+		}
+		else
+		{
+			glColor3f(1.0, 1.0, 0.0);
+		}
+
+		float fZPos = m_vecRoute2Points[17];
+
+		glPointSize(6.0);
+		glPushMatrix();
+		glBegin(GL_POINTS);
+		glVertex3f(MAX_X_POS-fZPos, START_Y_POS, MAX_Z_POS);
+		glEnd();
+		glPopMatrix();
+
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
+	}
 }
 
 void CSence3::DrawMaxPane2()
@@ -1563,6 +1637,8 @@ void CSence3::DrawMaxPane2()
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_BLEND);
+
+	DrawMaxBlingPoint2();
 }
 void CSence3::DrawBlingLine()
 {
@@ -1578,7 +1654,7 @@ void CSence3::DrawBlingLine()
 		
 		//glLineWidth(3.0);
 		glBegin(GL_LINE_STRIP);
-			glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-3.0, START_Z_POS-8.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS/*-3.0*/, START_Z_POS-8.0);
 			glVertex3f(START_X_POS+OFFSET_X_MAXPANE, START_Y_POS-10.0, START_Z_POS-8.0);
 		glEnd();
 	glPopMatrix();

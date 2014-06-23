@@ -89,6 +89,8 @@ protected:
 	void DrawRoutePane2();
 	void DrawMaxPane1();
 	void DrawMaxPane2();
+	void DrawMaxBlingPoint1();
+	void DrawMaxBlingPoint2();
 	void DrawBlingLine();
 	void DrawBlingBomb();
 	
