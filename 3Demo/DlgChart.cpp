@@ -32,6 +32,9 @@ void CDlgChart::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CHARTCTRL, m_ChartCtrlFisrt);
 	DDX_Control(pDX, IDC_CHARTCTRL2, m_ChartCtrlSecond);
+	DDX_Control(pDX, IDC_START_EXPLORE_1, m_colorBtnRoute1);
+	DDX_Control(pDX, IDC_START_EXPLORE_2, m_colorBtnRoute2);
+	DDX_Control(pDX, IDC_BTN_GET_POSITION, m_colorBtnCalc);
 }
 
 
@@ -63,6 +66,33 @@ BOOL CDlgChart::OnInitDialog()
 {
 
 	CDialog::OnInitDialog();
+
+	m_colorBtnRoute1.SetFlat(FALSE);
+ 	m_colorBtnRoute1.SetTooltipText(_T("test"));
+ 	m_colorBtnRoute1.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
+ 	m_colorBtnRoute1.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
+ 	m_colorBtnRoute1.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
+ 	m_colorBtnRoute1.SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
+ 	//m_colorBtnRoute1.DrawBorder();
+
+	m_colorBtnRoute2.SetFlat(FALSE);
+	m_colorBtnRoute2.SetTooltipText(_T("test"));
+	m_colorBtnRoute2.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
+	m_colorBtnRoute2.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
+	m_colorBtnRoute2.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
+	m_colorBtnRoute2.SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
+	m_colorBtnRoute2.DrawBorder();
+
+	m_colorBtnCalc.SetFlat(FALSE);
+	m_colorBtnCalc.SetTooltipText(_T("test"));
+	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
+	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
+	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
+	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
+	m_colorBtnCalc.DrawBorder();
+
+
+
 
 	//Create first chartctrl
 	CChartStandardAxis* pBottomAxis = 

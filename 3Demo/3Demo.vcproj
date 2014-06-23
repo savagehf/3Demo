@@ -212,6 +212,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BCMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BtnST.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BtnST.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ChartView.cpp"
 				>
 			</File>
@@ -830,6 +842,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\BCMenu.h"
+			>
+		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

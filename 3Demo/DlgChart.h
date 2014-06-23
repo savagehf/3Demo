@@ -2,7 +2,7 @@
 
 #include "resource.h"
 #include "ChartCtrl/ChartCtrl.h"
-
+#include "BtnST.h"
 
 class CDlgChart : public CDialog
 {
@@ -31,6 +31,10 @@ protected:
 	int m_nSecSerieID;
 	double m_dXValue;
 	double m_dYValue;
+
+	CButtonST m_colorBtnRoute1;
+	CButtonST m_colorBtnRoute2;
+	CButtonST m_colorBtnCalc;
 
 	DECLARE_MESSAGE_MAP()
 public:
