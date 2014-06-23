@@ -1292,6 +1292,13 @@ void CSence3::DrawRoute1Points()
 	int nCount = m_vecRoute1Points.size();
 	if (nCount > 0)
 	{
+		glEnable ( GL_DEPTH_TEST );
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST); // Make round points, not square points
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);  // Antialias the lines
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glColor3f(1.0, 0.0, 0.0);
 		for (int nIndex = 0; nIndex<nCount; nIndex++)
 		{
@@ -1304,6 +1311,8 @@ void CSence3::DrawRoute1Points()
 			glEnd();
 			glPopMatrix();
 		}
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 	}
 }
 
@@ -1414,6 +1423,13 @@ void CSence3::DrawRoute2Points()
 	int nCount = m_vecRoute2Points.size();
 	if (nCount > 0)
 	{
+		glEnable ( GL_DEPTH_TEST );
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST); // Make round points, not square points
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);  // Antialias the lines
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glColor3f(0.0, 1.0, 0.0);
 		for (int nIndex = 0; nIndex<nCount; nIndex++)
 		{
@@ -1426,6 +1442,8 @@ void CSence3::DrawRoute2Points()
 				glEnd();
 			glPopMatrix();
 		}
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 	}
 }
 
