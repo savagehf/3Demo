@@ -138,6 +138,9 @@ CSence3::CSence3(HWND hWnd)
 	m_bExplover = FALSE;
 	m_nExplorCount = 0;
 
+	m_vecRoute1Points.clear();
+	m_vecRoute2Points.clear();
+
 }
 
 CSence3::~CSence3()
@@ -1280,6 +1283,28 @@ void CSence3::DrawCollData1()
 		DrawRoutePane1();
 	}
 
+	DrawRoute1Points();
+}
+
+void CSence3::DrawRoute1Points()
+{
+	//draw points
+	int nCount = m_vecRoute1Points.size();
+	if (nCount > 0)
+	{
+		glColor3f(1.0, 0.0, 0.0);
+		for (int nIndex = 0; nIndex<nCount; nIndex++)
+		{
+			float fZPos = m_vecRoute1Points[nIndex];
+
+			glPointSize(4.0);
+			glPushMatrix();
+			glBegin(GL_POINTS);
+			glVertex3f(MAX_X_POS, START_Y_POS, START_Z_POS-fZPos);
+			glEnd();
+			glPopMatrix();
+		}
+	}
 }
 
 void CSence3::DrawRoute2()
@@ -1327,6 +1352,7 @@ void CSence3::DrawRoute2()
 	if (m_bDrawPane2)
 	{
 		DrawRoutePane1();
+		DrawRoute1Points();
 	}
 }
 
@@ -1373,12 +1399,34 @@ void CSence3::DrawCollData2()
 	if (m_bDrawPane2)
 	{
 		DrawRoutePane1();
+		DrawRoute1Points();
 	}
 	if (m_bDrawPane3)
 	{
 		DrawRoutePane2();
 	}
+	DrawRoute2Points();
+}
 
+void CSence3::DrawRoute2Points()
+{
+	//draw route 2 points
+	int nCount = m_vecRoute2Points.size();
+	if (nCount > 0)
+	{
+		glColor3f(0.0, 1.0, 0.0);
+		for (int nIndex = 0; nIndex<nCount; nIndex++)
+		{
+			float fXPos = m_vecRoute2Points[nIndex];
+
+			glPointSize(4.0);
+			glPushMatrix();
+				glBegin(GL_POINTS);
+				glVertex3f(MAX_X_POS-fXPos, START_Y_POS, MAX_Z_POS);
+				glEnd();
+			glPopMatrix();
+		}
+	}
 }
 
 void CSence3::DrawCalcMaxPane1()
@@ -1410,10 +1458,12 @@ void CSence3::DrawCalcMaxPane1()
 	if (m_bDrawPane2)
 	{
 		DrawRoutePane1();
+		DrawRoute1Points();
 	}
 	if (m_bDrawPane3)
 	{
 		DrawRoutePane2();
+		DrawRoute2Points();
 	}
 
 	DrawMaxPane1();
@@ -1448,10 +1498,12 @@ void CSence3::DrawCalcMaxPane2()
 	if (m_bDrawPane2)
 	{
 		DrawRoutePane1();
+		DrawRoute1Points();
 	}
 	if (m_bDrawPane3)
 	{
 		DrawRoutePane2();
+		DrawRoute2Points();
 	}
 
 	DrawMaxPane1();
@@ -1910,8 +1962,10 @@ void CSence3::OnTimer(UINT nIDEvent)
 					//走到底了，再从头走一遍
 					m_fFlyStep    = 0.0f;
 					m_fSignalStep = 0.0f;
+					m_vecRoute1Points.clear();
 				}
 
+				m_vecRoute1Points.push_back(m_fFlyStep);
 				m_fFlyStep += 0.5f;
 
 				SendDataToChart1(m_fFlyStep);
@@ -1934,8 +1988,10 @@ void CSence3::OnTimer(UINT nIDEvent)
 					//走到底了，再从头走一遍
 					m_fFlyStep    = 0.0f;
 					m_fSignalStep = 0.0f;
+					m_vecRoute2Points.clear();
 				}
 
+				m_vecRoute2Points.push_back(m_fFlyStep);
 				m_fFlyStep += 0.5f;
 				
 				//同步数据到Chartctrl
@@ -2122,6 +2178,14 @@ void CSence3::StartFlyTask2()
 	KillTimer(m_hWnd, TIMER_DRAW_SIGNAL);
 	m_fFlyStep = 0.0f;
 	m_fSignalStep = 0.0f;
+
+	//Init route 1 points array.hard code.
+	m_vecRoute1Points.clear();
+	for(float f = 0.0; f<=16.0;)
+	{
+		m_vecRoute1Points.push_back(f);
+		f += 0.5;
+	}
 }
 
 void CSence3::CalcFirePostion()
@@ -2130,6 +2194,14 @@ void CSence3::CalcFirePostion()
 	m_eState = eState_DrawMaxPane_1;
 	//2s后绘制第二个max pane
 	SetTimer(m_hWnd, TIMER_MAX_PLANE2, 3000,NULL);
+
+	//Init route 2 points array.hard code.
+	m_vecRoute2Points.clear();
+	for (float f=0.0; f<=16.0;)
+	{
+		m_vecRoute2Points.push_back(f);
+		f += 0.5;
+	}
 }
 
 

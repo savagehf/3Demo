@@ -5,6 +5,9 @@
 #include "trilist.h"
 #include "ComDefinition.h"
 #include "Point3D.h"
+#include <vector>
+
+using namespace std;
 
 class CSence3
 {
@@ -77,6 +80,8 @@ protected:
 	void DrawCollData2();				//第二阶段的数据采集
 	void DrawCalcMaxPane1();
 	void DrawCalcMaxPane2();
+	void DrawRoute1Points();
+	void DrawRoute2Points();
 	
 	//void DrawStaticPlaneAndSignal();	//飞机静止状态下采集数据的信号模拟。
 	//void DrawClippane1();
@@ -135,6 +140,8 @@ protected:
 	float m_fFlyStep;			//每次飞行的步长
 	BOOL	m_bColorChange;		//更改线条颜色
 	
+	vector<float> m_vecRoute1Points;
+	vector<float> m_vecRoute2Points;
 
 	//绘制信号线
 	float m_fSignalStep;
