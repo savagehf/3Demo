@@ -37,20 +37,9 @@ public:
 	void SetStartExp(BOOL bStart);
 	void SetStartPlane(BOOL bStart);
 
-	//说明：开始任务一的绘制，会分解：
-	//1.轨迹线闪烁绘制，2.飞行绘制，3.暂停+信号线绘制，4.终点到了，就停止绘制，不考虑循环了
-	//如果在进行任务二绘制，那么任务一就只绘制一个平面了。
 	void StartFlyTask1();
-
-	//说明：开始任务二的绘制，分解如下：
-	//1.轨迹线的少说绘制，2.飞行绘制，3.暂停+信号线绘制，4.终点到了，就停止绘制。
-	//如果结束了，就绘制最终的静止状态的飞行平面。
 	void StartFlyTask2();
-
-	//模拟切面，计算脏弹位置，并显示闪烁脏弹位置
 	void CalcFirePostion();
-	
-	
 
 protected:
 	BOOL InitOpenGL();
@@ -86,7 +75,7 @@ protected:
 	void DrawRoute2Points();
 	
 	//void DrawStaticPlaneAndSignal();	//飞机静止状态下采集数据的信号模拟。
-	//void DrawClippane1();
+	void DrawPlane(float fAngle);
 	void DrawRoutePane1();
 	void DrawRoutePane2();
 	void DrawMaxPane1();
@@ -140,9 +129,9 @@ protected:
 	BOOL m_bPlaneLoaded;
 
 	EState m_eState;		
-	int   m_eDir;				//方向控制
-	float m_fFlyStep;			//每次飞行的步长
-	BOOL	m_bColorChange;		//更改线条颜色
+	int    m_eDir;				//方向控制
+	float  m_fFlyStep;			//每次飞行的步长
+	BOOL   m_bColorChange;		//更改线条颜色
 	
 	vector<float> m_vecRoute1Points;
 	vector<float> m_vecRoute2Points;
@@ -150,11 +139,8 @@ protected:
 	//绘制信号线
 	float m_fSignalStep;
 
-
-// 	BOOL m_bDrawPane1;
  	BOOL m_bDrawPane2;	
  	BOOL m_bDrawPane3;
-// 	BOOL m_bDrawPane4;
 
 	//draw state flag.
 	BOOL m_bStartExplosion;
