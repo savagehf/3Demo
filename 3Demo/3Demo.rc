@@ -188,7 +188,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "3Demo\nÔàµ¯Ì½Ñ°\n3Demo\n\n\nMy3Demo.Document\n3Demo.Document"
+    IDR_MAINFRAME           "3Demo\nXXXXÄ£Äâ·ÂÕæÈí¼þ\n3Demo\n\n\nMy3Demo.Document\n3Demo.Document"
 END
 
 STRINGTABLE 

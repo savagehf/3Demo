@@ -100,6 +100,8 @@ int C3DemoView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 
 	SetTimer(TIMER_DRAW_EXP, 20, NULL);
+
+	OnSence3();
 	
 	return 0;
 }
