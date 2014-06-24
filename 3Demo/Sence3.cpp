@@ -8,8 +8,8 @@
 //#define FRAND   (((float)rand()-(float)rand())/RAND_MAX)
 
 //////////////////////////////////////////////////////////////////////////
-#define START_X_POS			-8
-#define MAX_X_POS			8
+#define START_X_POS			-10
+#define MAX_X_POS			6
 #define START_Z_POS			-20
 #define MAX_Z_POS			-36
 #define START_Y_POS			6.0
@@ -17,6 +17,9 @@
 
 #define OFFSET_X_MAXPANE2	7.5
 #define OFFSET_X_MAXPANE1	3.0
+
+#define ROTATE_MAX_PANE1	-10.0	//顺时针绕离圆点半径旋转10度
+#define ROTATE_MAX_PANE2	10.0	//逆时针绕离圆点半径旋转10度
 
 //////////////////////////////////////////////////////////////////////////
 #define TIMER_ROUTE_1_OVER	3000	//绘制闪烁信号线。
@@ -521,12 +524,18 @@ void CSence3::Draw()
 				break;
 			case eState_Route_1:
 				{
-					DrawRoute1();
+					glPushMatrix();
+						glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+						DrawRoute1();
+					glPopMatrix();
 				}
 				break;
 			case eState_Coll_Data_1:
 				{
-					DrawCollData1();
+					glPushMatrix();
+						glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+						DrawCollData1();
+					glPopMatrix();
 				}
 				break;
 			case eState_Route_2:
@@ -1200,71 +1209,85 @@ void CSence3::DrawRoute1Points()
 
 void CSence3::DrawRoute2()
 {
-	//draw plane static
 	glPushMatrix();
-		glTranslated (MAX_X_POS, START_Y_POS, MAX_Z_POS);
-		DrawPlane(90.0*2);
-	glPopMatrix();
+	glRotated(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		//draw plane static
+		glPushMatrix();
+			glTranslated (MAX_X_POS, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
 
-	//draw route 2.
-	glPushMatrix();
-		if (m_bColorChange)
-		{
-			glColor3f(1.0, 0.0, 0.0);
-		}
-		else
-		{
-			glColor3f(0.0, 1.0, 0.0);
-		}
+		//draw route 2.
+		glPushMatrix();
+			if (m_bColorChange)
+			{
+				glColor3f(1.0, 0.0, 0.0);
+			}
+			else
+			{
+				glColor3f(0.0, 1.0, 0.0);
+			}
 
-		glLineWidth(2.0);
-		glBegin(GL_LINE_STRIP);
-		glVertex3f(MAX_X_POS,	START_Y_POS, MAX_Z_POS);
-		glVertex3f(START_X_POS, START_Y_POS, MAX_Z_POS);
-		glEnd();
+			glLineWidth(2.0);
+			glBegin(GL_LINE_STRIP);
+			glVertex3f(MAX_X_POS,	START_Y_POS, MAX_Z_POS);
+			glVertex3f(START_X_POS, START_Y_POS, MAX_Z_POS);
+			glEnd();
+		glPopMatrix();
 	glPopMatrix();
 
 	if (m_bDrawPane2)
 	{
-		DrawRoutePane1();
-		DrawRoute1Points();
+		glPushMatrix();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
+		glPopMatrix();
 	}
 }
 
 void CSence3::DrawCollData2()
 {
-	//draw flash plane.
 	glPushMatrix();
-		//+x------>-x
-		glTranslated(MAX_X_POS-m_fFlyStep, START_Y_POS, MAX_Z_POS);
-		DrawPlane(90.0*2);
+	glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+
+		glPushMatrix();
+			//+x------>-x
+			glTranslated(MAX_X_POS-m_fFlyStep, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
+
+		//2.draw signal
+		float xPos = MAX_X_POS-m_fFlyStep;
+		float yPos = START_Y_POS;
+		float zPos = MAX_Z_POS;
+
+		Point3D ptstart(xPos,yPos, zPos);
+		Point3D ptend(xPos,yPos-6.0, zPos);
+		glPushMatrix();
+			DrawSignal(ptstart, ptend); 
+		glPopMatrix();
+
+		glPushMatrix();
+			drawCNString(xPos, yPos+1.5, zPos, " 获取采样数据");
+		glPopMatrix();
+
+		if (m_bDrawPane3)
+		{
+			DrawRoutePane2();
+		}
+		DrawRoute2Points();
 	glPopMatrix();
-
-	//2.draw signal
-	float xPos = MAX_X_POS-m_fFlyStep;
-	float yPos = START_Y_POS;
-	float zPos = MAX_Z_POS;
-
-	Point3D ptstart(xPos,yPos, zPos);
-	Point3D ptend(xPos,yPos-6.0, zPos);
-	glPushMatrix();
-		DrawSignal(ptstart, ptend); 
-	glPopMatrix();
-
-	glPushMatrix();
-		drawCNString(xPos, yPos+1.5, zPos, " 获取采样数据");
-	glPopMatrix();
-
+	
 	if (m_bDrawPane2)
 	{
-		DrawRoutePane1();
-		DrawRoute1Points();
+		glPushMatrix();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
+		glPopMatrix();
 	}
-	if (m_bDrawPane3)
-	{
-		DrawRoutePane2();
-	}
-	DrawRoute2Points();
+	
 }
 
 void CSence3::DrawRoute2Points()
@@ -1299,80 +1322,109 @@ void CSence3::DrawRoute2Points()
 
 void CSence3::DrawCalcMaxPane1()
 {
-	//draw flash plane.
 	glPushMatrix();
-		glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
-		DrawPlane(90.0*2);
-	glPopMatrix();
+	glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
 
+		glPushMatrix();
+			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
+		if (m_bDrawPane3)
+		{
+			DrawRoutePane2();
+			DrawRoute2Points();
+		}
+	glPopMatrix();
 
 	if (m_bDrawPane2)
 	{
-		DrawRoutePane1();
-		DrawRoute1Points();
+		glPushMatrix();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
+		glPopMatrix();
 	}
-	if (m_bDrawPane3)
-	{
-		DrawRoutePane2();
-		DrawRoute2Points();
-	}
+	
 
-	DrawMaxPane1();
-	DrawMaxBlingPoint1();
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+		DrawMaxPane1();
+		DrawMaxBlingPoint1();
+	glPopMatrix();
 	
 }
 
 void CSence3::DrawCalcMaxPane2()
 {
-	//draw flash plane.
+	
 	glPushMatrix();
-		//+x------>-x
-		glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
-		DrawPlane(90.0*2);
+		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		glPushMatrix();
+			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
+		
+		if (m_bDrawPane3)
+		{
+			DrawRoutePane2();
+			DrawRoute2Points();
+		}
+		DrawMaxPane2();
+		DrawMaxBlingPoint2();
 	glPopMatrix();
-
 
 	if (m_bDrawPane2)
 	{
+		glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
 		DrawRoutePane1();
 		DrawRoute1Points();
+		glPopMatrix();
 	}
-	if (m_bDrawPane3)
-	{
-		DrawRoutePane2();
-		DrawRoute2Points();
-	}
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+		DrawMaxPane1();
+		DrawMaxBlingPoint1();
+	glPopMatrix();
 
-	DrawMaxPane1();
-	DrawMaxBlingPoint1();
-	DrawMaxPane2();
-	DrawMaxBlingPoint2();
+	
 }
 void CSence3::DrawLastPosition()
 {
-	//draw flash plane.
 	glPushMatrix();
-		//+x------>-x
-		glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
-		DrawPlane(90.0*2);
+		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		glPushMatrix();
+			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
+
+		if (m_bDrawPane3)
+		{
+			DrawRoutePane2();
+			DrawRoute2Points();
+		}
+		DrawMaxPane2();
+		DrawBlingLine();
+		DrawBlingBomb();
 	glPopMatrix();
 
 
 	if (m_bDrawPane2)
 	{
-		DrawRoutePane1();
-		DrawRoute1Points();
+		glPushMatrix();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
+		glPopMatrix();
 	}
-	if (m_bDrawPane3)
-	{
-		DrawRoutePane2();
-		DrawRoute2Points();
-	}
+	
 
-	DrawMaxPane1();
-	DrawMaxPane2();
-	DrawBlingLine();
-	DrawBlingBomb();
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+		DrawMaxPane1();
+	glPopMatrix();
+
+
 }
 
 void CSence3::DrawMaxPane1()
@@ -1380,12 +1432,12 @@ void CSence3::DrawMaxPane1()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glPushMatrix();
-		glColor4f(0.2, 0.3, 0.7, 0.4);
+		glColor4f(0.8, 0.0, 0.0, 0.4);
 		glBegin(GL_POLYGON);
-		glVertex3f(START_X_POS+5.0, START_Y_POS-10.0, START_Z_POS-8.0);
-		glVertex3f(MAX_X_POS+4.0,	START_Y_POS-10.0, START_Z_POS-8.0);
-		glVertex3f(MAX_X_POS+4.0,	START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
-		glVertex3f(START_X_POS+5.0, START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
+		glVertex3f(START_X_POS-9, START_Y_POS-10.0, START_Z_POS-8.0);
+		glVertex3f(MAX_X_POS+1.0,	START_Y_POS-10.0, START_Z_POS-8.0);
+		glVertex3f(MAX_X_POS+1.0,	START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
+		glVertex3f(START_X_POS-9, START_Y_POS/*-3.0*/,	 START_Z_POS-8.0);
 		glEnd();
 	glPopMatrix();
 
@@ -1471,12 +1523,12 @@ void CSence3::DrawMaxPane2()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glPushMatrix();
-		glColor4f(0.0, 0.9, 0.0, 0.3);
+		glColor4f(0.0, 0.9, 0.0, 0.6);
 		glBegin(GL_POLYGON);
-		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+9.0/*-6.0*/);
 		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, MAX_Z_POS-6.0);
 		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*+3.0*/,	   MAX_Z_POS-6.0);
-		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*+3.0*/,	   START_Z_POS-6.0);
+		glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*+3.0*/,	   START_Z_POS+9.0/*-6.0*/);
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_BLEND);
@@ -1497,8 +1549,8 @@ void CSence3::DrawBlingLine()
 		
 		//glLineWidth(3.0);
 		glBegin(GL_LINE_STRIP);
-			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*-3.0*/, START_Z_POS-8.0);
-			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS-8.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS/*-3.0*/, START_Z_POS+2.0/*-8.0*/);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0/*-8.0*/);
 		glEnd();
 	glPopMatrix();
 }
@@ -1514,7 +1566,7 @@ void CSence3::DrawBlingBomb()
 		{
 			glColor3f(1.0, 0.0, 0.0);
 		}
-		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS-8.0);
+		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0/*-8.0*/);
 		auxSolidSphere(0.3);
 	glPopMatrix();
 }
