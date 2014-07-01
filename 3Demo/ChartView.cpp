@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CChartView, CDockablePane)
 	ON_WM_SIZE()
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 int CChartView::OnCreate(LPCREATESTRUCT lpCreateStruct)
