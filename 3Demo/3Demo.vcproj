@@ -254,6 +254,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DlgIntroduce.h"
+				>
+			</File>
+			<File
 				RelativePath=".\FileView.cpp"
 				>
 			</File>
@@ -880,10 +884,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\DlgIntroduce.h"
-			>
-		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

@@ -52,6 +52,15 @@
 #define IDR_MENU_IMAGES                 179
 #define IDB_MENU_IMAGES_24              180
 #define ID_TOOLS_MACRO                  181
+
+#define IDB_INTRO_PIC_1					182
+#define IDB_INTRO_PIC_2					183
+#define IDB_INTRO_PIC_3					184
+#define IDB_INTRO_PIC_4					185
+#define IDB_INTRO_PIC_5					186
+#define IDB_INTRO_PIC_6					187
+#define IDB_INTRO_PIC_7					188
+
 #define IDR_THEME_MENU                  200
 #define ID_SET_STYLE                    201
 #define ID_VIEW_APPLOOK_WIN_2000        210

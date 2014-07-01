@@ -23,6 +23,7 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(C3DemoView, CView)
 
 BEGIN_MESSAGE_MAP(C3DemoView, CView)
+	ON_WM_ERASEBKGND()
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_SIZE()
@@ -79,18 +80,44 @@ void C3DemoView::OnDraw(CDC* pDC)
 	C3DemoDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	if (enm_Sence1 == m_eDrawSence)
+	//CPaintDC dc(this);//不可以是PaintDC，否则刷新有问题。
+	CClientDC dc(this);
+	CRect rect;
+	GetClientRect(rect);
+	CBitmap bmp;
+	if (bmp.LoadBitmap(IDB_INTRO_PIC_1))
 	{
-		RenderScene1();
+		BITMAP bmpInfo;
+		bmp.GetBitmap(&bmpInfo);
+
+		CDC dcMemory;
+		dcMemory.CreateCompatibleDC(&dc);
+
+		//将位图选入到内存DC中
+		CBitmap* pOldBitmap = dcMemory.SelectObject(&bmp);
+
+		//DrawClient(&dcMemory);
+
+		dc.StretchBlt(0,0,rect.Width(),rect.Height(),
+			&dcMemory,
+			0,0,bmpInfo.bmWidth,bmpInfo.bmHeight,SRCCOPY);
+
+		dcMemory.SelectObject(pOldBitmap);
+
 	}
-	else if (enm_Sence2 == m_eDrawSence)
-	{
-		RenderSence2();
-	}
-	else if (enm_Sence3 == m_eDrawSence)
-	{
-		RenderSence3();
-	}
+
+ 	if (enm_Sence1 == m_eDrawSence)
+ 	{
+ 		RenderScene1();
+ 	}
+ 	else if (enm_Sence2 == m_eDrawSence)
+ 	{
+ 		RenderSence2();
+ 	}
+ 	else if (enm_Sence3 == m_eDrawSence)
+ 	{
+ 		RenderSence3();
+ 	}
 }
 
 #ifdef _DEBUG
@@ -109,7 +136,7 @@ int C3DemoView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	SetTimer(TIMER_DRAW_EXP, 20, NULL);
 
-	OnSence3();
+	//OnSence3();
 	
 	return 0;
 }
