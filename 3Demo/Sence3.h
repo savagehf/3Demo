@@ -21,9 +21,11 @@ public:
 		eState_Coll_Data_1			= 2,	//任务1的采集数据阶段
 		eState_Route_2				= 3,	//任务2的闪烁路线阶段
 		eState_Coll_Data_2			= 4,	//任务2的采集数据阶段
-		eState_DrawMaxPane_1		= 5,	//任务1的最大值切面
-		eState_DrawMaxPane_2		= 6,	//任务2的最大值切面
-		eState_DrawBomb				= 7,	//绘制闪烁脏弹
+		eState_Draw_Dync_Pane1		= 5,	//动态绘制MAX1
+		//eState_DrawMaxPane_1		= 6,	//任务1的最大值切面
+		eState_Draw_Dync_Pane2		= 7,	//动态绘制MAX2
+		//eState_DrawMaxPane_2		= 8,	//任务2的最大值切面
+		eState_DrawBomb				= 9,	//绘制闪烁脏弹
 	};
 	//terrain.
 	BOOL Init();
@@ -68,8 +70,10 @@ protected:
 	void DrawCollData1();				//第一阶段的数据采集
 	void DrawRoute2();					//第二接单的路线闪烁
 	void DrawCollData2();				//第二阶段的数据采集
-	void DrawCalcMaxPane1();
-	void DrawCalcMaxPane2();
+	//void DrawCalcMaxPane1();
+	void DrawDyncMaxPane1();
+	//void DrawCalcMaxPane2();
+	void DrawDyncMaxPane2();
 	void DrawLastPosition();
 	void DrawRoute1Points();
 	void DrawRoute2Points();
@@ -78,6 +82,8 @@ protected:
 	void DrawPlane(float fAngle);
 	void DrawRoutePane1();
 	void DrawRoutePane2();
+	void DrawDyncPane1();
+	void DrawDyncPane2();
 	void DrawMaxPane1();
 	void DrawMaxPane2();
 	void DrawMaxBlingPoint1();
@@ -141,6 +147,9 @@ protected:
 
  	BOOL m_bDrawPane2;	
  	BOOL m_bDrawPane3;
+
+	float m_fOffsetPane1;
+	float m_fOffsetPane2;
 
 	//draw state flag.
 	BOOL m_bStartExplosion;

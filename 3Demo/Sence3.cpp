@@ -24,8 +24,11 @@
 //////////////////////////////////////////////////////////////////////////
 #define TIMER_ROUTE_1_OVER	3000	//绘制闪烁信号线。
 #define TIMER_ROUTE_2_OVER	3001	//绘制闪烁信号线。
-#define TIMER_MAX_PLANE2	3002	//绘制第二个Max切面
+//#define TIMER_MAX_PLANE2	3002	//绘制第二个Max切面
 #define TIMER_DIRTY_BOMB	3003	//绘制脏弹闪烁
+
+#define TIMER_DYNC_PANE1	3010	//动态绘制pane1,y长度值到了就停止。
+#define TIMER_DYNC_PANE2	3011	//动态绘制pane2,y长度值到了就停止。
 
 
 
@@ -133,6 +136,8 @@ CSence3::CSence3(HWND hWnd)
 	//m_bDrawPane1 = FALSE;
 	m_bDrawPane2 = FALSE;
 	m_bDrawPane3 = FALSE;
+	m_fOffsetPane1 = 0.0;
+	m_fOffsetPane2 = 0.0;
 	//m_bDrawPane4 = FALSE;
 	//m_bIsGettingData = FALSE;
 	//m_bStartSimulateFly = FALSE;
@@ -548,16 +553,26 @@ void CSence3::Draw()
 					DrawCollData2();
 				}
 				break;
-			case eState_DrawMaxPane_1:
+			case eState_Draw_Dync_Pane1:
 				{
-					DrawCalcMaxPane1();
+					DrawDyncMaxPane1();
 				}
 				break;
-			case eState_DrawMaxPane_2:
+// 			case eState_DrawMaxPane_1:
+// 				{
+// 					DrawCalcMaxPane1();
+// 				}
+// 				break;
+			case eState_Draw_Dync_Pane2:
 				{
-					DrawCalcMaxPane2();
+					DrawDyncMaxPane2();
 				}
 				break;
+			//case eState_DrawMaxPane_2:
+			//	{
+			//		DrawCalcMaxPane2();
+			//	}
+			//	break;
 			case eState_DrawBomb:
 				{
 					glRotatef(-15.0, 0.0,1.0,0.0);
@@ -1320,20 +1335,20 @@ void CSence3::DrawRoute2Points()
 	}
 }
 
-void CSence3::DrawCalcMaxPane1()
+void CSence3::DrawDyncMaxPane1()
 {
 	glPushMatrix();
-	glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
 
 		glPushMatrix();
 			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
 			DrawPlane(90.0*2);
 		glPopMatrix();
-		if (m_bDrawPane3)
-		{
-			DrawRoutePane2();
-			DrawRoute2Points();
-		}
+			if (m_bDrawPane3)
+			{
+				DrawRoutePane2();
+				DrawRoute2Points();
+			}
 	glPopMatrix();
 
 	if (m_bDrawPane2)
@@ -1344,51 +1359,116 @@ void CSence3::DrawCalcMaxPane1()
 			DrawRoute1Points();
 		glPopMatrix();
 	}
-	
+
 
 	glPushMatrix();
 		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
-		DrawMaxPane1();
+		DrawDyncPane1();
 		DrawMaxBlingPoint1();
 	glPopMatrix();
-	
 }
+//void CSence3::DrawCalcMaxPane1()
+//{
+//	glPushMatrix();
+//	glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+//
+//		glPushMatrix();
+//			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+//			DrawPlane(90.0*2);
+//		glPopMatrix();
+//		if (m_bDrawPane3)
+//		{
+//			DrawRoutePane2();
+//			DrawRoute2Points();
+//		}
+//	glPopMatrix();
+//
+//	if (m_bDrawPane2)
+//	{
+//		glPushMatrix();
+//			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+//			DrawRoutePane1();
+//			DrawRoute1Points();
+//		glPopMatrix();
+//	}
+//	
+//
+//	glPushMatrix();
+//		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+//		DrawMaxPane1();
+//		DrawMaxBlingPoint1();
+//	glPopMatrix();
+//	
+//}
 
-void CSence3::DrawCalcMaxPane2()
+void CSence3::DrawDyncMaxPane2()
 {
-	
 	glPushMatrix();
 		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
 		glPushMatrix();
 			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
 			DrawPlane(90.0*2);
 		glPopMatrix();
-		
+
 		if (m_bDrawPane3)
 		{
 			DrawRoutePane2();
 			DrawRoute2Points();
 		}
-		DrawMaxPane2();
+		DrawDyncPane2();
 		DrawMaxBlingPoint2();
 	glPopMatrix();
 
 	if (m_bDrawPane2)
 	{
 		glPushMatrix();
-		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
-		DrawRoutePane1();
-		DrawRoute1Points();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
 		glPopMatrix();
 	}
+
 	glPushMatrix();
 		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
 		DrawMaxPane1();
 		DrawMaxBlingPoint1();
 	glPopMatrix();
-
-	
 }
+//void CSence3::DrawCalcMaxPane2()
+//{
+//	
+//	glPushMatrix();
+//		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+//		glPushMatrix();
+//			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+//			DrawPlane(90.0*2);
+//		glPopMatrix();
+//		
+//		if (m_bDrawPane3)
+//		{
+//			DrawRoutePane2();
+//			DrawRoute2Points();
+//		}
+//		DrawMaxPane2();
+//		DrawMaxBlingPoint2();
+//	glPopMatrix();
+//
+//	if (m_bDrawPane2)
+//	{
+//		glPushMatrix();
+//		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+//		DrawRoutePane1();
+//		DrawRoute1Points();
+//		glPopMatrix();
+//	}
+//	glPushMatrix();
+//		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+//		DrawMaxPane1();
+//		DrawMaxBlingPoint1();
+//	glPopMatrix();
+//
+//	
+//}
 void CSence3::DrawLastPosition()
 {
 	glPushMatrix();
@@ -1427,6 +1507,25 @@ void CSence3::DrawLastPosition()
 
 }
 
+
+void CSence3::DrawDyncPane1()
+{
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glPushMatrix();
+	glColor4f(0.8, 0.0, 0.0, 0.4);
+		glBegin(GL_POLYGON);
+			glVertex3f(START_X_POS-9,	START_Y_POS-m_fOffsetPane1,	START_Z_POS-8.0);
+			glVertex3f(MAX_X_POS+1.0,	START_Y_POS-m_fOffsetPane1, START_Z_POS-8.0);
+			glVertex3f(MAX_X_POS+1.0,	START_Y_POS,				START_Z_POS-8.0);
+			glVertex3f(START_X_POS-9,	START_Y_POS,				START_Z_POS-8.0);
+		glEnd();
+	glPopMatrix();
+
+	glDisable(GL_BLEND);
+
+	DrawMaxBlingPoint1();
+}
 void CSence3::DrawMaxPane1()
 {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1518,6 +1617,23 @@ void CSence3::DrawMaxBlingPoint2()
 	}
 }
 
+void CSence3::DrawDyncPane2()
+{
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glPushMatrix();
+	glColor4f(0.0, 0.9, 0.0, 0.6);
+		glBegin(GL_POLYGON);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-m_fOffsetPane2,	START_Z_POS+9.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-m_fOffsetPane2,	MAX_Z_POS-6.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS,					MAX_Z_POS-6.0);
+			glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS,					START_Z_POS+9.0);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_BLEND);
+
+	DrawMaxBlingPoint2();
+}
 void CSence3::DrawMaxPane2()
 {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1885,17 +2001,17 @@ void CSence3::OnTimer(UINT nIDEvent)
 				SendDataToChart2(m_fFlyStep);
 			}
 			break;
-		case eState_DrawMaxPane_1:
-			{
-				//更改线条颜色。
-				m_bColorChange = !m_bColorChange;
-			}
-			break;
-		case eState_DrawMaxPane_2:
-			{
-				m_bColorChange = !m_bColorChange;
-			}
-			break;
+		//case eState_DrawMaxPane_1:
+		//	{
+		//		//更改线条颜色。
+		//		m_bColorChange = !m_bColorChange;
+		//	}
+		//	break;
+		//case eState_DrawMaxPane_2:
+		//	{
+		//		m_bColorChange = !m_bColorChange;
+		//	}
+		//	break;
 		case eState_DrawBomb:
 			{
 				m_bColorChange = !m_bColorChange;
@@ -1931,17 +2047,46 @@ void CSence3::OnTimer(UINT nIDEvent)
 			m_fSignalStep += 0.5f;
 		}
 	}
-	else if (nIDEvent == TIMER_MAX_PLANE2)
-	{		
-		KillTimer(m_hWnd, TIMER_MAX_PLANE2);
-		SetTimer(m_hWnd, TIMER_DIRTY_BOMB, 4000, NULL);
-		m_eState = eState_DrawMaxPane_2;
-	}
+// 	else if (nIDEvent == TIMER_MAX_PLANE2)
+// 	{		
+// 		KillTimer(m_hWnd, TIMER_MAX_PLANE2);
+// 		SetTimer(m_hWnd, TIMER_DIRTY_BOMB, 4000, NULL);
+// 		m_eState = eState_DrawMaxPane_2;
+// 	}
 	else if (nIDEvent == TIMER_DIRTY_BOMB)
 	{
 		KillTimer(m_hWnd, TIMER_DIRTY_BOMB);
 		m_eState = eState_DrawBomb;
 	}
+	else if (nIDEvent == TIMER_DYNC_PANE1)
+	{
+		if (m_fOffsetPane1> 10.0)
+		{
+			KillTimer(m_hWnd, TIMER_DYNC_PANE1);
+			m_fOffsetPane1 = 0.0;
+
+			m_eState = eState_Draw_Dync_Pane2;
+			SetTimer(m_hWnd, TIMER_DYNC_PANE2, 200, NULL);
+		}
+		m_fOffsetPane1 += 0.5;
+
+		//更改线条颜色。
+		m_bColorChange = !m_bColorChange;
+	}
+	else if (nIDEvent == TIMER_DYNC_PANE2)
+	{
+		if (m_fOffsetPane2 > 10.0)
+		{
+			KillTimer(m_hWnd, TIMER_DYNC_PANE2);
+			m_fOffsetPane2 = 0.0;
+
+			m_eState = eState_DrawBomb;
+		}
+		m_fOffsetPane2 += 0.5;
+
+		m_bColorChange = !m_bColorChange;
+	}
+
 }
 void CSence3::ResetExp()
 {
@@ -2076,10 +2221,14 @@ void CSence3::StartFlyTask2()
 
 void CSence3::CalcFirePostion()
 {
+	//绘制动态的Pane1
+	m_eState = eState_Draw_Dync_Pane1;
+	SetTimer(m_hWnd, TIMER_DYNC_PANE1, 200, NULL);
+	
 	//绘制第一个max pane
-	m_eState = eState_DrawMaxPane_1;
+	//m_eState = eState_DrawMaxPane_1;
 	//3s后绘制第二个max pane
-	SetTimer(m_hWnd, TIMER_MAX_PLANE2, 3000,NULL);
+	//SetTimer(m_hWnd, TIMER_MAX_PLANE2, 3000,NULL);
 
 	//Init route 2 points array.hard code.
 	m_vecRoute2Points.clear();
