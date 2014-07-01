@@ -68,6 +68,7 @@
 #define IDD_DIALOG_LEFT_DOCK            310
 #define IDD_DIALOG1                     311
 #define IDD_DLG_CHART                   311
+#define IDD_DLG_INTRODUCTION            312
 #define IDC_BUTTON1                     1000
 #define IDC_BUTTON_CALC                 1000
 #define IDC_START_EXPLORE_1             1000
@@ -83,6 +84,7 @@
 #define IDC_START_EXPLORE_2             1009
 #define IDC_BUTTON2                     1010
 #define IDC_BTN_GET_POSITION            1010
+#define IDC_HTML_PAGE                   1011
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_START_EXPLOSION              32773
@@ -91,14 +93,16 @@
 #define ID_SENCE_1                      32778
 #define ID_SENCE_2                      32779
 #define ID_SENCE_3                      32781
+#define ID_32783                        32783
+#define ID_PROJ_INTRODUCE               32784
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32783
-#define _APS_NEXT_CONTROL_VALUE         1011
+#define _APS_NEXT_RESOURCE_VALUE        313
+#define _APS_NEXT_COMMAND_VALUE         32785
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

@@ -250,6 +250,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DlgIntroduce.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FileView.cpp"
 				>
 			</File>
@@ -271,6 +275,14 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\memorydc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\memorydc.h"
 				>
 			</File>
 			<File
@@ -757,6 +769,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="htmlctrl"
+				>
+				<File
+					RelativePath=".\HtmlCtl\HtmlCtrl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\HtmlCtl\HtmlCtrl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\HtmlCtl\HtmlTool.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\HtmlCtl\HtmlTool.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -848,6 +880,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\DlgIntroduce.h"
+			>
+		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

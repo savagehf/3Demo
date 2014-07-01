@@ -35,6 +35,8 @@ protected:
 	C3DemoDoc* GetDocument();
 
 protected:
+
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg int  OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -60,6 +62,7 @@ protected:
 public:
 	afx_msg void OnExportTxt();
 	afx_msg void OnExportCsv();
+	afx_msg void OnProjIntroduce();
 };
 
 #ifndef _DEBUG  // debug version in 3DemoView.cpp

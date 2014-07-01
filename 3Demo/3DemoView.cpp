@@ -7,6 +7,7 @@
 #include "Sence1.h"
 #include "Sence2.h"
 #include "Sence3.h"
+#include "DlgIntroduce.h"
 
 
 
@@ -36,6 +37,7 @@ BEGIN_MESSAGE_MAP(C3DemoView, CView)
 	ON_COMMAND(ID_SENCE_3, OnSence3)
 	ON_COMMAND(ID_EXPORT_TXT, &C3DemoView::OnExportTxt)
 	ON_COMMAND(ID_EXPORT_CSV, &C3DemoView::OnExportCsv)
+	ON_COMMAND(ID_PROJ_INTRODUCE, &C3DemoView::OnProjIntroduce)
 END_MESSAGE_MAP()
 
 
@@ -64,6 +66,12 @@ C3DemoView::~C3DemoView()
 		delete m_pSence3;
 		m_pSence3 = NULL;
 	}
+}
+
+
+BOOL C3DemoView::OnEraseBkgnd(CDC* pDC)
+{
+	return TRUE;
 }
 
 void C3DemoView::OnDraw(CDC* pDC)
@@ -493,5 +501,13 @@ void C3DemoView::CalcPostion()
 	if (NULL != m_pSence3)
 	{
 		m_pSence3->CalcFirePostion();
+	}
+}
+void C3DemoView::OnProjIntroduce()
+{
+	CDlgIntroduce dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
 	}
 }

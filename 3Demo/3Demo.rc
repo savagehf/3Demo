@@ -97,6 +97,14 @@ BEGIN
     PUSHBUTTON      "确定脏弹位置",IDC_BTN_GET_POSITION,5,336,65,18
 END
 
+IDD_DLG_INTRODUCTION DIALOGEX 0, 0, 747, 359
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "项目介绍"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Static",IDC_HTML_PAGE,0,2,740,350,SS_SUNKEN
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -119,6 +127,13 @@ BEGIN
         RIGHTMARGIN, 200
         TOPMARGIN, 1
         BOTTOMMARGIN, 493
+    END
+
+    IDD_DLG_INTRODUCTION, DIALOG
+    BEGIN
+        RIGHTMARGIN, 740
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 352
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -166,6 +181,8 @@ BEGIN
     END
     POPUP "模拟"
     BEGIN
+        MENUITEM "项目介绍",                        ID_PROJ_INTRODUCE
+        MENUITEM SEPARATOR
         MENUITEM "启动模拟",                        ID_START_EXPLOSION
     END
     POPUP "导出数据"
