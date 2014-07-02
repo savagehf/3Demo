@@ -35,6 +35,8 @@ protected:
 	CButtonST m_colorBtnRoute1;
 	CButtonST m_colorBtnRoute2;
 	CButtonST m_colorBtnCalc;
+	CButtonST m_colorBtnMorePos;
+	CButtonST m_colorBtnConfirm;
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -42,4 +44,5 @@ public:
 	afx_msg void OnBnClickedStartExplore2();
 	afx_msg void OnBnClickedBtnGetPosition();
 	afx_msg void OnBnClickedBtnMorePos();
+	afx_msg void OnBnClickedBtnSpecifyPos();
 };

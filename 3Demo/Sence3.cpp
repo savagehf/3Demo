@@ -30,6 +30,8 @@
 #define TIMER_DYNC_PANE1	3010	//动态绘制pane1,y长度值到了就停止。
 #define TIMER_DYNC_PANE2	3011	//动态绘制pane2,y长度值到了就停止。
 
+#define TIMER_LINK_BOMBS	3012	//连接三个脏弹点
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -135,6 +137,7 @@ CSence3::CSence3(HWND hWnd)
 
 	//m_bDrawPane1 = FALSE;
 	m_bDrawMorePos = FALSE;
+	m_uLinkCount = 0;
 
 	m_bDrawPane2 = FALSE;
 	m_bDrawPane3 = FALSE;
@@ -580,6 +583,13 @@ void CSence3::Draw()
 					glRotatef(-15.0, 0.0,1.0,0.0);
 					glTranslatef(-5.0, 0.0,0.0);
 					DrawLastPosition();
+				}
+				break;
+			case eState_DrawConfirmBomb:
+				{
+					glRotatef(-15.0, 0.0,1.0,0.0);
+					glTranslatef(-5.0, 0.0,0.0);
+					DrawLastConfirmBomb();
 				}
 				break;
 			default:
@@ -1510,13 +1520,90 @@ void CSence3::DrawLastPosition()
 	if (m_bDrawMorePos)
 	{
 		glPushMatrix();
-			//glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+			glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
 			Draw2MoreBlingBombs();	
 		glPopMatrix();
 	}
 
 }
 
+void CSence3::DrawLastConfirmBomb()
+{
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		glPushMatrix();
+			glTranslated(MAX_X_POS, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
+
+		if (m_bDrawPane3)
+		{
+			DrawRoutePane2();
+			DrawRoute2Points();
+		}
+		DrawMaxPane2();
+		DrawBlingLine();
+		DrawBlingBomb();
+	glPopMatrix();
+
+
+	if (m_bDrawPane2)
+	{
+		glPushMatrix();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
+		glPopMatrix();
+	}
+
+
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+		DrawMaxPane1();
+	glPopMatrix();
+
+	//绘制另外2个采样的脏弹位置.
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		Draw2MoreBlingBombs();	
+	glPopMatrix();
+
+
+	DrawBombLinks();
+}
+
+void CSence3::DrawBombLinks()
+{
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		glLineWidth(2.0);
+		glColor3f(1.0, 0.0, 0.0);
+		if (m_uLinkCount == 1)
+		{
+			glBegin(GL_LINE_STRIP);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2+2.0, START_Y_POS-10.0, START_Z_POS+2.0);
+			glEnd();
+		}
+		else if (m_uLinkCount == 2)
+		{
+			glBegin(GL_LINE_STRIP);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2+2.0, START_Y_POS-10.0, START_Z_POS+2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2/*+1.0*/, START_Y_POS-10.0, START_Z_POS+2.0-2.0);
+			glEnd();
+		}
+		else if (m_uLinkCount == 3)
+		{
+			glBegin(GL_LINE_STRIP);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2+2.0, START_Y_POS-10.0, START_Z_POS+2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2/*+1.0*/, START_Y_POS-10.0, START_Z_POS+2.0-2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0);
+			glEnd();
+		}
+	glPopMatrix();
+}
 
 void CSence3::DrawDyncPane1()
 {
@@ -1693,7 +1780,7 @@ void CSence3::DrawBlingBomb()
 			glColor3f(1.0, 0.0, 0.0);
 		}
 		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0/*-8.0*/);
-		auxSolidSphere(0.3);
+		auxSolidSphere(0.25);
 	glPopMatrix();
 }
 
@@ -1709,7 +1796,7 @@ void CSence3::Draw2MoreBlingBombs()
 			glColor3f(1.0, 0.0, 0.0);
 		}
 		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2+2.0, START_Y_POS-10.0, START_Z_POS+2.0);
-		auxSolidSphere(0.3);
+		auxSolidSphere(0.25);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1721,8 +1808,8 @@ void CSence3::Draw2MoreBlingBombs()
 		{
 			glColor3f(1.0, 0.0, 0.0);
 		}
-		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2+1.0, START_Y_POS-10.0, START_Z_POS+2.0-2.0);
-		auxSolidSphere(0.3);
+		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2/*+1.0*/, START_Y_POS-10.0, START_Z_POS+2.0-2.0);
+		auxSolidSphere(0.25);
 	glPopMatrix();
 
 }
@@ -2056,6 +2143,11 @@ void CSence3::OnTimer(UINT nIDEvent)
 				m_bColorChange = !m_bColorChange;
 			}
 			break;
+		case eState_DrawConfirmBomb:
+			{
+				m_bColorChange = !m_bColorChange;
+			}
+			break;
 		default:
 			break;
 		}
@@ -2124,6 +2216,14 @@ void CSence3::OnTimer(UINT nIDEvent)
 		m_fOffsetPane2 += 0.5;
 
 		m_bColorChange = !m_bColorChange;
+	}
+	else if (nIDEvent == TIMER_LINK_BOMBS)
+	{
+		m_uLinkCount++;
+		if (m_uLinkCount == 3)
+		{
+			KillTimer(m_hWnd, TIMER_LINK_BOMBS);
+		}
 	}
 
 }
@@ -2280,7 +2380,13 @@ void CSence3::CalcNuclearPos()
 
 void CSence3::Draw2MorePos()
 {
+	m_bDrawMorePos = TRUE;
+}
 
+void CSence3::DrawConfirmedPos()
+{
+	m_eState = eState_DrawConfirmBomb;
+	SetTimer(m_hWnd, TIMER_LINK_BOMBS, 2000, NULL);
 }
 
 void CSence3::SendDataToChart1(float fCurPos, float fDensity /*= 0*/)

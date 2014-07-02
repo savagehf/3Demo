@@ -26,6 +26,7 @@ public:
 		eState_Draw_Dync_Pane2		= 7,	//动态绘制MAX2
 		//eState_DrawMaxPane_2		= 8,	//任务2的最大值切面
 		eState_DrawBomb				= 9,	//绘制闪烁脏弹
+		eState_DrawConfirmBomb		= 10,	//连接三个点，并绘制最终的脏弹位置
 	};
 	//terrain.
 	BOOL Init();
@@ -43,6 +44,7 @@ public:
 	void StartFlyTask2();
 	void CalcNuclearPos();
 	void Draw2MorePos();
+	void DrawConfirmedPos();
 
 protected:
 	BOOL InitOpenGL();
@@ -76,6 +78,7 @@ protected:
 	//void DrawCalcMaxPane2();
 	void DrawDyncMaxPane2();
 	void DrawLastPosition();
+	void DrawLastConfirmBomb();
 	void DrawRoute1Points();
 	void DrawRoute2Points();
 	
@@ -92,6 +95,7 @@ protected:
 	void DrawBlingLine();
 	void DrawBlingBomb();
 	void Draw2MoreBlingBombs();
+	void DrawBombLinks();
 	
 	void SendDataToChart1(float fCurPos, float fDensity = 0);
 	void SendDataToChart2(float fCurPos, float fDensity = 0);
@@ -152,6 +156,7 @@ protected:
 
 	BOOL m_bDrawMorePos;
 
+	UINT m_uLinkCount;
 	float m_fOffsetPane1;
 	float m_fOffsetPane2;
 

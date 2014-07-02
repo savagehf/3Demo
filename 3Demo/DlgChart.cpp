@@ -35,6 +35,8 @@ void CDlgChart::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_START_EXPLORE_1, m_colorBtnRoute1);
 	DDX_Control(pDX, IDC_START_EXPLORE_2, m_colorBtnRoute2);
 	DDX_Control(pDX, IDC_BTN_GET_POSITION, m_colorBtnCalc);
+	DDX_Control(pDX, IDC_BTN_MORE_POS, m_colorBtnMorePos);
+	DDX_Control(pDX, IDC_BTN_CONFIRM_POS, m_colorBtnConfirm);
 }
 
 
@@ -45,6 +47,7 @@ BEGIN_MESSAGE_MAP(CDlgChart, CDialog)
 	ON_BN_CLICKED(IDC_START_EXPLORE_2, &CDlgChart::OnBnClickedStartExplore2)
 	ON_BN_CLICKED(IDC_BTN_GET_POSITION, &CDlgChart::OnBnClickedBtnGetPosition)
 	ON_BN_CLICKED(IDC_BTN_MORE_POS, &CDlgChart::OnBnClickedBtnMorePos)
+	ON_BN_CLICKED(IDC_BTN_CONFIRM_POS, &CDlgChart::OnBnClickedBtnSpecifyPos)
 END_MESSAGE_MAP()
 
 
@@ -69,7 +72,7 @@ BOOL CDlgChart::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	m_colorBtnRoute1.SetFlat(FALSE);
- 	m_colorBtnRoute1.SetTooltipText(_T("test"));
+ 	m_colorBtnRoute1.SetTooltipText(_T("启动任务一"));
  	m_colorBtnRoute1.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
  	m_colorBtnRoute1.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
  	m_colorBtnRoute1.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
@@ -77,7 +80,7 @@ BOOL CDlgChart::OnInitDialog()
  	//m_colorBtnRoute1.DrawBorder();
 
 	m_colorBtnRoute2.SetFlat(FALSE);
-	m_colorBtnRoute2.SetTooltipText(_T("test"));
+	m_colorBtnRoute2.SetTooltipText(_T("启动任务二"));
 	m_colorBtnRoute2.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
 	m_colorBtnRoute2.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
 	m_colorBtnRoute2.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
@@ -85,12 +88,28 @@ BOOL CDlgChart::OnInitDialog()
 	m_colorBtnRoute2.DrawBorder();
 
 	m_colorBtnCalc.SetFlat(FALSE);
-	m_colorBtnCalc.SetTooltipText(_T("test"));
+	m_colorBtnCalc.SetTooltipText(_T("确定一次脏弹位置"));
 	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
 	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
 	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
 	m_colorBtnCalc.SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
 	m_colorBtnCalc.DrawBorder();
+
+	m_colorBtnMorePos.SetFlat(FALSE);
+	m_colorBtnMorePos.SetTooltipText(_T("采样更多脏弹位置"));
+	m_colorBtnMorePos.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
+	m_colorBtnMorePos.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
+	m_colorBtnMorePos.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
+	m_colorBtnMorePos.SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
+	m_colorBtnMorePos.DrawBorder();
+
+	m_colorBtnConfirm.SetFlat(FALSE);
+	m_colorBtnConfirm.SetTooltipText(_T("确定脏弹位置"));
+	m_colorBtnConfirm.SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
+	m_colorBtnConfirm.SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
+	m_colorBtnConfirm.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
+	m_colorBtnConfirm.SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
+	m_colorBtnConfirm.DrawBorder();
 
 
 
@@ -232,7 +251,7 @@ void CDlgChart::AddData1(float fPos, float fDesity)
 void CDlgChart::AddData2(float fPos, float fDesity)
 {
 	float fXPos = fPos*100;
-	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100;
+	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100 - 30;
 	CChartLineSerie* pLineSeries = (CChartLineSerie*)m_ChartCtrlSecond.GetSerie(m_nSecSerieID);
 
 	if (NULL != pLineSeries)
@@ -248,5 +267,14 @@ void CDlgChart::OnBnClickedBtnMorePos()
 	if (NULL != pFrame)
 	{
 		pFrame->PostMessage(WM_MORE_POSITION);
+	}
+}
+
+void CDlgChart::OnBnClickedBtnSpecifyPos()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->PostMessage(WM_CONFIRM_POS);
 	}
 }

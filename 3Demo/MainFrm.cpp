@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_MESSAGE(WM_START_TASK_2, OnStartTask2)
 	ON_MESSAGE(WM_CALC_POSITION, OnCalcPosition)
 	ON_MESSAGE(WM_MORE_POSITION, OnMorePosition)
+	ON_MESSAGE(WM_CONFIRM_POS, OnConfirmPos)
 	ON_MESSAGE(WM_ADD_ONE_DATA, OnAddOneData)
 	ON_MESSAGE(WM_EXPORT_AS_TEXT, OnExportAsText)
 	ON_MESSAGE(WM_EXPORT_AS_CSV, OnExportAsCSV)
@@ -430,6 +431,16 @@ LRESULT CMainFrame::OnMorePosition(WPARAM w, LPARAM l)
 	if (NULL != pView)
 	{
 		pView->CalMorePos();
+	}
+	return 0;
+}
+
+LRESULT CMainFrame::OnConfirmPos(WPARAM w, LPARAM l)
+{
+	C3DemoView* pView = (C3DemoView*)GetActiveView();
+	if (NULL != pView)
+	{
+		pView->ConfirmPos();
 	}
 	return 0;
 }

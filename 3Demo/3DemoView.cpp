@@ -568,6 +568,14 @@ void C3DemoView::CalMorePos()
 	}
 }
 
+void C3DemoView::ConfirmPos()
+{
+	if (NULL != m_pSence3)
+	{
+		m_pSence3->DrawConfirmedPos();
+	}
+}
+
 void C3DemoView::OnProjIntroduce()
 {
 	CDlgIntroduce dlg;
