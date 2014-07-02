@@ -92,58 +92,32 @@ void C3DemoView::OnDraw(CDC* pDC)
 
 	if (!m_bDraw3D)
 	{
-		//CPaintDC dc(this);//error!对于CDialog可以使用PaintDC类
+		//CPaintDC dc(this);//不可以是PaintDC，否则刷新有问题。
 		CClientDC dc(this);
 		CRect rect;
 		GetClientRect(rect);
-
-		CDC MemDC; 
-		CBitmap MemBitmap;
-
-		//随后建立与屏幕显示兼容的内存显示设备
-		MemDC.CreateCompatibleDC(NULL);
-
-		//这时还不能绘图，因为没有地方画
-		//下面建立一个与屏幕显示兼容的位图，至于位图的大小嘛，可以用窗口的大小
-		MemBitmap.CreateCompatibleBitmap(&dc,rect.Width(),rect.Height());
-
-		//将位图选入到内存显示设备中
-		//只有选入了位图的内存显示设备才有地方绘图，画到指定的位图上
-		CBitmap *pOldBit=MemDC.SelectObject(&MemBitmap);
-
-
-		//1.画背景：先用背景色将位图清除干净，这里我用的是白色作为背景
-		MemDC.FillSolidRect(0,0,rect.Width(),rect.Height(),RGB(255,255,255));
-
-		//2.画前景色，例如bitmap图片：直接拷贝。
 		CBitmap bmp;
 		if (bmp.LoadBitmap(m_uIDRes))
 		{
 			BITMAP bmpInfo;
 			bmp.GetBitmap(&bmpInfo);
 
-			CDC dcMem2;
-			dcMem2.CreateCompatibleDC(&MemDC);
+			CDC dcMemory;
+			dcMemory.CreateCompatibleDC(&dc);
 
 			//将位图选入到内存DC中
-			CBitmap* pOldBitmap = dcMem2.SelectObject(&bmp);
+			CBitmap* pOldBitmap = dcMemory.SelectObject(&bmp);
 
-			int nXPos = rect.left + (rect.Width()-bmpInfo.bmWidth)/2;
-			int nYPos = rect.top  + (rect.Height()-bmpInfo.bmHeight)/2;
-			MemDC.BitBlt(nXPos, nYPos, bmpInfo.bmWidth, bmpInfo.bmHeight,
-				&dcMem2, 0, 0, SRCCOPY);
+			//DrawClient(&dcMemory);
 
-			dcMem2.SelectObject(pOldBitmap);
+			dc.StretchBlt(0,0,rect.Width(),rect.Height(),
+				&dcMemory,
+				0,0,bmpInfo.bmWidth,bmpInfo.bmHeight,SRCCOPY);
+
+			dcMemory.SelectObject(pOldBitmap);
+
 		}
 
-
-		//Flash到print dc.
-		dc.BitBlt(0,0,rect.Width(),rect.Height(),&MemDC,0,0,SRCCOPY);
-
-		//绘图完成后的清理
-		MemBitmap.DeleteObject();
-		MemDC.SelectObject(pOldBit);
-		MemDC.DeleteDC();
 	}
 	else
 	{
