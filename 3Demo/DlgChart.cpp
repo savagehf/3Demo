@@ -141,11 +141,10 @@ BOOL CDlgChart::OnInitDialog()
 		m_ChartCtrlSecond.CreateStandardAxis(CChartCtrl::LeftAxis);
 	pSecLeftAxis->SetMinMax(0, 120);
 	CChartXYSerie* pSecSeries = NULL;
-	CChartLineSerie* pLineSeries = m_ChartCtrlSecond.CreateLineSerie(false,false);
+	CChartPointsSerie* pLineSeries = m_ChartCtrlSecond.CreatePointsSerie(false,false);
 	pSecSeries = pLineSeries;
 	pSecSeries->SetName(_T("采样数据"));
-	pLineSeries->SetColor(RGB(0,0,255));
-	pLineSeries->SetWidth(3);
+	pLineSeries->SetColor(RGB(0,255,0));
 	m_nSecSerieID = pLineSeries->GetSerieId();
 	CChartTitle* pSecTitle = m_ChartCtrlSecond.GetTitle();
 	pSecTitle->RemoveAll();
@@ -252,11 +251,10 @@ void CDlgChart::AddData2(float fPos, float fDesity)
 {
 	float fXPos = fPos*100;
 	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100 - 30;
-	CChartLineSerie* pLineSeries = (CChartLineSerie*)m_ChartCtrlSecond.GetSerie(m_nSecSerieID);
+	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)m_ChartCtrlSecond.GetSerie(m_nSecSerieID);
 
 	if (NULL != pLineSeries)
 	{
-		pLineSeries->SetWidth(2.0);
 		pLineSeries->AddPoint(fXPos, fYDes);
 		m_ChartCtrlSecond.RefreshCtrl();
 	}
