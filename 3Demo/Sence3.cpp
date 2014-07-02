@@ -1602,6 +1602,29 @@ void CSence3::DrawBombLinks()
 				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0);
 			glEnd();
 		}
+		else if (m_uLinkCount == 4)
+		{
+			glBegin(GL_LINE_STRIP);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2+2.0, START_Y_POS-10.0, START_Z_POS+2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2/*+1.0*/, START_Y_POS-10.0, START_Z_POS+2.0-2.0);
+				glVertex3f(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0);
+			glEnd();
+
+			//绘制最后确定的Bomb
+			glPushMatrix();
+				if (m_bColorChange)
+				{
+					glColor3f(1.0, 1.0, 0.0);
+				}
+				else
+				{
+					glColor3f( 0.0, 1.0, 0.0);
+				}
+				glTranslatef(START_X_POS+OFFSET_X_MAXPANE2+1.0, START_Y_POS-10.0, START_Z_POS+2.0-1.0/*-8.0*/);
+				auxSolidSphere(0.3);
+			glPopMatrix();
+		}
 	glPopMatrix();
 }
 
@@ -2220,7 +2243,7 @@ void CSence3::OnTimer(UINT nIDEvent)
 	else if (nIDEvent == TIMER_LINK_BOMBS)
 	{
 		m_uLinkCount++;
-		if (m_uLinkCount == 3)
+		if (m_uLinkCount == 4)
 		{
 			KillTimer(m_hWnd, TIMER_LINK_BOMBS);
 		}
