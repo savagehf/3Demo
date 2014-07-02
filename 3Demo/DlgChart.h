@@ -25,10 +25,10 @@ protected:
 protected:
 
 	CChartCtrl m_ChartCtrlFisrt;
-	CChartCtrl m_ChartCtrlSecond;
+	//CChartCtrl m_ChartCtrlSecond;
 
 	int m_nFirstSerieID;
-	int m_nSecSerieID;
+	//int m_nSecSerieID;
 	double m_dXValue;
 	double m_dYValue;
 

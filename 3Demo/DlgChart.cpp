@@ -18,7 +18,7 @@ CDlgChart::CDlgChart(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgChart::IDD, pParent)
 {
 	m_nFirstSerieID = 0;
-	m_nSecSerieID   = 0;
+	//m_nSecSerieID   = 0;
 	m_dXValue = 0;
 	m_dYValue = 0;
 }
@@ -31,7 +31,7 @@ void CDlgChart::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CHARTCTRL, m_ChartCtrlFisrt);
-	DDX_Control(pDX, IDC_CHARTCTRL2, m_ChartCtrlSecond);
+	//DDX_Control(pDX, IDC_CHARTCTRL2, m_ChartCtrlSecond);
 	DDX_Control(pDX, IDC_START_EXPLORE_1, m_colorBtnRoute1);
 	DDX_Control(pDX, IDC_START_EXPLORE_2, m_colorBtnRoute2);
 	DDX_Control(pDX, IDC_BTN_GET_POSITION, m_colorBtnCalc);
@@ -133,23 +133,23 @@ BOOL CDlgChart::OnInitDialog()
 	pTitle->RemoveAll();
 	pTitle->AddString(_T("采样脏弹数据"));
 	
-	//Create Second ChartCtrl;
-	CChartStandardAxis* pSecBottomAxis = 
-		m_ChartCtrlSecond.CreateStandardAxis(CChartCtrl::BottomAxis);
-	pSecBottomAxis->SetMinMax(0, 1600);
-	CChartStandardAxis* pSecLeftAxis =
-		m_ChartCtrlSecond.CreateStandardAxis(CChartCtrl::LeftAxis);
-	pSecLeftAxis->SetMinMax(0, 120);
-	CChartXYSerie* pSecSeries = NULL;
-	CChartPointsSerie* pLineSeries = m_ChartCtrlSecond.CreatePointsSerie(false,false);
-	pSecSeries = pLineSeries;
-	pSecSeries->SetName(_T("采样数据"));
-	pLineSeries->SetColor(RGB(0,255,0));
-	m_nSecSerieID = pLineSeries->GetSerieId();
-	CChartTitle* pSecTitle = m_ChartCtrlSecond.GetTitle();
-	pSecTitle->RemoveAll();
-	pSecTitle->AddString(_T("采样脏弹数据"));
-	int NumberPoints = 10;
+	////Create Second ChartCtrl;
+	//CChartStandardAxis* pSecBottomAxis = 
+	//	m_ChartCtrlSecond.CreateStandardAxis(CChartCtrl::BottomAxis);
+	//pSecBottomAxis->SetMinMax(0, 1600);
+	//CChartStandardAxis* pSecLeftAxis =
+	//	m_ChartCtrlSecond.CreateStandardAxis(CChartCtrl::LeftAxis);
+	//pSecLeftAxis->SetMinMax(0, 120);
+	//CChartXYSerie* pSecSeries = NULL;
+	//CChartPointsSerie* pLineSeries = m_ChartCtrlSecond.CreatePointsSerie(false,false);
+	//pSecSeries = pLineSeries;
+	//pSecSeries->SetName(_T("采样数据"));
+	//pLineSeries->SetColor(RGB(0,255,0));
+	//m_nSecSerieID = pLineSeries->GetSerieId();
+	//CChartTitle* pSecTitle = m_ChartCtrlSecond.GetTitle();
+	//pSecTitle->RemoveAll();
+	//pSecTitle->AddString(_T("采样脏弹数据"));
+	//int NumberPoints = 10;
 	/*double* XValues = new double[NumberPoints];
 	double* YValues = new double[NumberPoints];
 	float Step = (100 - 0)/(10);
@@ -239,6 +239,7 @@ void CDlgChart::AddData1(float fPos, float fDesity)
 	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100;
 	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
 	
+	pPointSeries->SetColor(RGB(255,0,0));
 	if (NULL != pPointSeries)
 	{
 		pPointSeries->AddPoint(fXPos, fYDes);	
@@ -251,12 +252,13 @@ void CDlgChart::AddData2(float fPos, float fDesity)
 {
 	float fXPos = fPos*100;
 	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100 - 30;
-	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)m_ChartCtrlSecond.GetSerie(m_nSecSerieID);
+	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)/*m_ChartCtrlSecond*/m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID/*m_nSecSerieID*/);
 
+	pLineSeries->SetColor(RGB(0,255,0));
 	if (NULL != pLineSeries)
 	{
 		pLineSeries->AddPoint(fXPos, fYDes);
-		m_ChartCtrlSecond.RefreshCtrl();
+		/*m_ChartCtrlSecond*/m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }
 void CDlgChart::OnBnClickedBtnMorePos()
