@@ -1780,7 +1780,7 @@ void CSence3::DrawBlingBomb()
 			glColor3f(1.0, 0.0, 0.0);
 		}
 		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2, START_Y_POS-10.0, START_Z_POS+2.0/*-8.0*/);
-		auxSolidSphere(0.25);
+		auxSolidSphere(0.2);
 	glPopMatrix();
 }
 
@@ -1796,7 +1796,7 @@ void CSence3::Draw2MoreBlingBombs()
 			glColor3f(1.0, 0.0, 0.0);
 		}
 		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2+2.0, START_Y_POS-10.0, START_Z_POS+2.0);
-		auxSolidSphere(0.25);
+		auxSolidSphere(0.2);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1809,7 +1809,7 @@ void CSence3::Draw2MoreBlingBombs()
 			glColor3f(1.0, 0.0, 0.0);
 		}
 		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2/*+1.0*/, START_Y_POS-10.0, START_Z_POS+2.0-2.0);
-		auxSolidSphere(0.25);
+		auxSolidSphere(0.2);
 	glPopMatrix();
 
 }
