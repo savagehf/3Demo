@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(CDlgChart, CDialog)
 	ON_BN_CLICKED(IDC_START_EXPLORE_1, &CDlgChart::OnBnClickedStartExplore1)
 	ON_BN_CLICKED(IDC_START_EXPLORE_2, &CDlgChart::OnBnClickedStartExplore2)
 	ON_BN_CLICKED(IDC_BTN_GET_POSITION, &CDlgChart::OnBnClickedBtnGetPosition)
+	ON_BN_CLICKED(IDC_BTN_MORE_POS, &CDlgChart::OnBnClickedBtnMorePos)
 END_MESSAGE_MAP()
 
 
@@ -239,5 +240,13 @@ void CDlgChart::AddData2(float fPos, float fDesity)
 		pLineSeries->SetWidth(2.0);
 		pLineSeries->AddPoint(fXPos, fYDes);
 		m_ChartCtrlSecond.RefreshCtrl();
+	}
+}
+void CDlgChart::OnBnClickedBtnMorePos()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->PostMessage(WM_MORE_POSITION);
 	}
 }

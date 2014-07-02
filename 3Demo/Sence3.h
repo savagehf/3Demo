@@ -41,7 +41,8 @@ public:
 
 	void StartFlyTask1();
 	void StartFlyTask2();
-	void CalcFirePostion();
+	void CalcNuclearPos();
+	void Draw2MorePos();
 
 protected:
 	BOOL InitOpenGL();
@@ -90,6 +91,7 @@ protected:
 	void DrawMaxBlingPoint2();
 	void DrawBlingLine();
 	void DrawBlingBomb();
+	void Draw2MoreBlingBombs();
 	
 	void SendDataToChart1(float fCurPos, float fDensity = 0);
 	void SendDataToChart2(float fCurPos, float fDensity = 0);
@@ -147,6 +149,8 @@ protected:
 
  	BOOL m_bDrawPane2;	
  	BOOL m_bDrawPane3;
+
+	BOOL m_bDrawMorePos;
 
 	float m_fOffsetPane1;
 	float m_fOffsetPane2;

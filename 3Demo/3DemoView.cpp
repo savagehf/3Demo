@@ -556,9 +556,18 @@ void C3DemoView::CalcPostion()
 {
 	if (NULL != m_pSence3)
 	{
-		m_pSence3->CalcFirePostion();
+		m_pSence3->CalcNuclearPos();
 	}
 }
+
+void C3DemoView::CalMorePos()
+{
+	if (NULL != m_pSence3)
+	{
+		m_pSence3->Draw2MorePos();
+	}
+}
+
 void C3DemoView::OnProjIntroduce()
 {
 	CDlgIntroduce dlg;

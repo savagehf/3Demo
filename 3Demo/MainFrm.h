@@ -12,6 +12,7 @@
 #define WM_START_TASK_1		WM_USER+210
 #define WM_START_TASK_2		WM_USER+211
 #define WM_CALC_POSITION	WM_USER+212
+#define WM_MORE_POSITION	WM_USER+213
 
 class CMainFrame : public CFrameWndEx
 {
@@ -52,6 +53,7 @@ protected:
 	afx_msg LRESULT OnStartTask1(WPARAM W, LPARAM l);
 	afx_msg LRESULT OnStartTask2(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnCalcPosition(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnMorePosition(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnAddOneData(WPARAM wp, LPARAM lp);
 	afx_msg LRESULT OnExportAsText(WPARAM wp, LPARAM lp);
 	afx_msg LRESULT OnExportAsCSV(WPARAM wp, LPARAM lp);

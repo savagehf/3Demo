@@ -134,6 +134,8 @@ CSence3::CSence3(HWND hWnd)
 	m_bColorChange = FALSE;
 
 	//m_bDrawPane1 = FALSE;
+	m_bDrawMorePos = FALSE;
+
 	m_bDrawPane2 = FALSE;
 	m_bDrawPane3 = FALSE;
 	m_fOffsetPane1 = 0.0;
@@ -1504,6 +1506,14 @@ void CSence3::DrawLastPosition()
 		DrawMaxPane1();
 	glPopMatrix();
 
+	//绘制另外2个采样的脏弹位置.
+	if (m_bDrawMorePos)
+	{
+		glPushMatrix();
+			//glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+			Draw2MoreBlingBombs();	
+		glPopMatrix();
+	}
 
 }
 
@@ -1687,6 +1697,35 @@ void CSence3::DrawBlingBomb()
 	glPopMatrix();
 }
 
+void CSence3::Draw2MoreBlingBombs()
+{
+	glPushMatrix();
+		if (m_bColorChange)
+		{
+			glColor3f(0.0, 1.0, 1.0);
+		}
+		else
+		{
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2+2.0, START_Y_POS-10.0, START_Z_POS+2.0);
+		auxSolidSphere(0.3);
+	glPopMatrix();
+
+	glPushMatrix();
+		if (m_bColorChange)
+		{
+			glColor3f(0.0, 1.0, 1.0);
+		}
+		else
+		{
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		glTranslatef(START_X_POS+OFFSET_X_MAXPANE2+1.0, START_Y_POS-10.0, START_Z_POS+2.0-2.0);
+		auxSolidSphere(0.3);
+	glPopMatrix();
+
+}
 
 void CSence3::DrawSignal( Point3D start, Point3D end) 
 {
@@ -2219,7 +2258,7 @@ void CSence3::StartFlyTask2()
 	}
 }
 
-void CSence3::CalcFirePostion()
+void CSence3::CalcNuclearPos()
 {
 	//绘制动态的Pane1
 	m_eState = eState_Draw_Dync_Pane1;
@@ -2239,6 +2278,10 @@ void CSence3::CalcFirePostion()
 	}
 }
 
+void CSence3::Draw2MorePos()
+{
+
+}
 
 void CSence3::SendDataToChart1(float fCurPos, float fDensity /*= 0*/)
 {
