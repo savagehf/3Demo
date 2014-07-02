@@ -52,15 +52,13 @@
 #define IDR_MENU_IMAGES                 179
 #define IDB_MENU_IMAGES_24              180
 #define ID_TOOLS_MACRO                  181
-
-#define IDB_INTRO_PIC_1					182
-#define IDB_INTRO_PIC_2					183
-#define IDB_INTRO_PIC_3					184
-#define IDB_INTRO_PIC_4					185
-#define IDB_INTRO_PIC_5					186
-#define IDB_INTRO_PIC_6					187
-#define IDB_INTRO_PIC_7					188
-
+#define IDB_INTRO_PIC_1                 182
+#define IDB_INTRO_PIC_2                 183
+#define IDB_INTRO_PIC_3                 184
+#define IDB_INTRO_PIC_4                 185
+#define IDB_INTRO_PIC_5                 186
+#define IDB_INTRO_PIC_6                 187
+#define IDB_INTRO_PIC_7                 188
 #define IDR_THEME_MENU                  200
 #define ID_SET_STYLE                    201
 #define ID_VIEW_APPLOOK_WIN_2000        210
@@ -78,6 +76,8 @@
 #define IDD_DIALOG1                     311
 #define IDD_DLG_CHART                   311
 #define IDD_DLG_INTRODUCTION            312
+#define IDR_MENU1                       313
+#define IDR_MENU_VIEW_CONTX             313
 #define IDC_BUTTON1                     1000
 #define IDC_BUTTON_CALC                 1000
 #define IDC_START_EXPLORE_1             1000
@@ -104,13 +104,27 @@
 #define ID_SENCE_3                      32781
 #define ID_32783                        32783
 #define ID_PROJ_INTRODUCE               32784
+#define ID_CONTEXT_32785                32785
+#define ID_CONTEXT_32786                32786
+#define ID_CONTEXT_32787                32787
+#define ID_CONTEXT_32788                32788
+#define ID_CONTEXT_32789                32789
+#define ID_CONTEXT_32790                32790
+#define ID_CONTEXT_32791                32791
+#define ID_CONTEXT_INTRO_1              32792
+#define ID_CONTEXT_INTRO_2              32793
+#define ID_CONTEXT_INTRO_3              32794
+#define ID_CONTEXT_INTRO_4              32795
+#define ID_CONTEXT_INTRO_5              32796
+#define ID_CONTEXT_INTRO_6              32797
+#define ID_CONTEXT_INTRO_7              32798
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32785
+#define _APS_NEXT_RESOURCE_VALUE        314
+#define _APS_NEXT_COMMAND_VALUE         32799
 #define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

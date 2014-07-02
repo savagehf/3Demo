@@ -864,6 +864,34 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\pic1.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pic2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pic3.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pic4.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pic5.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pic6.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pic7.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\sort.bmp"
 				>
 			</File>

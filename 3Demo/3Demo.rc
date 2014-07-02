@@ -192,6 +192,20 @@ BEGIN
     END
 END
 
+IDR_MENU_VIEW_CONTX MENU 
+BEGIN
+    POPUP "Context"
+    BEGIN
+        MENUITEM "ΩÈ…‹“ª",                         ID_CONTEXT_INTRO_1
+        MENUITEM "ΩÈ…‹∂˛",                         ID_CONTEXT_INTRO_2
+        MENUITEM "ΩÈ…‹»˝",                         ID_CONTEXT_INTRO_3
+        MENUITEM "ΩÈ…‹Àƒ",                         ID_CONTEXT_INTRO_4
+        MENUITEM "ΩÈ…‹ŒÂ",                         ID_CONTEXT_INTRO_5
+        MENUITEM "ΩÈ…‹¡˘",                         ID_CONTEXT_INTRO_6
+        MENUITEM "ΩÈ…‹∆ﬂ",                         ID_CONTEXT_INTRO_7
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -469,14 +483,13 @@ IDR_EXPLORER            BITMAP                  "res\\explorer.bmp"
 IDB_EXPLORER_24         BITMAP                  "res\\explorer_hc.bmp"
 IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
 IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
-
-IDB_INTRO_PIC_1			BITMAP					"res\\pic1.bmp"
-IDB_INTRO_PIC_2			BITMAP					"res\\pic2.bmp"
-IDB_INTRO_PIC_3			BITMAP					"res\\pic3.bmp"
-IDB_INTRO_PIC_4			BITMAP					"res\\pic4.bmp"
-IDB_INTRO_PIC_5			BITMAP					"res\\pic5.bmp"
-IDB_INTRO_PIC_6			BITMAP					"res\\pic6.bmp"
-IDB_INTRO_PIC_7			BITMAP					"res\\pic7.bmp"
+IDB_INTRO_PIC_1         BITMAP                  "res\\pic1.bmp"
+IDB_INTRO_PIC_2         BITMAP                  "res\\pic2.bmp"
+IDB_INTRO_PIC_3         BITMAP                  "res\\pic3.bmp"
+IDB_INTRO_PIC_4         BITMAP                  "res\\pic4.bmp"
+IDB_INTRO_PIC_5         BITMAP                  "res\\pic5.bmp"
+IDB_INTRO_PIC_6         BITMAP                  "res\\pic6.bmp"
+IDB_INTRO_PIC_7         BITMAP                  "res\\pic7.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -15,7 +15,6 @@ public:
 		enm_Sence2 = 2,
 		enm_Sence3 = 3,
 	};
-
 public:
 	C3DemoView();
 	virtual ~C3DemoView();
@@ -44,6 +43,7 @@ protected:
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 
 	afx_msg void OnStartExplosion();
 	afx_msg void OnSence1();
@@ -58,11 +58,20 @@ protected:
 	CSence2* m_pSence2;
 	CSence3* m_pSence3;
 	EDrawS   m_eDrawSence;
+	UINT	 m_uIDRes;
+	BOOL	 m_bDraw3D;
 
 public:
 	afx_msg void OnExportTxt();
 	afx_msg void OnExportCsv();
 	afx_msg void OnProjIntroduce();
+	afx_msg void OnContextIntro1();
+	afx_msg void OnContextIntro2();
+	afx_msg void OnContextIntro3();
+	afx_msg void OnContextIntro4();
+	afx_msg void OnContextIntro5();
+	afx_msg void OnContextIntro6();
+	afx_msg void OnContextIntro7();
 };
 
 #ifndef _DEBUG  // debug version in 3DemoView.cpp

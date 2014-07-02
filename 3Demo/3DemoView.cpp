@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(C3DemoView, CView)
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_RBUTTONUP()
 
 	ON_COMMAND(ID_START_EXPLOSION, OnStartExplosion)
 	//ON_COMMAND(ID_SENCE_1, OnSence1)
@@ -39,6 +40,13 @@ BEGIN_MESSAGE_MAP(C3DemoView, CView)
 	ON_COMMAND(ID_EXPORT_TXT, &C3DemoView::OnExportTxt)
 	ON_COMMAND(ID_EXPORT_CSV, &C3DemoView::OnExportCsv)
 	ON_COMMAND(ID_PROJ_INTRODUCE, &C3DemoView::OnProjIntroduce)
+	ON_COMMAND(ID_CONTEXT_INTRO_1, &C3DemoView::OnContextIntro1)
+	ON_COMMAND(ID_CONTEXT_INTRO_2, &C3DemoView::OnContextIntro2)
+	ON_COMMAND(ID_CONTEXT_INTRO_3, &C3DemoView::OnContextIntro3)
+	ON_COMMAND(ID_CONTEXT_INTRO_4, &C3DemoView::OnContextIntro4)
+	ON_COMMAND(ID_CONTEXT_INTRO_5, &C3DemoView::OnContextIntro5)
+	ON_COMMAND(ID_CONTEXT_INTRO_6, &C3DemoView::OnContextIntro6)
+	ON_COMMAND(ID_CONTEXT_INTRO_7, &C3DemoView::OnContextIntro7)
 END_MESSAGE_MAP()
 
 
@@ -48,6 +56,8 @@ C3DemoView::C3DemoView()
 	m_pSence2 = NULL;
 	m_pSence3 = NULL;
 	m_eDrawSence = enm_Sence1;
+	m_uIDRes  = IDB_INTRO_PIC_1;
+	m_bDraw3D = FALSE;
 }
 
 C3DemoView::~C3DemoView()
@@ -80,44 +90,50 @@ void C3DemoView::OnDraw(CDC* pDC)
 	C3DemoDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	//CPaintDC dc(this);//不可以是PaintDC，否则刷新有问题。
-	CClientDC dc(this);
-	CRect rect;
-	GetClientRect(rect);
-	CBitmap bmp;
-	if (bmp.LoadBitmap(IDB_INTRO_PIC_1))
+	if (!m_bDraw3D)
 	{
-		BITMAP bmpInfo;
-		bmp.GetBitmap(&bmpInfo);
+		//CPaintDC dc(this);//不可以是PaintDC，否则刷新有问题。
+		CClientDC dc(this);
+		CRect rect;
+		GetClientRect(rect);
+		CBitmap bmp;
+		if (bmp.LoadBitmap(m_uIDRes))
+		{
+			BITMAP bmpInfo;
+			bmp.GetBitmap(&bmpInfo);
 
-		CDC dcMemory;
-		dcMemory.CreateCompatibleDC(&dc);
+			CDC dcMemory;
+			dcMemory.CreateCompatibleDC(&dc);
 
-		//将位图选入到内存DC中
-		CBitmap* pOldBitmap = dcMemory.SelectObject(&bmp);
+			//将位图选入到内存DC中
+			CBitmap* pOldBitmap = dcMemory.SelectObject(&bmp);
 
-		//DrawClient(&dcMemory);
+			//DrawClient(&dcMemory);
 
-		dc.StretchBlt(0,0,rect.Width(),rect.Height(),
-			&dcMemory,
-			0,0,bmpInfo.bmWidth,bmpInfo.bmHeight,SRCCOPY);
+			dc.StretchBlt(0,0,rect.Width(),rect.Height(),
+				&dcMemory,
+				0,0,bmpInfo.bmWidth,bmpInfo.bmHeight,SRCCOPY);
 
-		dcMemory.SelectObject(pOldBitmap);
+			dcMemory.SelectObject(pOldBitmap);
+
+		}
 
 	}
-
- 	if (enm_Sence1 == m_eDrawSence)
- 	{
- 		RenderScene1();
- 	}
- 	else if (enm_Sence2 == m_eDrawSence)
- 	{
- 		RenderSence2();
- 	}
- 	else if (enm_Sence3 == m_eDrawSence)
- 	{
- 		RenderSence3();
- 	}
+	else
+	{
+		if (enm_Sence1 == m_eDrawSence)
+		{
+			RenderScene1();
+		}
+		else if (enm_Sence2 == m_eDrawSence)
+		{
+			RenderSence2();
+		}
+		else if (enm_Sence3 == m_eDrawSence)
+		{
+			RenderSence3();
+		}
+	}
 }
 
 #ifdef _DEBUG
@@ -438,14 +454,15 @@ BOOL C3DemoView::RenderSence2()
 	return TRUE;
 }
 
- void C3DemoView::OnSence3()
- {
+void C3DemoView::OnSence3()
+{
 	 delete m_pSence1;
 	 m_pSence1 = NULL;
 	 delete m_pSence2;
 	 m_pSence2 = NULL;
 
 
+	m_bDraw3D = TRUE;
  	m_eDrawSence = enm_Sence3;
 
 	if (NULL != m_pSence3)
@@ -470,9 +487,9 @@ BOOL C3DemoView::RenderSence2()
  			pFrame->ShowWindow(SW_SHOWMAXIMIZED);
  		}
  	}
- }
+}
  
- BOOL C3DemoView::RenderSence3()
+BOOL C3DemoView::RenderSence3()
  {
 	if (NULL != m_pSence3)
 	{
@@ -481,6 +498,18 @@ BOOL C3DemoView::RenderSence2()
 
 	return TRUE;
  }
+
+void C3DemoView::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	CMenu   menu;
+	VERIFY(menu.LoadMenu(IDR_MENU_VIEW_CONTX));
+	CMenu* pPopup = menu.GetSubMenu(0);
+	ASSERT(pPopup != NULL);
+	CPoint ptCursor;
+	GetCursorPos(&ptCursor);
+	//ScreenToClient(&ptCursor);
+	pPopup-> TrackPopupMenu(TPM_LEFTALIGN|TPM_LEFTBUTTON, ptCursor.x, ptCursor.y, this);
+}
 
 void C3DemoView::OnLButtonDown(UINT nFlags, CPoint point)
 {
@@ -537,4 +566,39 @@ void C3DemoView::OnProjIntroduce()
 	{
 
 	}
+}
+
+void C3DemoView::OnContextIntro1()
+{
+	m_uIDRes = IDB_INTRO_PIC_1;	
+}
+
+void C3DemoView::OnContextIntro2()
+{
+	m_uIDRes = IDB_INTRO_PIC_2;
+}
+
+void C3DemoView::OnContextIntro3()
+{
+	m_uIDRes = IDB_INTRO_PIC_3;
+}
+
+void C3DemoView::OnContextIntro4()
+{
+	m_uIDRes = IDB_INTRO_PIC_4;
+}
+
+void C3DemoView::OnContextIntro5()
+{
+	m_uIDRes = IDB_INTRO_PIC_5;
+}
+
+void C3DemoView::OnContextIntro6()
+{
+	m_uIDRes = IDB_INTRO_PIC_6;
+}
+
+void C3DemoView::OnContextIntro7()
+{
+	m_uIDRes = IDB_INTRO_PIC_7;
 }
