@@ -92,6 +92,10 @@ BOOL C3DemoView::OnEraseBkgnd(CDC* pDC)
 	return TRUE;
 }
 
+
+
+CString g_strTitle(_T("辐射物体的快速检测"));
+#define TITLE_OFFSET	25
 void C3DemoView::OnDraw(CDC* pDC)
 {
 	C3DemoDoc* pDoc = GetDocument();
@@ -133,13 +137,24 @@ void C3DemoView::OnDraw(CDC* pDC)
 			CBitmap* pOldBitmap = dcMem2.SelectObject(&bmp);
 
 			int nXPos = rect.left + (rect.Width()-bmpInfo.bmWidth)/2;
-			int nYPos = rect.top  + (rect.Height()-bmpInfo.bmHeight)/2;
+			int nYPos = rect.top  + (rect.Height()-bmpInfo.bmHeight)/2 + TITLE_OFFSET;
 			MemDC.BitBlt(nXPos, nYPos, bmpInfo.bmWidth, bmpInfo.bmHeight,
 				&dcMem2, 0, 0, SRCCOPY);
 
 			dcMem2.SelectObject(pOldBitmap);
 		}
 
+		//draw title
+		CFont font;
+		VERIFY(font.CreatePointFont(TITLE_OFFSET*10, "Arial", &MemDC));
+		// Do something with the font just created...
+		CFont* def_font = MemDC.SelectObject(&font);
+		int xTitle = rect.left + (rect.Width()- g_strTitle.GetLength()*TITLE_OFFSET)/2;
+		MemDC.SetTextColor(RGB(255,0,0));
+		MemDC.TextOut(xTitle, 5, g_strTitle);
+		MemDC.SelectObject(def_font);
+		// Done with the font. Delete the font object.
+		font.DeleteObject();
 
 		//draw to print dc.
 		dc.BitBlt(0,0,rect.Width(),rect.Height(),&MemDC,0,0,SRCCOPY);
