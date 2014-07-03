@@ -100,22 +100,19 @@ void C3DemoView::OnDraw(CDC* pDC)
 		CDC MemDC; 
 		CBitmap MemBitmap;
 
-		//随后建立与屏幕显示兼容的内存显示设备
+		//Create compatible with print dc.
 		MemDC.CreateCompatibleDC(NULL);
 
-		//这时还不能绘图，因为没有地方画
-		//下面建立一个与屏幕显示兼容的位图，至于位图的大小嘛，可以用窗口的大小
+		//Create bitmap to be drawn
 		MemBitmap.CreateCompatibleBitmap(&dc,rect.Width(),rect.Height());
 
-		//将位图选入到内存显示设备中
-		//只有选入了位图的内存显示设备才有地方绘图，画到指定的位图上
+		//Select bitmap to memdc.
 		CBitmap *pOldBit=MemDC.SelectObject(&MemBitmap);
 
-
-		//1.画背景：先用背景色将位图清除干净，这里我用的是白色作为背景
+		//1.draw background
 		MemDC.FillSolidRect(0,0,rect.Width(),rect.Height(),RGB(255,255,255));
 
-		//2.画前景色，例如bitmap图片：直接拷贝。
+		//2.draw foreground
 		CBitmap bmp;
 		if (bmp.LoadBitmap(m_uIDRes))
 		{
@@ -125,7 +122,7 @@ void C3DemoView::OnDraw(CDC* pDC)
 			CDC dcMem2;
 			dcMem2.CreateCompatibleDC(&MemDC);
 
-			//将位图选入到内存DC中
+			//select bmp to current memory dc.
 			CBitmap* pOldBitmap = dcMem2.SelectObject(&bmp);
 
 			int nXPos = rect.left + (rect.Width()-bmpInfo.bmWidth)/2;
@@ -137,7 +134,7 @@ void C3DemoView::OnDraw(CDC* pDC)
 		}
 
 
-		//Flash到print dc.
+		//draw to print dc.
 		dc.BitBlt(0,0,rect.Width(),rect.Height(),&MemDC,0,0,SRCCOPY);
 
 		//clear.
