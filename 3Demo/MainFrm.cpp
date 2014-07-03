@@ -23,6 +23,8 @@ const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
+	ON_MESSAGE(WM_LOAD_SENCE, OnLoadSence)
+	ON_MESSAGE(WM_START_SIMULATE, OnStartSimulate)
 	ON_MESSAGE(WM_START_TASK_1, OnStartTask1)
 	ON_MESSAGE(WM_START_TASK_2, OnStartTask2)
 	ON_MESSAGE(WM_CALC_POSITION, OnCalcPosition)
@@ -390,6 +392,30 @@ LRESULT CMainFrame::OnExportAsCSV(WPARAM wp, LPARAM lp)
 LRESULT CMainFrame::OnExportAsText(WPARAM wp, LPARAM lp)
 {
 	m_wndFileView.ExportAsText();
+	return 0;
+}
+
+LRESULT CMainFrame::OnLoadSence(WPARAM w, LPARAM l)
+{
+	C3DemoView* pView = (C3DemoView*)GetActiveView();
+	if (NULL != pView)
+	{
+		pView->LoadSence();
+	}
+
+
+	return 0;
+}
+
+LRESULT CMainFrame::OnStartSimulate(WPARAM w, LPARAM l)
+{
+	C3DemoView* pView = (C3DemoView*)GetActiveView();
+	if (NULL != pView)
+	{
+		pView->StartSimulate();
+	}
+
+
 	return 0;
 }
 

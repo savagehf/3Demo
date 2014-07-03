@@ -609,6 +609,16 @@ void C3DemoView::OnExportCsv()
 	}
 }
 
+void C3DemoView::LoadSence()
+{
+	OnSence3();
+}
+
+void C3DemoView::StartSimulate()
+{
+	OnStartExplosion();
+}
+
 void C3DemoView::StartTask1()
 {
 	if (NULL != m_pSence3)

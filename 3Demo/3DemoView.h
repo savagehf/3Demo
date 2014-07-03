@@ -25,6 +25,8 @@ public:
 	BOOL RenderSence3();
 	void StartDrawPlane();
 
+	void LoadSence();
+	void StartSimulate();
 	void StartTask1();
 	void StartTask2();
 	void CalcPostion();

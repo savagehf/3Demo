@@ -34,6 +34,8 @@ protected:
 	COLORREF m_crPoints1;
 	COLORREF m_crPoints2;
 
+	CButtonST m_colorBtnLoadScene;
+	CButtonST m_colorBtnStart;
 	CButtonST m_colorBtnRoute1;
 	CButtonST m_colorBtnRoute2;
 	CButtonST m_colorBtnCalc;
@@ -47,4 +49,6 @@ public:
 	afx_msg void OnBnClickedBtnGetPosition();
 	afx_msg void OnBnClickedBtnMorePos();
 	afx_msg void OnBnClickedBtnSpecifyPos();
+	afx_msg void OnBnClickedBtnLoadSence();
+	afx_msg void OnBnClickedBtnStartSimulate();
 };

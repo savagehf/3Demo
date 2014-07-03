@@ -96,6 +96,9 @@
 #define IDC_BTN_MORE_POS                1012
 #define IDC_BUTTON4                     1013
 #define IDC_BTN_CONFIRM_POS             1013
+#define IDC_BTN_LOAD_SENCE              1014
+#define IDC_BUTTON5                     1015
+#define IDC_BTN_START_SIMULATE          1015
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_START_EXPLOSION              32773
@@ -127,7 +130,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        314
 #define _APS_NEXT_COMMAND_VALUE         32799
-#define _APS_NEXT_CONTROL_VALUE         1014
+#define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

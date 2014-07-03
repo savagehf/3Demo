@@ -9,6 +9,8 @@
 #define WM_EXPORT_AS_TEXT	WM_USER+201
 #define WM_EXPORT_AS_CSV	WM_USER+202
 
+#define WM_LOAD_SENCE		WM_USER+208
+#define WM_START_SIMULATE	WM_USER+209
 #define WM_START_TASK_1		WM_USER+210
 #define WM_START_TASK_2		WM_USER+211
 #define WM_CALC_POSITION	WM_USER+212
@@ -51,6 +53,8 @@ protected:  // control bar embedded members
 // Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg LRESULT OnLoadSence(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnStartSimulate(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnStartTask1(WPARAM W, LPARAM l);
 	afx_msg LRESULT OnStartTask2(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnCalcPosition(WPARAM w, LPARAM l);
