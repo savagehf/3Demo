@@ -25,13 +25,14 @@
 //! Structure containing a point data with X and Y values
 struct SChartXYPoint
 {
-	SChartXYPoint() : X(0.0), Y(0.0)  
+	//! Update by lee: Add each point with its color value.
+	SChartXYPoint() : X(0.0), Y(0.0),rColor(RGB(0,0,0))  
 	{ 
 		#ifndef NO_USER_DATA
 		pUserData = NULL;
 		#endif
 	}
-	SChartXYPoint(double XVal, double YVal) : X(XVal), Y(YVal)  
+	SChartXYPoint(double XVal, double YVal, COLORREF rPointColor = RGB(0,0,0)) : X(XVal), Y(YVal) , rColor(rPointColor) 
 	{ 
 		#ifndef NO_USER_DATA
 		pUserData = NULL;
@@ -45,10 +46,14 @@ struct SChartXYPoint
 	double GetYMin() const { return Y; }
 	double GetYMax() const { return Y; }
 
+	COLORREF GetPointColor() const {	return rColor;	}
 	//! The point X value.
 	double X;
 	//! The point Y value.
 	double Y;
+
+	//! Updated by lee:Add color to each point.
+	COLORREF rColor;
 	#ifndef NO_USER_DATA
 	//! Optional user data.
 	void *pUserData;
@@ -69,6 +74,9 @@ public:
 	CChartXYSerie(CChartCtrl* pParent);
 	//! Destructor
 	virtual ~CChartXYSerie();
+
+	//!update by lee:add color to each point.
+	void AddPoint(double X, double Y, COLORREF rColor);
 
 	//! Adds a single data point to the series.
 	void AddPoint(double X, double Y);

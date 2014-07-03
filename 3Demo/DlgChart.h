@@ -31,6 +31,8 @@ protected:
 	//int m_nSecSerieID;
 	double m_dXValue;
 	double m_dYValue;
+	COLORREF m_crPoints1;
+	COLORREF m_crPoints2;
 
 	CButtonST m_colorBtnRoute1;
 	CButtonST m_colorBtnRoute2;

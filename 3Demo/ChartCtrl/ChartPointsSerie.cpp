@@ -194,18 +194,24 @@ void CChartPointsSerie::DrawAll(CDC *pDC)
 
 		switch(m_iPointType)
 		{
-		case ptEllipse:
-			if (m_bShadow)
+		case ptEllipse://!update by lee:draw user defined point color.
 			{
-				pOldPen = pDC->SelectObject(&ShadowPen);
-				pDC->SelectObject(&ShadowBrush);
-				pDC->Ellipse(ShadowRect);
-				pDC->SelectObject(&NewBrush);
-				pDC->SelectObject(&BorderPen);
+				CBrush ptBrush = CBrush(Point.GetPointColor());
+				CBrush* pOBsh = pDC->SelectObject(&ptBrush);
+				if (m_bShadow)
+				{
+					pOldPen = pDC->SelectObject(&ShadowPen);
+					pDC->SelectObject(&ShadowBrush);
+					pDC->Ellipse(ShadowRect);
+					//pDC->SelectObject(&NewBrush);
+					pDC->SelectObject(&ptBrush);
+					pDC->SelectObject(&BorderPen);
+				}
+				pDC->Ellipse(PointRect);
+				pDC->SelectObject(pOBsh);
+				DeleteObject(ptBrush);
 			}
-			pDC->Ellipse(PointRect);
 			break;
-
 		case ptRectangle:
 			if (m_bShadow)
 			{

@@ -21,6 +21,8 @@ CDlgChart::CDlgChart(CWnd* pParent /*=NULL*/)
 	//m_nSecSerieID   = 0;
 	m_dXValue = 0;
 	m_dYValue = 0;
+	m_crPoints1 = RGB(255,0,0);
+	m_crPoints2 = RGB(0,255,0);
 }
 
 CDlgChart::~CDlgChart()
@@ -242,7 +244,7 @@ void CDlgChart::AddData1(float fPos, float fDesity)
 	pPointSeries->SetColor(RGB(255,0,0));
 	if (NULL != pPointSeries)
 	{
-		pPointSeries->AddPoint(fXPos, fYDes);	
+		pPointSeries->AddPoint(fXPos, fYDes, RGB(255,0,0));
 		m_ChartCtrlFisrt.RefreshCtrl();
 	}
 	
@@ -257,7 +259,7 @@ void CDlgChart::AddData2(float fPos, float fDesity)
 	pLineSeries->SetColor(RGB(0,255,0));
 	if (NULL != pLineSeries)
 	{
-		pLineSeries->AddPoint(fXPos, fYDes);
+		pLineSeries->AddPoint(fXPos, fYDes,RGB(0,255,0));
 		/*m_ChartCtrlSecond*/m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }

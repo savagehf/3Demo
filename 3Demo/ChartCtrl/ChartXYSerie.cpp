@@ -31,6 +31,12 @@ CChartXYSerie::~CChartXYSerie()
 {
 }
 
+void CChartXYSerie::AddPoint(double X, double Y, COLORREF rColor)
+{
+	SChartXYPoint newPoint(X,Y,rColor);
+	CChartSerieBase<SChartXYPoint>::AddPoint(newPoint);
+}
+
 void CChartXYSerie::AddPoint(double X, double Y)
 {
 	SChartXYPoint newPoint(X, Y);
