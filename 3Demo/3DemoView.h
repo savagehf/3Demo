@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BtnST.h"
 
 class CSence1;
 class CSence2;
@@ -52,18 +53,6 @@ protected:
 	afx_msg void OnSence2();
 	afx_msg void OnSence3();
 
-	DECLARE_MESSAGE_MAP()
-
-
-protected:
-	CSence1* m_pSence1;
-	CSence2* m_pSence2;
-	CSence3* m_pSence3;
-	EDrawS   m_eDrawSence;
-	UINT	 m_uIDRes;
-	BOOL	 m_bDraw3D;
-
-public:
 	afx_msg void OnExportTxt();
 	afx_msg void OnExportCsv();
 	afx_msg void OnProjIntroduce();
@@ -74,6 +63,22 @@ public:
 	afx_msg void OnContextIntro5();
 	afx_msg void OnContextIntro6();
 	afx_msg void OnContextIntro7();
+	afx_msg void OnPrevPage();
+	afx_msg void OnNextPage();
+
+	DECLARE_MESSAGE_MAP()
+
+
+protected:
+	CButtonST* m_pBtnPrevPage;
+	CButtonST* m_pBtnNextPage;
+	CSence1* m_pSence1;
+	CSence2* m_pSence2;
+	CSence3* m_pSence3;
+	EDrawS   m_eDrawSence;
+	UINT	 m_uIDRes;
+	BOOL	 m_bDraw3D;
+
 };
 
 #ifndef _DEBUG  // debug version in 3DemoView.cpp

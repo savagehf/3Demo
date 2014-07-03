@@ -25,7 +25,7 @@
 //! Structure containing a point data with X and Y values
 struct SChartXYPoint
 {
-	//! Update by lee: Add each point with its color value.
+	//! Update by wenjie: Add each point with its color value.
 	SChartXYPoint() : X(0.0), Y(0.0),rColor(RGB(0,0,0))  
 	{ 
 		#ifndef NO_USER_DATA
@@ -52,7 +52,7 @@ struct SChartXYPoint
 	//! The point Y value.
 	double Y;
 
-	//! Updated by lee:Add color to each point.
+	//! Updated by wenjie:Add color to each point.
 	COLORREF rColor;
 	#ifndef NO_USER_DATA
 	//! Optional user data.
@@ -75,7 +75,7 @@ public:
 	//! Destructor
 	virtual ~CChartXYSerie();
 
-	//!update by lee:add color to each point.
+	//!update by wenjie:add color to each point.
 	void AddPoint(double X, double Y, COLORREF rColor);
 
 	//! Adds a single data point to the series.

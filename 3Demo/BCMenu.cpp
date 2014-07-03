@@ -1358,7 +1358,7 @@ BOOL BCMenu::ModifyODMenuW(wchar_t *lpstrText,wchar_t *OptionText,
 	BCMenuData *mdata;
 	
 	// Find the old BCMenuData structure:
-	CString junk;//=OptionText;//delete by lee.2014-6-30
+	CString junk;//=OptionText;//delete by wenjie.2014-6-30
 	mdata=FindMenuOption(OptionText);
 	if(mdata){
 		if(lpstrText)

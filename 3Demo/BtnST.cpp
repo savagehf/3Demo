@@ -2033,7 +2033,7 @@ DWORD CButtonST::SetSound(LPCTSTR lpszSound, HMODULE hMod, BOOL bPlayOnClick, BO
 		} // if
 		else
 		{
-			////delete by lee.2014-6-30
+			////delete by wenjie.2014-6-30
 			//wcsncpy_s((wchar_t*)(m_csSounds[byIndex].szSound),_MAX_PATH, lpszSound,_TRUNCATE );
 			m_csSounds[byIndex].lpszSound = m_csSounds[byIndex].szSound;
 		} // else

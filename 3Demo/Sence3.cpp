@@ -107,7 +107,7 @@ float multiplier_3 = 360/(3.14159*2); // multiplier_3 is necessary for conversio
 CSence3::CSence3(HWND hWnd)
 {
 
-	//lee 2014年5月27日15:39:41
+	//wenjie 2014年5月27日15:39:41
 	KillTimer(m_hWnd, TIMER_DRAW_EXP);
 	SetTimer(hWnd, TIMER_DRAW_EXP, 20, NULL);
 
@@ -116,7 +116,7 @@ CSence3::CSence3(HWND hWnd)
 	m_hrgc = NULL;
 	m_hPalette = NULL;
 
-	//lee 2014年5月27日15:39:41
+	//wenjie 2014年5月27日15:39:41
 	//explosion
 	m_fRotate = 0.f;
 	m_fOpacity = 1.0f;

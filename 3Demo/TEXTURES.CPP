@@ -125,12 +125,12 @@ bool CTextures::LoadBMP(LPCTSTR Filename, GLuint *texture_id)									// Load Bi
 
 	
 	//Assign the mip map levels and texture info
-	//lee控制滤波
+	//wenjie控制滤波
 	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR_MIPMAP_LINEAR);
 	
-	//lee说明映射方式
+	//wenjie说明映射方式
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 

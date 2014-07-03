@@ -194,7 +194,7 @@ void CChartPointsSerie::DrawAll(CDC *pDC)
 
 		switch(m_iPointType)
 		{
-		case ptEllipse://!update by lee:draw user defined point color.
+		case ptEllipse://!update by wenjie:draw user defined point color.
 			{
 				CBrush ptBrush = CBrush(Point.GetPointColor());
 				CBrush* pOBsh = pDC->SelectObject(&ptBrush);

@@ -10,6 +10,9 @@
 #include "DlgIntroduce.h"
 
 
+#define ID_BTN_PREV_PAGE	2014
+#define ID_BTN_NEXT_PAGE	2015
+
 
 // #pragma comment( lib,"winmm.lib" )
 
@@ -47,6 +50,8 @@ BEGIN_MESSAGE_MAP(C3DemoView, CView)
 	ON_COMMAND(ID_CONTEXT_INTRO_5, &C3DemoView::OnContextIntro5)
 	ON_COMMAND(ID_CONTEXT_INTRO_6, &C3DemoView::OnContextIntro6)
 	ON_COMMAND(ID_CONTEXT_INTRO_7, &C3DemoView::OnContextIntro7)
+	ON_COMMAND(ID_BTN_PREV_PAGE, OnPrevPage)
+	ON_COMMAND(ID_BTN_NEXT_PAGE, OnNextPage)
 END_MESSAGE_MAP()
 
 
@@ -58,6 +63,8 @@ C3DemoView::C3DemoView()
 	m_eDrawSence = enm_Sence1;
 	m_uIDRes  = IDB_INTRO_PIC_1;
 	m_bDraw3D = FALSE;
+	m_pBtnPrevPage = NULL;
+	m_pBtnNextPage = NULL;
 }
 
 C3DemoView::~C3DemoView()
@@ -173,6 +180,28 @@ int C3DemoView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 
+	m_pBtnPrevPage = new CButtonST();
+	m_pBtnPrevPage->Create(_T("上一页"), WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON, CRect(10,10,100,30), this, ID_BTN_PREV_PAGE);
+	m_pBtnNextPage = new CButtonST();
+	m_pBtnNextPage->Create(_T("下一页"), WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON, CRect(10,10,100,30), this, ID_BTN_NEXT_PAGE);
+
+	m_pBtnPrevPage->SetFlat(TRUE);
+	m_pBtnPrevPage->SetTooltipText(_T("上一页"));
+	m_pBtnPrevPage->SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
+	m_pBtnPrevPage->SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
+	m_pBtnPrevPage->SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
+	m_pBtnPrevPage->SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
+	//m_pBtnPrevPage->DrawBorder();
+
+
+	m_pBtnNextPage->SetFlat(TRUE);
+	m_pBtnNextPage->SetTooltipText(_T("下一页"));
+	m_pBtnNextPage->SetColor(CButtonST::BTNST_COLOR_BK_OUT, RGB(255,0,0));
+	m_pBtnNextPage->SetColor(CButtonST::BTNST_COLOR_FG_OUT, RGB(255,255,255));
+	m_pBtnNextPage->SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, RGB(255,0,0));
+	m_pBtnNextPage->SetColor(CButtonST::BTNST_COLOR_FG_FOCUS, RGB(255,255,255));
+	//m_pBtnNextPage->DrawBorder();
+
 	SetTimer(TIMER_DRAW_EXP, 20, NULL);
 
 	//OnSence3();
@@ -192,6 +221,27 @@ void C3DemoView::OnDestroy()
 void C3DemoView::OnSize(UINT nType, int cx, int cy) 
 {
 	CView::OnSize(nType, cx, cy);
+
+	if (!m_bDraw3D)
+	{
+		int xPos = cx-300;
+		int yPos = cy-30;
+
+		if (m_pBtnPrevPage != NULL && NULL != m_pBtnPrevPage->GetSafeHwnd())
+		{
+			m_pBtnPrevPage->MoveWindow(xPos, yPos, 100, 25);
+		}
+		if (m_pBtnNextPage != NULL && NULL != m_pBtnNextPage->GetSafeHwnd())
+		{
+			m_pBtnNextPage->MoveWindow(xPos+150, yPos, 100, 25);
+		}
+	}
+	else
+	{
+		m_pBtnNextPage->ShowWindow(SW_HIDE);
+		m_pBtnPrevPage->ShowWindow(SW_HIDE);
+	}
+	
 
 	if (enm_Sence1 == m_eDrawSence)
 	{
@@ -641,4 +691,20 @@ void C3DemoView::OnContextIntro6()
 void C3DemoView::OnContextIntro7()
 {
 	m_uIDRes = IDB_INTRO_PIC_7;
+}
+
+void C3DemoView::OnPrevPage()
+{
+	if (IDB_INTRO_PIC_1 != m_uIDRes)
+	{
+		m_uIDRes--;
+	}
+}
+
+void C3DemoView::OnNextPage()
+{
+	if (IDB_INTRO_PIC_7 != m_uIDRes)
+	{
+		m_uIDRes++;
+	}
 }
