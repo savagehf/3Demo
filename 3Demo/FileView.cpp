@@ -123,126 +123,126 @@ void CFileView::AddOneData(/*float fDensity, float fHeight, float fLatitude, flo
 {
 	if (m_pLeftWnd != NULL)
 	{
-		m_pLeftWnd->AddOneItem(/*fDensity,fHeight,fLatitude, fLogitude*/);
+		//m_pLeftWnd->AddOneItem(/*fDensity,fHeight,fLatitude, fLogitude*/);
 	}
 }
 
-void CFileView::ExportAsText()
-{
-	//2.show save as txt dialog and create saved file.
-	CString strAppPath;
-	GetCurrentAppPath(strAppPath);
-	CString strLogFileName;
-	CTime time = CTime::GetCurrentTime();
-	CString strSavedFile;
-
-	strLogFileName = _T("数据") + time.Format("%d-%b-%y %H;%M;%S") + _T(".txt");
-	CFileDialog fileDlg(FALSE , _T("txt"), strLogFileName,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.txt)|*.txt||"), this);
-
-	fileDlg.m_ofn.lpstrInitialDir = strAppPath + strLogFileName;
-	fileDlg.m_ofn.lpstrTitle = _T("保存为txt");
-
-	if (fileDlg.DoModal() != IDOK)
-		return;
-
-	strSavedFile = fileDlg.GetPathName();
-
-	CString strDelimeter(_T("\t"));
-	CStdioFile file;
-	if(!file.Open(strSavedFile, CFile::modeCreate|CFile::modeWrite))
-	{
-		CString strError;
-		strError.Format("创建文件[%s]失败",strSavedFile);
-		AfxMessageBox(strError);
-		return;
-	}
-
-	CString strTemp;
-	strTemp.Format("%s\t%s\t%s\t%s\t\n", "经度","纬度","高度", "浓度");
-	file.WriteString(strTemp);
-	int nCount = m_pLeftWnd->m_ctrlResults.GetItemCount();
-	if (nCount == 0)
-	{
-		AfxMessageBox("没有采样数据可以保存！");
-		return;
-	}
-	for (int nRow=0; nRow<nCount; nRow++)
-	{
-		strTemp.Empty();
-		for (int nCol=0; nCol<4; nCol++)
-		{
-			CString strItem = m_pLeftWnd->m_ctrlResults.GetItemText(nRow, nCol);
-			strTemp += strItem;
-			strTemp += strDelimeter;
-		}
-		strTemp += _T("\n");
-		file.WriteString(strTemp);
-	}
-	
-	file.Close();
-
-	AfxMessageBox(_T("保存成功"));
-}
-void CFileView::ExportAsCSV()
-{
-	//2.show save as txt dialog and create saved file.
-	CString strAppPath;
-	GetCurrentAppPath(strAppPath);
-	CString strLogFileName;
-	CTime time = CTime::GetCurrentTime();
-	CString strSavedFile;
-
-	strLogFileName = _T("数据") + time.Format("%d-%b-%y %H;%M;%S") + _T(".CSV");
-	CFileDialog fileDlg(FALSE , _T("txt"), strLogFileName,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.CSV)|*.CSV||"), this);
-
-	fileDlg.m_ofn.lpstrInitialDir = strAppPath + strLogFileName;
-	fileDlg.m_ofn.lpstrTitle = _T("保存为CSV");
-
-	if (fileDlg.DoModal() != IDOK)
-		return;
-
-	strSavedFile = fileDlg.GetPathName();
-
-	CString strDelimeter(_T(","));
-	CStdioFile file;
-	if(!file.Open(strSavedFile, CFile::modeCreate|CFile::modeWrite))
-	{
-		CString strError;
-		strError.Format("创建文件[%s]失败",strSavedFile);
-		AfxMessageBox(strError);
-		return;
-	}
-
-	CString strTemp;
-	strTemp.Format("%s,%s,%s,%s,\n", "经度","纬度","高度", "浓度");
-	file.WriteString(strTemp);
-	
-	int nCount = m_pLeftWnd->m_ctrlResults.GetItemCount();
-	if (nCount == 0)
-	{
-		AfxMessageBox("没有采样数据可以保存！");
-		return;
-	}
-
-	for (int nRow=0; nRow<nCount; nRow++)
-	{
-		strTemp.Empty();
-		for (int nCol=0; nCol<4; nCol++)
-		{
-			CString strItem = m_pLeftWnd->m_ctrlResults.GetItemText(nRow, nCol);
-			strTemp += strItem;
-			strTemp += strDelimeter;
-		}
-		strTemp += _T("\n");
-		file.WriteString(strTemp);
-	}
-
-	file.Close();
-
-	AfxMessageBox(_T("保存成功"));
-}
+//void CFileView::ExportAsText()
+//{
+//	//2.show save as txt dialog and create saved file.
+//	CString strAppPath;
+//	GetCurrentAppPath(strAppPath);
+//	CString strLogFileName;
+//	CTime time = CTime::GetCurrentTime();
+//	CString strSavedFile;
+//
+//	strLogFileName = _T("数据") + time.Format("%d-%b-%y %H;%M;%S") + _T(".txt");
+//	CFileDialog fileDlg(FALSE , _T("txt"), strLogFileName,
+//		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.txt)|*.txt||"), this);
+//
+//	fileDlg.m_ofn.lpstrInitialDir = strAppPath + strLogFileName;
+//	fileDlg.m_ofn.lpstrTitle = _T("保存为txt");
+//
+//	if (fileDlg.DoModal() != IDOK)
+//		return;
+//
+//	strSavedFile = fileDlg.GetPathName();
+//
+//	CString strDelimeter(_T("\t"));
+//	CStdioFile file;
+//	if(!file.Open(strSavedFile, CFile::modeCreate|CFile::modeWrite))
+//	{
+//		CString strError;
+//		strError.Format("创建文件[%s]失败",strSavedFile);
+//		AfxMessageBox(strError);
+//		return;
+//	}
+//
+//	CString strTemp;
+//	strTemp.Format("%s\t%s\t%s\t%s\t\n", "经度","纬度","高度", "浓度");
+//	file.WriteString(strTemp);
+//	int nCount = m_pLeftWnd->m_ctrlResults.GetItemCount();
+//	if (nCount == 0)
+//	{
+//		AfxMessageBox("没有采样数据可以保存！");
+//		return;
+//	}
+//	for (int nRow=0; nRow<nCount; nRow++)
+//	{
+//		strTemp.Empty();
+//		for (int nCol=0; nCol<4; nCol++)
+//		{
+//			CString strItem = m_pLeftWnd->m_ctrlResults.GetItemText(nRow, nCol);
+//			strTemp += strItem;
+//			strTemp += strDelimeter;
+//		}
+//		strTemp += _T("\n");
+//		file.WriteString(strTemp);
+//	}
+//	
+//	file.Close();
+//
+//	AfxMessageBox(_T("保存成功"));
+//}
+//void CFileView::ExportAsCSV()
+//{
+//	//2.show save as txt dialog and create saved file.
+//	CString strAppPath;
+//	GetCurrentAppPath(strAppPath);
+//	CString strLogFileName;
+//	CTime time = CTime::GetCurrentTime();
+//	CString strSavedFile;
+//
+//	strLogFileName = _T("数据") + time.Format("%d-%b-%y %H;%M;%S") + _T(".CSV");
+//	CFileDialog fileDlg(FALSE , _T("txt"), strLogFileName,
+//		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.CSV)|*.CSV||"), this);
+//
+//	fileDlg.m_ofn.lpstrInitialDir = strAppPath + strLogFileName;
+//	fileDlg.m_ofn.lpstrTitle = _T("保存为CSV");
+//
+//	if (fileDlg.DoModal() != IDOK)
+//		return;
+//
+//	strSavedFile = fileDlg.GetPathName();
+//
+//	CString strDelimeter(_T(","));
+//	CStdioFile file;
+//	if(!file.Open(strSavedFile, CFile::modeCreate|CFile::modeWrite))
+//	{
+//		CString strError;
+//		strError.Format("创建文件[%s]失败",strSavedFile);
+//		AfxMessageBox(strError);
+//		return;
+//	}
+//
+//	CString strTemp;
+//	strTemp.Format("%s,%s,%s,%s,\n", "经度","纬度","高度", "浓度");
+//	file.WriteString(strTemp);
+//	
+//	int nCount = m_pLeftWnd->m_ctrlResults.GetItemCount();
+//	if (nCount == 0)
+//	{
+//		AfxMessageBox("没有采样数据可以保存！");
+//		return;
+//	}
+//
+//	for (int nRow=0; nRow<nCount; nRow++)
+//	{
+//		strTemp.Empty();
+//		for (int nCol=0; nCol<4; nCol++)
+//		{
+//			CString strItem = m_pLeftWnd->m_ctrlResults.GetItemText(nRow, nCol);
+//			strTemp += strItem;
+//			strTemp += strDelimeter;
+//		}
+//		strTemp += _T("\n");
+//		file.WriteString(strTemp);
+//	}
+//
+//	file.Close();
+//
+//	AfxMessageBox(_T("保存成功"));
+//}
 
 //"D:\..\Exec\"
 BOOL CFileView::GetCurrentAppPath(CString& strAppPath)

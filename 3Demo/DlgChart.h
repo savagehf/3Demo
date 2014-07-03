@@ -3,6 +3,9 @@
 #include "resource.h"
 #include "ChartCtrl/ChartCtrl.h"
 #include "BtnST.h"
+#include <vector>
+
+using namespace std;
 
 class CDlgChart : public CDialog
 {
@@ -16,6 +19,14 @@ public:
 
 	void AddData1(float fPos, float fDesity);
 	void AddData2(float fPos, float fDesity);
+	void AddOneBomb(/*float x, float y, float fDesity*/);
+
+	struct SDataItem
+	{
+		float fx;
+		float fy;
+	};
+
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    
@@ -41,6 +52,12 @@ protected:
 	CButtonST m_colorBtnCalc;
 	CButtonST m_colorBtnMorePos;
 	CButtonST m_colorBtnConfirm;
+
+	CListCtrl m_ctrlResults;
+	float m_fLongitude;
+	float m_fLAttitude;
+	int m_nItemCount;
+	vector<SDataItem> m_vecBombDatas;
 
 	DECLARE_MESSAGE_MAP()
 public:

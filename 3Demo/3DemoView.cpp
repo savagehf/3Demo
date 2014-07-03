@@ -40,8 +40,8 @@ BEGIN_MESSAGE_MAP(C3DemoView, CView)
 	//ON_COMMAND(ID_SENCE_1, OnSence1)
 	//ON_COMMAND(ID_SENCE_2, OnSence2)
 	ON_COMMAND(ID_SENCE_3, OnSence3)
-	ON_COMMAND(ID_EXPORT_TXT, &C3DemoView::OnExportTxt)
-	ON_COMMAND(ID_EXPORT_CSV, &C3DemoView::OnExportCsv)
+	/*ON_COMMAND(ID_EXPORT_TXT, &C3DemoView::OnExportTxt)
+	ON_COMMAND(ID_EXPORT_CSV, &C3DemoView::OnExportCsv)*/
 	ON_COMMAND(ID_PROJ_INTRODUCE, &C3DemoView::OnProjIntroduce)
 	ON_COMMAND(ID_CONTEXT_INTRO_1, &C3DemoView::OnContextIntro1)
 	ON_COMMAND(ID_CONTEXT_INTRO_2, &C3DemoView::OnContextIntro2)
@@ -518,12 +518,12 @@ void C3DemoView::OnSence2()
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	if (NULL != pFrame)
 	{
-		if (pFrame->IsZoomed())
-		{
-			pFrame->ShowWindow(SW_RESTORE);
-		}
-		else
-		{
+ 		if (pFrame->IsZoomed())
+ 		{
+ 			pFrame->ShowWindow(SW_RESTORE);
+ 		}
+ 		else
+ 		{
 			pFrame->ShowWindow(SW_SHOWMAXIMIZED);
 		}
 	}
@@ -606,23 +606,23 @@ void C3DemoView::OnLButtonDown(UINT nFlags, CPoint point)
  		m_pSence1->Setfire();
  	}
 }
-void C3DemoView::OnExportTxt()
-{
-	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-	if (NULL != pFrame)
-	{
-		pFrame->PostMessage(WM_EXPORT_AS_TEXT);
-	}
-}
+//void C3DemoView::OnExportTxt()
+//{
+//	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+//	if (NULL != pFrame)
+//	{
+//		pFrame->PostMessage(WM_EXPORT_AS_TEXT);
+//	}
+//}
 
-void C3DemoView::OnExportCsv()
-{
-	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-	if (NULL != pFrame)
-	{
-		pFrame->PostMessage(WM_EXPORT_AS_CSV);
-	}
-}
+//void C3DemoView::OnExportCsv()
+//{
+//	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+//	if (NULL != pFrame)
+//	{
+//		pFrame->PostMessage(WM_EXPORT_AS_CSV);
+//	}
+//}
 
 void C3DemoView::LoadSence()
 {

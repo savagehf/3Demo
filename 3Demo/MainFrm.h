@@ -1,13 +1,13 @@
 
 
 #pragma once
-#include "FileView.h"
+//#include "FileView.h"
 #include "ChartView.h"
 
 
-#define WM_ADD_ONE_DATA		WM_USER+101
-#define WM_EXPORT_AS_TEXT	WM_USER+201
-#define WM_EXPORT_AS_CSV	WM_USER+202
+//#define WM_ADD_ONE_DATA		WM_USER+101
+//#define WM_EXPORT_AS_TEXT	WM_USER+201
+//#define WM_EXPORT_AS_CSV	WM_USER+202
 
 #define WM_LOAD_SENCE		WM_USER+208
 #define WM_START_SIMULATE	WM_USER+209
@@ -28,7 +28,7 @@ protected: // create from serialization only
 public:
 	void SendDataChart1(float fCurPos, float fDensity);
 	void SendDataChart2(float fCurPos, float fDensity);
-
+	void SendBombPos(/*float fXpos, float fYpos, float fDesity*/);
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -47,7 +47,7 @@ protected:  // control bar embedded members
 	CMFCToolBar       m_wndToolBar;
 	CMFCStatusBar     m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
-	CFileView         m_wndFileView;
+	//CFileView         m_wndFileView;
 	CChartView		  m_wndChartView;
 	
 // Generated message map functions
@@ -60,9 +60,9 @@ protected:
 	afx_msg LRESULT OnCalcPosition(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnMorePosition(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnConfirmPos(WPARAM w, LPARAM l);
-	afx_msg LRESULT OnAddOneData(WPARAM wp, LPARAM lp);
-	afx_msg LRESULT OnExportAsText(WPARAM wp, LPARAM lp);
-	afx_msg LRESULT OnExportAsCSV(WPARAM wp, LPARAM lp);
+	//afx_msg LRESULT OnAddOneData(WPARAM wp, LPARAM lp);
+	//afx_msg LRESULT OnExportAsText(WPARAM wp, LPARAM lp);
+	//afx_msg LRESULT OnExportAsCSV(WPARAM wp, LPARAM lp);
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
 	afx_msg void OnApplicationLook(UINT id);

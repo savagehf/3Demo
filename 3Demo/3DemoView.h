@@ -55,8 +55,8 @@ protected:
 	afx_msg void OnSence2();
 	afx_msg void OnSence3();
 
-	afx_msg void OnExportTxt();
-	afx_msg void OnExportCsv();
+	/*afx_msg void OnExportTxt();
+	afx_msg void OnExportCsv();*/
 	afx_msg void OnProjIntroduce();
 	afx_msg void OnContextIntro1();
 	afx_msg void OnContextIntro2();

@@ -20,8 +20,8 @@ public:
 	CFileView();
 
 	void AddOneData(/*float fDensity, float fHeight, float fLatitude, float fLogitude*/);
-	void ExportAsCSV();
-	void ExportAsText();
+	//void ExportAsCSV();
+	//void ExportAsText();
 
 protected:
 	void AdjustLayout();

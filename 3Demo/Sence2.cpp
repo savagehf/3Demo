@@ -876,7 +876,7 @@ void CSence2::OnTimer(UINT nIDEvent)
 		CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 		if (NULL != pFrame)
 		{
-			pFrame->PostMessage(WM_ADD_ONE_DATA);
+			//pFrame->PostMessage(WM_ADD_ONE_DATA);
 		}
 	}
 	else if (nIDEvent == TIMER_DRAW_SIGNAL)

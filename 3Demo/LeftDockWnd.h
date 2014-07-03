@@ -10,7 +10,7 @@ public:
 	CLeftDockWnd(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CLeftDockWnd();
 
-	void AddOneItem(/*float fDensity, float fHeight, float fLatitude, float fLogitude*/);
+	
 
 // Dialog Data
 	enum { IDD = IDD_DIALOG_LEFT_DOCK };
@@ -23,12 +23,9 @@ protected:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	DECLARE_MESSAGE_MAP()
 public:
-	CListCtrl m_ctrlResults;
+	
 	afx_msg void OnBnClickedButtonCalc();
-	float m_fLongitude;
-	float m_fLAttitude;
-	float m_fHeight;
-	int m_nItemCount;
+	
 
 
 	

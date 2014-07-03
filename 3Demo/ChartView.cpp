@@ -118,3 +118,10 @@ void CChartView::AddChart2Data(float fCurPos, float fDensity)
 		m_pChartDlg->AddData2(fCurPos, fDensity);
 	}
 }
+void CChartView::AddBombData(/*float x, float y, float fDesity*/)
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->AddOneBomb(/*x, y, fDesity*/);
+	}
+}

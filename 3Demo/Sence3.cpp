@@ -2235,6 +2235,9 @@ void CSence3::OnTimer(UINT nIDEvent)
 			m_fOffsetPane2 = 0.0;
 
 			m_eState = eState_DrawBomb;
+			
+			//第一个bomb位置写入到listctrl
+			SendBombToChart1();
 		}
 		m_fOffsetPane2 += 0.5;
 
@@ -2426,6 +2429,15 @@ void CSence3::SendDataToChart2(float fCurPos, float fDensity /*= 0*/)
 	if (NULL != pFrame)
 	{
 		pFrame->SendDataChart2(fCurPos, fDensity);
+	}
+}
+
+void CSence3::SendBombToChart1(/*float x, float y, float fDesity*/)
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->SendBombPos(/*x, y, fDesity*/);
 	}
 }
 

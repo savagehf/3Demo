@@ -30,9 +30,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_MESSAGE(WM_CALC_POSITION, OnCalcPosition)
 	ON_MESSAGE(WM_MORE_POSITION, OnMorePosition)
 	ON_MESSAGE(WM_CONFIRM_POS, OnConfirmPos)
-	ON_MESSAGE(WM_ADD_ONE_DATA, OnAddOneData)
-	ON_MESSAGE(WM_EXPORT_AS_TEXT, OnExportAsText)
-	ON_MESSAGE(WM_EXPORT_AS_CSV, OnExportAsCSV)
+	//ON_MESSAGE(WM_ADD_ONE_DATA, OnAddOneData)
+	//ON_MESSAGE(WM_EXPORT_AS_TEXT, OnExportAsText)
+	//ON_MESSAGE(WM_EXPORT_AS_CSV, OnExportAsCSV)
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnApplicationLook)
@@ -129,8 +129,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 
-	m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndFileView);
+// 	m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
+// 	DockPane(&m_wndFileView);
 	m_wndChartView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndChartView);
 	CDockablePane* pTabbedBar = NULL;
@@ -196,16 +196,16 @@ BOOL CMainFrame::CreateDockingWindows()
 {
 	BOOL bNameValid;
 
-	// Create file view
-	CString strFileView;
-	bNameValid = strFileView.LoadString(IDS_FILE_VIEW);
-	ASSERT(bNameValid);
-	if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, 
-		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
-	{
-		TRACE0("Failed to create File View window\n");
-		return FALSE; // failed to create
-	}
+	//// Create file view
+	//CString strFileView;
+	//bNameValid = strFileView.LoadString(IDS_FILE_VIEW);
+	//ASSERT(bNameValid);
+	//if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, 
+	//	WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	//{
+	//	TRACE0("Failed to create File View window\n");
+	//	return FALSE; // failed to create
+	//}
 
 	//Create chart view
 	if (!m_wndChartView.Create(_T("数据采集"), this, CRect(0,0,200,200), TRUE, ID_VIEW_CHARTVIEW,
@@ -221,13 +221,13 @@ BOOL CMainFrame::CreateDockingWindows()
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 {
-	HICON hFileViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), 
-		MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), 
-		IMAGE_ICON, 
-		::GetSystemMetrics(SM_CXSMICON), 
-		::GetSystemMetrics(SM_CYSMICON), 0);
-
-	m_wndFileView.SetIcon(hFileViewIcon, FALSE);
+// 	HICON hFileViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), 
+// 		MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), 
+// 		IMAGE_ICON, 
+// 		::GetSystemMetrics(SM_CXSMICON), 
+// 		::GetSystemMetrics(SM_CYSMICON), 0);
+// 
+// 	m_wndFileView.SetIcon(hFileViewIcon, FALSE);
 
 	HICON hChartViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), 
 		MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), 
@@ -374,26 +374,26 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
-LRESULT CMainFrame::OnAddOneData(WPARAM wp, LPARAM lp)
-{
-	/*sDataItem* pdata = ((sDataItem*)wp);*/
+//LRESULT CMainFrame::OnAddOneData(WPARAM wp, LPARAM lp)
+//{
+//	/*sDataItem* pdata = ((sDataItem*)wp);*/
+//
+//	//m_wndFileView.AddOneData(/*pdata->fDensity, pdata->fHeight, pdata->fLatitude, pdata->fLogitude*/);
+//
+//	return 0;
+//}
 
-	m_wndFileView.AddOneData(/*pdata->fDensity, pdata->fHeight, pdata->fLatitude, pdata->fLogitude*/);
-
-	return 0;
-}
-
-LRESULT CMainFrame::OnExportAsCSV(WPARAM wp, LPARAM lp)
-{
-	m_wndFileView.ExportAsCSV();
-	return 0;
-}
-
-LRESULT CMainFrame::OnExportAsText(WPARAM wp, LPARAM lp)
-{
-	m_wndFileView.ExportAsText();
-	return 0;
-}
+// LRESULT CMainFrame::OnExportAsCSV(WPARAM wp, LPARAM lp)
+// {
+// 	m_wndFileView.ExportAsCSV();
+// 	return 0;
+// }
+// 
+// LRESULT CMainFrame::OnExportAsText(WPARAM wp, LPARAM lp)
+// {
+// 	m_wndFileView.ExportAsText();
+// 	return 0;
+// }
 
 LRESULT CMainFrame::OnLoadSence(WPARAM w, LPARAM l)
 {
@@ -479,4 +479,9 @@ void CMainFrame::SendDataChart1(float fCurPos, float fDensity)
 void CMainFrame::SendDataChart2(float fCurPos, float fDensity)
 {
 	m_wndChartView.AddChart2Data(fCurPos, fDensity);
+}
+
+void CMainFrame::SendBombPos(/*float fXpos, float fYpos, float fDesity*/)
+{
+	m_wndChartView.AddBombData(/*fXpos, fYpos, fDesity*/);
 }

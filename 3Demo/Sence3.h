@@ -99,6 +99,7 @@ protected:
 	
 	void SendDataToChart1(float fCurPos, float fDensity = 0);
 	void SendDataToChart2(float fCurPos, float fDensity = 0);
+	void SendBombToChart1(/*float x, float y, float fDesity*/);
 	void CleanUp();
 	BOOL ReleaseRes();
 

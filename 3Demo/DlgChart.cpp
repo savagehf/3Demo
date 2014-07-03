@@ -16,13 +16,17 @@ IMPLEMENT_DYNAMIC(CDlgChart, CDialog)
 
 CDlgChart::CDlgChart(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgChart::IDD, pParent)
+	, m_fLongitude(0)
+	, m_fLAttitude(0)
 {
+	m_nItemCount = 0;
 	m_nFirstSerieID = 0;
-	//m_nSecSerieID   = 0;
 	m_dXValue = 0;
 	m_dYValue = 0;
 	m_crPoints1 = RGB(255,0,0);
 	m_crPoints2 = RGB(0,255,0);
+
+
 }
 
 CDlgChart::~CDlgChart()
@@ -41,6 +45,9 @@ void CDlgChart::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_GET_POSITION, m_colorBtnCalc);
 	DDX_Control(pDX, IDC_BTN_MORE_POS, m_colorBtnMorePos);
 	DDX_Control(pDX, IDC_BTN_CONFIRM_POS, m_colorBtnConfirm);
+	DDX_Control(pDX, IDC_LIST_SIMPLIE_RESULT, m_ctrlResults);
+	DDX_Text(pDX, IDC_EDIT_LONGITUDE, m_fLongitude);
+	DDX_Text(pDX, IDC_EDIT_LATTITUDE, m_fLAttitude);
 }
 
 
@@ -76,6 +83,18 @@ BOOL CDlgChart::OnInitDialog()
 {
 
 	CDialog::OnInitDialog();
+
+
+	DWORD dwStyle = m_ctrlResults.GetExtendedStyle();
+	dwStyle |= LVS_EX_FULLROWSELECT;        // 选中某行使整行高亮（只适用与report风格的listctrl）
+	dwStyle |= LVS_EX_GRIDLINES;            // 网格线（只适用与report风格的listctrl）
+	m_ctrlResults.SetExtendedStyle(dwStyle);
+
+	m_ctrlResults.InsertColumn(0, _T("经度"), LVCFMT_LEFT, 65);
+	m_ctrlResults.InsertColumn(1, _T("纬度"), LVCFMT_LEFT, 65);
+	m_ctrlResults.InsertColumn(2, _T("浓度"), LVCFMT_LEFT, 65);
+
+
 
 	m_colorBtnLoadScene.SetFlat(FALSE);
 	m_colorBtnLoadScene.SetTooltipText(_T("启动任务一"));
@@ -281,6 +300,39 @@ void CDlgChart::AddData2(float fPos, float fDesity)
 		/*m_ChartCtrlSecond*/m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }
+#define MAX_COUNT 6
+void CDlgChart::AddOneBomb(/*float x, float y, float fDesity*/)
+{
+	float f1 = 270.0 + (rand()%10)/2.0f;
+	float f2 = 198.0 + (rand()%10)/2.0f;
+	//float f3 = 2000.0 +(rand()%100)/100.0f;
+	float f4 = 89.45 + (rand()%10)/2.0f;
+	CString str;
+	str.Format(_T("%.2f"), f1);
+	m_ctrlResults.InsertItem(m_nItemCount, str.GetBuffer());
+
+	str.Empty();
+	str.Format(_T("%.2f"), f2);
+	m_ctrlResults.SetItemText(m_nItemCount, 1, str.GetBuffer());
+
+	//str.Empty();
+	//str.Format(_T("%.2f"), f3);
+	//m_ctrlResults.SetItemText(m_nItemCount, 2, str.GetBuffer());
+
+	str.Empty();
+	str.Format(_T("%.2f"), f4);
+	m_ctrlResults.SetItemText(m_nItemCount, 2, str.GetBuffer());
+
+
+	SDataItem oneBomb;
+	oneBomb.fx = f1;
+	oneBomb.fy = f4;
+	m_vecBombDatas.push_back(oneBomb);
+
+
+	m_nItemCount++;
+
+}
 void CDlgChart::OnBnClickedBtnMorePos()
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
@@ -288,6 +340,10 @@ void CDlgChart::OnBnClickedBtnMorePos()
 	{
 		pFrame->PostMessage(WM_MORE_POSITION);
 	}
+
+	//add 2 more data to listctrl
+	AddOneBomb();
+	AddOneBomb();
 }
 
 void CDlgChart::OnBnClickedBtnSpecifyPos()
@@ -297,6 +353,25 @@ void CDlgChart::OnBnClickedBtnSpecifyPos()
 	{
 		pFrame->PostMessage(WM_CONFIRM_POS);
 	}
+
+	//计算最终的脏弹位置。
+	float fxTotal = 0.0;
+	float fyTotal = 0.0;
+	int ncount = m_vecBombDatas.size();
+	if (ncount>0)
+	{
+		for(int n=0; n<ncount; n++)
+		{
+			fxTotal += m_vecBombDatas[n].fx;
+			fyTotal += m_vecBombDatas[n].fy;
+		}
+
+		m_fLongitude = fxTotal/ncount;
+		m_fLAttitude = fyTotal/ncount;
+	}
+	
+
+	UpdateData(FALSE);
 }
 
 void CDlgChart::OnBnClickedBtnLoadSence()
@@ -316,3 +391,4 @@ void CDlgChart::OnBnClickedBtnStartSimulate()
 		pFrame->PostMessage(WM_START_SIMULATE);
 	}
 }
+
