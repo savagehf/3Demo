@@ -15,7 +15,7 @@
 #define START_Y_POS			6.0
 #define SCALE_FACTOR		0.0002
 #define ERROR1_OFFSET		8
-#define ERROR2_OFFSET		8
+#define ERROR2_OFFSET		-8
 
 #define OFFSET_X_MAXPANE2	7.5
 #define OFFSET_X_MAXPANE1	3.0
@@ -159,6 +159,9 @@ CSence3::CSence3(HWND hWnd)
 
 	m_vecRoute1Points.clear();
 	m_vecRoute2Points.clear();
+
+	m_bNewTask1Sent = FALSE;
+	m_bNewTask2Sent = FALSE;
 
 }
 
@@ -2344,7 +2347,11 @@ void CSence3::OnTimer(UINT nIDEvent)
 					CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 					if (NULL != pFrame)
 					{
-						pFrame->PostMessage(START_RIGHT_TASK1);
+						if (!m_bNewTask1Sent)
+						{
+							pFrame->PostMessage(START_RIGHT_TASK1);
+							m_bNewTask1Sent = TRUE;//只发送一个消息。
+						}
 					}
 				}
 
@@ -2397,7 +2404,11 @@ void CSence3::OnTimer(UINT nIDEvent)
 					CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 					if (NULL != pFrame)
 					{
-						pFrame->PostMessage(START_RIGHT_TASK2);
+						if (!m_bNewTask2Sent)
+						{
+							pFrame->PostMessage(START_RIGHT_TASK2);
+							m_bNewTask2Sent = TRUE;
+						}
 					}
 				}
 

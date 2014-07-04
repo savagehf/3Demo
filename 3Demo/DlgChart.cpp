@@ -313,7 +313,7 @@ void CDlgChart::AddData1(float fPos, float fDesity)
 void CDlgChart::AddErrorData2(float fPos)
 {
 	float fXPos = fPos*100;
-	float fYDes = (fPos/2.0)*(fPos/2.0) + 30;
+	float fYDes = 100 - (fPos/2.0)*(fPos/2.0) - 20;
 	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
 
 	if (NULL != pLineSeries)

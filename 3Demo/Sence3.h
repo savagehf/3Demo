@@ -166,6 +166,9 @@ protected:
 	int    m_eDir;				//方向控制
 	float  m_fFlyStep;			//每次飞行的步长
 	BOOL   m_bColorChange;		//更改线条颜色
+
+	BOOL   m_bNewTask1Sent;		//启动新任务1消息已经发送了
+	BOOL   m_bNewTask2Sent;		//启动新任务2消息已经发送了
 	
 
 	vector<float> m_vecRoute1ErrorPts;
