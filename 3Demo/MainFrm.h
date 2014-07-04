@@ -17,6 +17,9 @@
 #define WM_MORE_POSITION	WM_USER+213
 #define WM_CONFIRM_POS		WM_USER+214
 
+#define START_RIGHT_TASK1	WM_USER+220
+#define START_RIGHT_TASK2	WM_USER+221
+
 class CMainFrame : public CFrameWndEx
 {
 	
@@ -26,6 +29,8 @@ protected: // create from serialization only
 
 
 public:
+	void SendError1DataToChart();
+	void SendError2DataToChart();
 	void SendDataChart1(float fCurPos, float fDensity);
 	void SendDataChart2(float fCurPos, float fDensity);
 	void SendBombPos(/*float fXpos, float fYpos, float fDesity*/);
@@ -60,6 +65,8 @@ protected:
 	afx_msg LRESULT OnCalcPosition(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnMorePosition(WPARAM w, LPARAM l);
 	afx_msg LRESULT OnConfirmPos(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnStartRightTask1(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnStartRightTask2(WPARAM w, LPARAM l);
 	//afx_msg LRESULT OnAddOneData(WPARAM wp, LPARAM lp);
 	//afx_msg LRESULT OnExportAsText(WPARAM wp, LPARAM lp);
 	//afx_msg LRESULT OnExportAsCSV(WPARAM wp, LPARAM lp);

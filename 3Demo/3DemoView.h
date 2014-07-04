@@ -32,6 +32,8 @@ public:
 	void CalcPostion();
 	void CalMorePos();
 	void ConfirmPos();
+	void StartRightTask1();
+	void StartRightTask2();
 
 protected: 
 	DECLARE_DYNCREATE(C3DemoView)

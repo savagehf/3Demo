@@ -104,11 +104,25 @@ BOOL CChartView::GetCurrentAppPath(CString& strAppPath)
 	return TRUE;
 }
 
+void CChartView::AddErrorData1()
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->AddErrorData1();
+	}
+}
 void CChartView::AddChart1Data(float fCurPos, float fDensity)
 {
 	if (NULL != m_pChartDlg)
 	{
 		m_pChartDlg->AddData1(fCurPos, fDensity);
+	}
+}
+void CChartView::AddErrorData2()
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->AddErrorData2();
 	}
 }
 void CChartView::AddChart2Data(float fCurPos, float fDensity)

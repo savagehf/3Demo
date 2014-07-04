@@ -733,3 +733,23 @@ void C3DemoView::OnNextPage()
 		m_uIDRes++;
 	}
 }
+void C3DemoView::StartRightTask1()
+{
+	//提醒用户数据有错误
+	AfxMessageBox(_T("采样数据一直递增，此次任务取消！\n制表图中的数据将会删除！并启动新的采集任务！"), MB_ICONWARNING);
+
+	if (NULL != m_pSence3)
+	{
+		m_pSence3->StartRight1Fly();
+	}
+}
+void C3DemoView::StartRightTask2()
+{
+	//提醒用户数据有错误
+	AfxMessageBox(_T("采样数据一直递增，此次任务取消！\n制表图中的数据将会删除！并启动新的采集任务！"), MB_ICONWARNING);
+
+	if (NULL != m_pSence3)
+	{
+		m_pSence3->StartRight2Fly();
+	}
+}

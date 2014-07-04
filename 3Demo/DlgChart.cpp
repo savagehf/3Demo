@@ -268,6 +268,11 @@ void CDlgChart::OnBnClickedBtnGetPosition()
 	}
 }
 
+
+void CDlgChart::AddErrorData1()
+{
+
+}
 //将fpos进行缩放到在X轴范围内。
 //magic number;8.0.这个值是在3D场景中，飞行的路径的长度值的/2 = 8.0，
 //如果3D中的坐标更改了，此处也需要更改哦。
@@ -287,6 +292,10 @@ void CDlgChart::AddData1(float fPos, float fDesity)
 	
 }
 
+void CDlgChart::AddErrorData2()
+{
+
+}
 void CDlgChart::AddData2(float fPos, float fDesity)
 {
 	float fXPos = fPos*100;

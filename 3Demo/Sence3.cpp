@@ -14,6 +14,8 @@
 #define MAX_Z_POS			-36
 #define START_Y_POS			6.0
 #define SCALE_FACTOR		0.0002
+#define ERROR1_OFFSET		8
+#define ERROR2_OFFSET		8
 
 #define OFFSET_X_MAXPANE2	7.5
 #define OFFSET_X_MAXPANE1	3.0
@@ -22,6 +24,8 @@
 #define ROTATE_MAX_PANE2	10.0	//逆时针绕离圆点半径旋转10度
 
 //////////////////////////////////////////////////////////////////////////
+#define TIMER_ERROR_ROUTE1_OVER 2990
+#define TIMER_ERROR_ROUTE2_OVER 2991
 #define TIMER_ROUTE_1_OVER	3000	//绘制闪烁信号线。
 #define TIMER_ROUTE_2_OVER	3001	//绘制闪烁信号线。
 //#define TIMER_MAX_PLANE2	3002	//绘制第二个Max切面
@@ -532,11 +536,27 @@ void CSence3::Draw()
 					DrawFlyFree();
 				}
 				break;
+			case eState_Route1_Error:
+				{
+					glPushMatrix();
+						glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+						DrawRoute1Error();
+					glPopMatrix();
+				}
+				break;
 			case eState_Route_1:
 				{
 					glPushMatrix();
 						glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
 						DrawRoute1();
+					glPopMatrix();
+				}
+				break;
+			case eState_Coll_Data1_Error:
+				{
+					glPushMatrix();
+						glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+						DrawCollData1Error();
 					glPopMatrix();
 				}
 				break;
@@ -548,9 +568,19 @@ void CSence3::Draw()
 					glPopMatrix();
 				}
 				break;
+			case eState_Route2_Error:
+				{
+					DrawRoute2Error();
+				}
+				break;
 			case eState_Route_2:
 				{
 					DrawRoute2();
+				}
+				break;
+			case eState_Coll_Data2_Error:
+				{
+					DrawCollData2Error();
 				}
 				break;
 			case eState_Coll_Data_2:
@@ -1145,6 +1175,34 @@ void CSence3::DrawPlane(float fAngle)
 	glDisable(GL_LIGHTING);	
 }
 
+void CSence3::DrawRoute1Error()
+{
+	//draw plane static
+	glPushMatrix();
+		glTranslated(MAX_X_POS, START_Y_POS, START_Z_POS-ERROR1_OFFSET);
+		DrawPlane(90.0*1);
+	glPopMatrix();
+
+	//draw route.
+	glPushMatrix();
+		if (m_bColorChange)
+		{
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		else
+		{
+			glColor3f(0.0, 1.0, 0.0);
+		}
+		glLineWidth(2.0);
+
+		glBegin(GL_LINE_STRIP);
+			//采集的数据是递减的。
+			glVertex3f(MAX_X_POS, START_Y_POS,	   MAX_Z_POS - ERROR1_OFFSET);
+			glVertex3f(MAX_X_POS, START_Y_POS,	  START_Z_POS- ERROR1_OFFSET);
+		glEnd();
+	glPopMatrix();
+}
+
 void CSence3::DrawRoute1()
 {
 	//draw plane static
@@ -1171,6 +1229,33 @@ void CSence3::DrawRoute1()
 			glVertex3f(MAX_X_POS, START_Y_POS,	  START_Z_POS );
 		glEnd();
 	glPopMatrix();
+}
+
+//采集一套错误数据，仅画点不画面。提示用户数据有误，重新飞。
+void CSence3::DrawCollData1Error()
+{
+	//draw flash plane.
+	glPushMatrix();
+		glTranslated(MAX_X_POS, START_Y_POS, START_Z_POS-ERROR1_OFFSET-m_fFlyStep);
+		DrawPlane(90.0);
+	glPopMatrix();
+
+	//2.draw signal
+	float xPos = MAX_X_POS;
+	float yPos = START_Y_POS;
+	float zPos = (START_Z_POS-ERROR1_OFFSET)-m_fFlyStep;
+
+	Point3D ptstart(xPos,yPos, zPos);
+	Point3D ptend(xPos,yPos-6.0, zPos);
+	glPushMatrix();
+		DrawSignal(ptstart, ptend); 
+	glPopMatrix();
+
+	glPushMatrix();
+		drawCNString(xPos+2.0, yPos, zPos, " 获取采样数据");
+	glPopMatrix();
+
+	DrawRoute1ErrorPoints();
 }
 
 void CSence3::DrawCollData1()
@@ -1204,6 +1289,37 @@ void CSence3::DrawCollData1()
 	DrawRoute1Points();
 }
 
+//绘制线路1的错误点
+void CSence3::DrawRoute1ErrorPoints()
+{
+	//draw points
+	int nCount = m_vecRoute1ErrorPts.size();
+	if (nCount > 0)
+	{
+		glEnable ( GL_DEPTH_TEST );
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST); // Make round points, not square points
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);  // Antialias the lines
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glColor3f(1.0, 0.0, 0.0);
+		for (int nIndex = 0; nIndex<nCount; nIndex++)
+		{
+			float fZPos = m_vecRoute1ErrorPts[nIndex];
+
+			glPointSize(4.0);
+			glPushMatrix();
+			glBegin(GL_POINTS);
+			glVertex3f(MAX_X_POS, START_Y_POS, START_Z_POS-ERROR1_OFFSET-fZPos);
+			glEnd();
+			glPopMatrix();
+		}
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
+	}
+}
+
 void CSence3::DrawRoute1Points()
 {
 	//draw points
@@ -1234,6 +1350,46 @@ void CSence3::DrawRoute1Points()
 	}
 }
 
+void CSence3::DrawRoute2Error()
+{
+	glPushMatrix();
+		glRotated(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+		//draw plane static
+		glPushMatrix();
+			glTranslated (MAX_X_POS+ERROR2_OFFSET, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
+
+		//draw route 2.
+		glPushMatrix();
+			if (m_bColorChange)
+			{
+				glColor3f(1.0, 0.0, 0.0);
+			}
+			else
+			{
+				glColor3f(0.0, 1.0, 0.0);
+			}
+
+			glLineWidth(2.0);
+			glBegin(GL_LINE_STRIP);
+				//采集的数据是递增的
+				glVertex3f(MAX_X_POS+ERROR2_OFFSET,	START_Y_POS, MAX_Z_POS);
+				glVertex3f(START_X_POS+ERROR2_OFFSET, START_Y_POS, MAX_Z_POS);
+			glEnd();
+		glPopMatrix();
+	glPopMatrix();
+
+	if (m_bDrawPane2)
+	{
+		glPushMatrix();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
+		glPopMatrix();
+	}
+}
+
 void CSence3::DrawRoute2()
 {
 	glPushMatrix();
@@ -1261,6 +1417,45 @@ void CSence3::DrawRoute2()
 			glVertex3f(START_X_POS, START_Y_POS, MAX_Z_POS);
 			glEnd();
 		glPopMatrix();
+	glPopMatrix();
+
+	if (m_bDrawPane2)
+	{
+		glPushMatrix();
+			glRotatef(ROTATE_MAX_PANE1, 0.0,1.0, 0.0);
+			DrawRoutePane1();
+			DrawRoute1Points();
+		glPopMatrix();
+	}
+}
+
+void CSence3::DrawCollData2Error()
+{
+	glPushMatrix();
+		glRotatef(ROTATE_MAX_PANE2, 0.0,1.0,0.0);
+
+		glPushMatrix();
+			//+x------>-x
+			glTranslated(MAX_X_POS+ERROR2_OFFSET-m_fFlyStep, START_Y_POS, MAX_Z_POS);
+			DrawPlane(90.0*2);
+		glPopMatrix();
+
+		//2.draw signal
+		float xPos = MAX_X_POS+ERROR2_OFFSET-m_fFlyStep;
+		float yPos = START_Y_POS;
+		float zPos = MAX_Z_POS;
+
+		Point3D ptstart(xPos,yPos, zPos);
+		Point3D ptend(xPos,yPos-6.0, zPos);
+		glPushMatrix();
+			DrawSignal(ptstart, ptend); 
+		glPopMatrix();
+
+		glPushMatrix();
+			drawCNString(xPos, yPos+1.5, zPos, " 获取采样数据");
+		glPopMatrix();
+		
+		DrawRoute2ErrorPoints();
 	glPopMatrix();
 
 	if (m_bDrawPane2)
@@ -1315,6 +1510,36 @@ void CSence3::DrawCollData2()
 		glPopMatrix();
 	}
 	
+}
+
+void CSence3::DrawRoute2ErrorPoints()
+{
+	//draw route 2 points
+	int nCount = m_vecRoute2ErrorPts.size();
+	if (nCount > 0)
+	{
+		glEnable ( GL_DEPTH_TEST );
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST); // Make round points, not square points
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);  // Antialias the lines
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glColor3f(0.0, 1.0, 0.0);
+		for (int nIndex = 0; nIndex<nCount; nIndex++)
+		{
+			float fXPos = m_vecRoute2ErrorPts[nIndex];
+
+			glPointSize(4.0);
+			glPushMatrix();
+			glBegin(GL_POINTS);
+			glVertex3f(MAX_X_POS+ERROR2_OFFSET-fXPos, START_Y_POS, MAX_Z_POS);
+			glEnd();
+			glPopMatrix();
+		}
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
+	}
 }
 
 void CSence3::DrawRoute2Points()
@@ -2097,10 +2322,36 @@ void CSence3::OnTimer(UINT nIDEvent)
 				m_fFlyStep += 0.5f;
 			}
 			break;
+		case eState_Route1_Error:
+			{
+				m_bColorChange = !m_bColorChange;
+			}
+			break;
 		case eState_Route_1: 
 			{
 				//更改线条颜色。
 				m_bColorChange = !m_bColorChange;	
+			}
+			break;
+		case eState_Coll_Data1_Error:
+			{
+				//-z--->+z
+				if ((START_Z_POS-ERROR1_OFFSET) +(-m_fFlyStep) <= (MAX_Z_POS-ERROR1_OFFSET))
+				{
+					m_fFlyStep    = 0.0f;
+					m_fSignalStep = 0.0f;
+
+					CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+					if (NULL != pFrame)
+					{
+						pFrame->PostMessage(START_RIGHT_TASK1);
+					}
+				}
+
+				m_vecRoute1ErrorPts.push_back(m_fFlyStep);
+				m_fFlyStep += 0.5f;
+
+				SendError1Data();
 			}
 			break;
 		case eState_Coll_Data_1:
@@ -2123,10 +2374,37 @@ void CSence3::OnTimer(UINT nIDEvent)
 				SendDataToChart1(m_fFlyStep);
 			}
 			break;
+		case eState_Route2_Error:
+			{
+				m_bColorChange = !m_bColorChange;	
+			}
+			break;
 		case eState_Route_2:
 			{
 				//更改线条颜色。
 				m_bColorChange = !m_bColorChange;	
+			}
+			break;
+		case eState_Coll_Data2_Error:
+			{
+				//+x---->-x
+				if ((MAX_X_POS+ERROR2_OFFSET)-m_fFlyStep <= (START_X_POS+ERROR2_OFFSET))
+				{
+					//走到底了，再从头走一遍
+					m_fFlyStep    = 0.0f;
+					m_fSignalStep = 0.0f;
+					
+					CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+					if (NULL != pFrame)
+					{
+						pFrame->PostMessage(START_RIGHT_TASK2);
+					}
+				}
+
+				m_vecRoute2ErrorPts.push_back(m_fFlyStep);
+				m_fFlyStep += 0.5f;
+
+				SendError2Data();
 			}
 			break;
 		case eState_Coll_Data_2:
@@ -2175,6 +2453,13 @@ void CSence3::OnTimer(UINT nIDEvent)
 			break;
 		}
 	}
+	else if (nIDEvent == TIMER_ERROR_ROUTE1_OVER)
+	{
+		m_eState = eState_Coll_Data1_Error;
+
+		KillTimer(m_hWnd,TIMER_ERROR_ROUTE1_OVER);
+		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 30, NULL);
+	}
 	//route 1的闪烁绘制该结束了。进入1的采集动画阶段
 	else if (nIDEvent == TIMER_ROUTE_1_OVER)
 	{
@@ -2182,6 +2467,13 @@ void CSence3::OnTimer(UINT nIDEvent)
 		
 		KillTimer(m_hWnd,TIMER_ROUTE_1_OVER);
 		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 30, NULL);//整个飞行阶段一直绘制信号线。以示采集。	
+	}
+	else if (nIDEvent == TIMER_ERROR_ROUTE2_OVER)
+	{
+		m_eState = eState_Coll_Data2_Error;
+
+		KillTimer(m_hWnd, TIMER_ERROR_ROUTE2_OVER);
+		SetTimer(m_hWnd, TIMER_DRAW_SIGNAL, 30, NULL);
 	}
 	else if (nIDEvent == TIMER_ROUTE_2_OVER)
 	{
@@ -2355,7 +2647,17 @@ BOOL CSence3::ReleaseRes()
 	return TRUE;
 }
 
-void CSence3::StartFlyTask1()
+void CSence3::StartError1Fly()
+{
+	m_eState = eState_Route1_Error;
+	SetTimer(m_hWnd, TIMER_ERROR_ROUTE1_OVER, 3000, NULL);
+
+	//reset 
+	KillTimer(m_hWnd, TIMER_DRAW_SIGNAL);
+	m_fFlyStep = 0.0f;
+	m_fSignalStep = 0.0f;
+}
+void CSence3::StartRight1Fly()
 {
 	m_eState = eState_Route_1;
 	SetTimer(m_hWnd, TIMER_ROUTE_1_OVER, 3000, NULL);
@@ -2365,7 +2667,22 @@ void CSence3::StartFlyTask1()
 	m_fFlyStep = 0.0f;
 	m_fSignalStep = 0.0f;
 }
-void CSence3::StartFlyTask2()
+void CSence3::StartFlyTask1()
+{
+	StartError1Fly();
+}
+
+void CSence3::StartError2Fly()
+{
+	m_eState = eState_Route2_Error;
+	SetTimer(m_hWnd, TIMER_ERROR_ROUTE2_OVER, 3000, NULL);
+
+	//reset.
+	KillTimer(m_hWnd, TIMER_DRAW_SIGNAL);
+	m_fFlyStep = 0.0f;
+	m_fSignalStep = 0.0f;
+}
+void CSence3::StartRight2Fly()
 {
 	m_eState = eState_Route_2;
 	SetTimer(m_hWnd, TIMER_ROUTE_2_OVER, 3000, NULL);
@@ -2382,6 +2699,10 @@ void CSence3::StartFlyTask2()
 		m_vecRoute1Points.push_back(f);
 		f += 0.5;
 	}
+}
+void CSence3::StartFlyTask2()
+{
+	StartError2Fly();
 }
 
 void CSence3::CalcNuclearPos()
@@ -2415,12 +2736,28 @@ void CSence3::DrawConfirmedPos()
 	SetTimer(m_hWnd, TIMER_LINK_BOMBS, 2000, NULL);
 }
 
+void CSence3::SendError1Data()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->SendError1DataToChart();
+	}
+}
 void CSence3::SendDataToChart1(float fCurPos, float fDensity /*= 0*/)
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	if (NULL != pFrame)
 	{
 		pFrame->SendDataChart1(fCurPos, fDensity);
+	}
+}
+void CSence3::SendError2Data()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->SendError2DataToChart();
 	}
 }
 void CSence3::SendDataToChart2(float fCurPos, float fDensity /*= 0*/)

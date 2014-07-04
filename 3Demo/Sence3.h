@@ -16,17 +16,21 @@ public:
 	~CSence3();
 	enum EState
 	{
-		eState_Free					= 0,	//自由飞行状态
-		eState_Route_1				= 1,	//任务1的闪烁线路阶段
-		eState_Coll_Data_1			= 2,	//任务1的采集数据阶段
-		eState_Route_2				= 3,	//任务2的闪烁路线阶段
-		eState_Coll_Data_2			= 4,	//任务2的采集数据阶段
-		eState_Draw_Dync_Pane1		= 5,	//动态绘制MAX1
-		//eState_DrawMaxPane_1		= 6,	//任务1的最大值切面
-		eState_Draw_Dync_Pane2		= 7,	//动态绘制MAX2
-		//eState_DrawMaxPane_2		= 8,	//任务2的最大值切面
-		eState_DrawBomb				= 9,	//绘制闪烁脏弹
-		eState_DrawConfirmBomb		= 10,	//连接三个点，并绘制最终的脏弹位置
+		eState_Free = 0,				//自由飞行状态
+		eState_Route1_Error,			//任务1的错误路线：递增的数据
+		eState_Route_1,					//任务1的闪烁线路阶段
+		eState_Coll_Data_1,				//任务1的采集数据阶段
+		eState_Coll_Data1_Error,		//任务1的错误数据采集
+		eState_Route2_Error,			//任务2的错误路线：递减的数据
+		eState_Route_2,					//任务2的闪烁路线阶段
+		eState_Coll_Data_2,				//任务2的采集数据阶段
+		eState_Coll_Data2_Error,		//任务2的错误数据采集
+		eState_Draw_Dync_Pane1,			//动态绘制MAX1
+		//eState_DrawMaxPane_1,			//任务1的最大值切面
+		eState_Draw_Dync_Pane2,			//动态绘制MAX2
+		//eState_DrawMaxPane_2,			//任务2的最大值切面
+		eState_DrawBomb,				//绘制闪烁脏弹
+		eState_DrawConfirmBomb,			//连接三个点，并绘制最终的脏弹位置
 	};
 	//terrain.
 	BOOL Init();
@@ -45,6 +49,9 @@ public:
 	void CalcNuclearPos();
 	void Draw2MorePos();
 	void DrawConfirmedPos();
+
+	void StartRight1Fly();
+	void StartRight2Fly();
 
 protected:
 	BOOL InitOpenGL();
@@ -68,18 +75,29 @@ protected:
 	void selectFont(int size, int charset, const char* face) ;
 	void drawCNString(float x, float y, float z, const char* str);
 	
+	//
+	void StartError1Fly();
+	void StartError2Fly();
+
 	void DrawFlyFree();					//自由飞行
+	void DrawRoute1Error();				//第一阶段的错误路线
+	void DrawCollData1Error();			//第一阶段的错误数据采集
 	void DrawRoute1();					//第一阶段的路线闪烁
 	void DrawCollData1();				//第一阶段的数据采集
+	void DrawRoute2Error();				//第二阶段的错误路线
+	void DrawCollData2Error();			//第二阶段的错误数据采集
 	void DrawRoute2();					//第二接单的路线闪烁
 	void DrawCollData2();				//第二阶段的数据采集
+	
 	//void DrawCalcMaxPane1();
 	void DrawDyncMaxPane1();
 	//void DrawCalcMaxPane2();
 	void DrawDyncMaxPane2();
 	void DrawLastPosition();
 	void DrawLastConfirmBomb();
+	void DrawRoute1ErrorPoints();
 	void DrawRoute1Points();
+	void DrawRoute2ErrorPoints();
 	void DrawRoute2Points();
 	
 	//void DrawStaticPlaneAndSignal();	//飞机静止状态下采集数据的信号模拟。
@@ -97,6 +115,8 @@ protected:
 	void Draw2MoreBlingBombs();
 	void DrawBombLinks();
 	
+	void SendError1Data();
+	void SendError2Data();
 	void SendDataToChart1(float fCurPos, float fDensity = 0);
 	void SendDataToChart2(float fCurPos, float fDensity = 0);
 	void SendBombToChart1(/*float x, float y, float fDesity*/);
@@ -146,6 +166,9 @@ protected:
 	float  m_fFlyStep;			//每次飞行的步长
 	BOOL   m_bColorChange;		//更改线条颜色
 	
+
+	vector<float> m_vecRoute1ErrorPts;
+	vector<float> m_vecRoute2ErrorPts;
 	vector<float> m_vecRoute1Points;
 	vector<float> m_vecRoute2Points;
 

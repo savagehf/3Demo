@@ -30,6 +30,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_MESSAGE(WM_CALC_POSITION, OnCalcPosition)
 	ON_MESSAGE(WM_MORE_POSITION, OnMorePosition)
 	ON_MESSAGE(WM_CONFIRM_POS, OnConfirmPos)
+	ON_MESSAGE(START_RIGHT_TASK1, OnStartRightTask1)
+	ON_MESSAGE(START_RIGHT_TASK2, OnStartRightTask2)
 	//ON_MESSAGE(WM_ADD_ONE_DATA, OnAddOneData)
 	//ON_MESSAGE(WM_EXPORT_AS_TEXT, OnExportAsText)
 	//ON_MESSAGE(WM_EXPORT_AS_CSV, OnExportAsCSV)
@@ -471,6 +473,10 @@ LRESULT CMainFrame::OnConfirmPos(WPARAM w, LPARAM l)
 	return 0;
 }
 
+void CMainFrame::SendError1DataToChart()
+{
+	m_wndChartView.AddErrorData1();
+}
 void CMainFrame::SendDataChart1(float fCurPos, float fDensity)
 {
 	m_wndChartView.AddChart1Data(fCurPos, fDensity);
@@ -480,8 +486,31 @@ void CMainFrame::SendDataChart2(float fCurPos, float fDensity)
 {
 	m_wndChartView.AddChart2Data(fCurPos, fDensity);
 }
+void CMainFrame::SendError2DataToChart()
+{
+	m_wndChartView.AddErrorData2();
+}
 
 void CMainFrame::SendBombPos(/*float fXpos, float fYpos, float fDesity*/)
 {
 	m_wndChartView.AddBombData(/*fXpos, fYpos, fDesity*/);
+}
+LRESULT CMainFrame::OnStartRightTask1(WPARAM w, LPARAM l)
+{
+	C3DemoView* pView = (C3DemoView*)GetActiveView();
+	if (NULL != pView)
+	{
+		pView->StartRightTask1();
+	}
+	return 0;
+}
+LRESULT CMainFrame::OnStartRightTask2(WPARAM w, LPARAM l)
+{
+	C3DemoView* pView = (C3DemoView*)GetActiveView();
+	if (NULL != pView)
+	{
+		pView->StartRightTask2();
+	}
+
+	return 0;
 }
