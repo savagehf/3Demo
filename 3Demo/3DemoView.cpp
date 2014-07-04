@@ -740,6 +740,14 @@ void C3DemoView::StartRightTask1()
 
 	if (NULL != m_pSence3)
 	{
+		//remove error1 points from chart.
+		CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+		if (NULL != pFrame)
+		{
+			pFrame->DeleteError1Points();
+		}
+
+		//start
 		m_pSence3->StartRight1Fly();
 	}
 }
@@ -750,6 +758,16 @@ void C3DemoView::StartRightTask2()
 
 	if (NULL != m_pSence3)
 	{
+		//remove error2 points from chart.
+		CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+		if (NULL != pFrame)
+		{
+			pFrame->DeleteError2Points();
+		}
+
+		//re add right points 1 to chartctrl
+		m_pSence3->ReAddPoint1ToChart();
+
 		m_pSence3->StartRight2Fly();
 	}
 }

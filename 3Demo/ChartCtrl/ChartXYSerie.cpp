@@ -31,8 +31,29 @@ CChartXYSerie::~CChartXYSerie()
 {
 }
 
+bool CChartXYSerie::IsPointExist(double x, double y)
+{
+	bool bExist = false;
+	int nPtCounts = GetPointsCount();
+	for (int i=0; i<nPtCounts; i++)
+	{
+		SChartXYPoint pt = GetPoint(i);
+		if (pt.GetX() == x && pt.GetY() == y)
+		{
+			bExist = true;
+			break;
+		}
+	}
+
+	return bExist;
+}
 void CChartXYSerie::AddPoint(double X, double Y, COLORREF rColor)
 {
+	if (IsPointExist(X,Y))
+	{
+		return ;
+	}
+
 	SChartXYPoint newPoint(X,Y,rColor);
 	CChartSerieBase<SChartXYPoint>::AddPoint(newPoint);
 }

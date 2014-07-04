@@ -52,6 +52,7 @@ public:
 
 	void StartRight1Fly();
 	void StartRight2Fly();
+	void ReAddPoint1ToChart();
 
 protected:
 	BOOL InitOpenGL();
@@ -115,8 +116,8 @@ protected:
 	void Draw2MoreBlingBombs();
 	void DrawBombLinks();
 	
-	void SendError1Data();
-	void SendError2Data();
+	void SendError1Data(float fCurPos);
+	void SendError2Data(float fCurPos);
 	void SendDataToChart1(float fCurPos, float fDensity = 0);
 	void SendDataToChart2(float fCurPos, float fDensity = 0);
 	void SendBombToChart1(/*float x, float y, float fDesity*/);

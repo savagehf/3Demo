@@ -77,6 +77,8 @@ public:
 
 	//!update by wenjie:add color to each point.
 	void AddPoint(double X, double Y, COLORREF rColor);
+	bool IsPointExist(double x, double y);
+
 
 	//! Adds a single data point to the series.
 	void AddPoint(double X, double Y);

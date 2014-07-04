@@ -104,11 +104,27 @@ BOOL CChartView::GetCurrentAppPath(CString& strAppPath)
 	return TRUE;
 }
 
-void CChartView::AddErrorData1()
+void CChartView::DeletePoints1()
 {
 	if (NULL != m_pChartDlg)
 	{
-		m_pChartDlg->AddErrorData1();
+		m_pChartDlg->RemoveAllError1Pts();
+	}
+}
+
+void CChartView::DeletePoints2()
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->RemoveAllError2Pts();
+	}
+}
+
+void CChartView::AddErrorData1(float fCurPos)
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->AddErrorData1(fCurPos);
 	}
 }
 void CChartView::AddChart1Data(float fCurPos, float fDensity)
@@ -118,11 +134,11 @@ void CChartView::AddChart1Data(float fCurPos, float fDensity)
 		m_pChartDlg->AddData1(fCurPos, fDensity);
 	}
 }
-void CChartView::AddErrorData2()
+void CChartView::AddErrorData2(float fCurPos)
 {
 	if (NULL != m_pChartDlg)
 	{
-		m_pChartDlg->AddErrorData2();
+		m_pChartDlg->AddErrorData2(fCurPos);
 	}
 }
 void CChartView::AddChart2Data(float fCurPos, float fDensity)

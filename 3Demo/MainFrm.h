@@ -29,8 +29,10 @@ protected: // create from serialization only
 
 
 public:
-	void SendError1DataToChart();
-	void SendError2DataToChart();
+	void DeleteError1Points();
+	void DeleteError2Points();
+	void SendError1DataToChart(float fCurPos);
+	void SendError2DataToChart(float fCurPos);
 	void SendDataChart1(float fCurPos, float fDensity);
 	void SendDataChart2(float fCurPos, float fDensity);
 	void SendBombPos(/*float fXpos, float fYpos, float fDesity*/);

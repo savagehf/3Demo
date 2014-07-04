@@ -473,9 +473,18 @@ LRESULT CMainFrame::OnConfirmPos(WPARAM w, LPARAM l)
 	return 0;
 }
 
-void CMainFrame::SendError1DataToChart()
+void CMainFrame::DeleteError1Points()
 {
-	m_wndChartView.AddErrorData1();
+	m_wndChartView.DeletePoints1();
+}
+void CMainFrame::DeleteError2Points()
+{
+	m_wndChartView.DeletePoints2();
+}
+
+void CMainFrame::SendError1DataToChart(float fCurPos)
+{
+	m_wndChartView.AddErrorData1(fCurPos);
 }
 void CMainFrame::SendDataChart1(float fCurPos, float fDensity)
 {
@@ -486,9 +495,9 @@ void CMainFrame::SendDataChart2(float fCurPos, float fDensity)
 {
 	m_wndChartView.AddChart2Data(fCurPos, fDensity);
 }
-void CMainFrame::SendError2DataToChart()
+void CMainFrame::SendError2DataToChart(float fCurPos)
 {
-	m_wndChartView.AddErrorData2();
+	m_wndChartView.AddErrorData2(fCurPos);
 }
 
 void CMainFrame::SendBombPos(/*float fXpos, float fYpos, float fDesity*/)

@@ -268,10 +268,29 @@ void CDlgChart::OnBnClickedBtnGetPosition()
 	}
 }
 
-
-void CDlgChart::AddErrorData1()
+void CDlgChart::RemoveAllError1Pts()
 {
+	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
+	pPointSeries->ClearSerie();
+}
 
+void CDlgChart::RemoveAllError2Pts()
+{
+	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
+	pPointSeries->ClearSerie();
+}
+
+void CDlgChart::AddErrorData1(float fPos)
+{
+	float fXPos = fPos*100;
+	float fYDes = 100 - (fPos/2.0)*(fPos/2.0);
+	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
+
+	if (NULL != pPointSeries)
+	{
+		pPointSeries->AddPoint(fXPos, fYDes, RGB(0,0,255));
+		m_ChartCtrlFisrt.RefreshCtrl();
+	}
 }
 //将fpos进行缩放到在X轴范围内。
 //magic number;8.0.这个值是在3D场景中，飞行的路径的长度值的/2 = 8.0，
@@ -289,24 +308,31 @@ void CDlgChart::AddData1(float fPos, float fDesity)
 		pPointSeries->AddPoint(fXPos, fYDes, RGB(255,0,0));
 		m_ChartCtrlFisrt.RefreshCtrl();
 	}
-	
 }
 
-void CDlgChart::AddErrorData2()
+void CDlgChart::AddErrorData2(float fPos)
 {
+	float fXPos = fPos*100;
+	float fYDes = (fPos/2.0)*(fPos/2.0) + 30;
+	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
 
+	if (NULL != pLineSeries)
+	{
+		pLineSeries->AddPoint(fXPos, fYDes,RGB(255,255,0));
+		m_ChartCtrlFisrt.RefreshCtrl();
+	}
 }
 void CDlgChart::AddData2(float fPos, float fDesity)
 {
 	float fXPos = fPos*100;
 	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100 - 30;
-	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)/*m_ChartCtrlSecond*/m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID/*m_nSecSerieID*/);
+	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID/*m_nSecSerieID*/);
 
 	pLineSeries->SetColor(RGB(0,255,0));
 	if (NULL != pLineSeries)
 	{
 		pLineSeries->AddPoint(fXPos, fYDes,RGB(0,255,0));
-		/*m_ChartCtrlSecond*/m_ChartCtrlFisrt.RefreshCtrl();
+		m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }
 #define MAX_COUNT 6

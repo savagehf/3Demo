@@ -17,8 +17,10 @@ public:
 
 	enum { IDD = IDD_DLG_CHART };
 
-	void AddErrorData1();
-	void AddErrorData2();
+	void RemoveAllError1Pts();
+	void RemoveAllError2Pts();
+	void AddErrorData1(float fCurPos);
+	void AddErrorData2(float fCurPos);
 	void AddData1(float fPos, float fDesity);
 	void AddData2(float fPos, float fDesity);
 	void AddOneBomb(/*float x, float y, float fDesity*/);

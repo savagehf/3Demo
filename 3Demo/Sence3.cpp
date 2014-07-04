@@ -2351,7 +2351,7 @@ void CSence3::OnTimer(UINT nIDEvent)
 				m_vecRoute1ErrorPts.push_back(m_fFlyStep);
 				m_fFlyStep += 0.5f;
 
-				SendError1Data();
+				SendError1Data(m_fFlyStep);
 			}
 			break;
 		case eState_Coll_Data_1:
@@ -2404,7 +2404,7 @@ void CSence3::OnTimer(UINT nIDEvent)
 				m_vecRoute2ErrorPts.push_back(m_fFlyStep);
 				m_fFlyStep += 0.5f;
 
-				SendError2Data();
+				SendError2Data(m_fFlyStep);
 			}
 			break;
 		case eState_Coll_Data_2:
@@ -2682,6 +2682,15 @@ void CSence3::StartError2Fly()
 	m_fFlyStep = 0.0f;
 	m_fSignalStep = 0.0f;
 }
+
+void CSence3::ReAddPoint1ToChart()
+{
+	for(float f = 0.0; f<=16.0;)
+	{
+		SendDataToChart1(f);
+		f += 0.5;
+	}
+}
 void CSence3::StartRight2Fly()
 {
 	m_eState = eState_Route_2;
@@ -2736,12 +2745,12 @@ void CSence3::DrawConfirmedPos()
 	SetTimer(m_hWnd, TIMER_LINK_BOMBS, 2000, NULL);
 }
 
-void CSence3::SendError1Data()
+void CSence3::SendError1Data(float fCurPos)
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	if (NULL != pFrame)
 	{
-		pFrame->SendError1DataToChart();
+		pFrame->SendError1DataToChart(fCurPos);
 	}
 }
 void CSence3::SendDataToChart1(float fCurPos, float fDensity /*= 0*/)
@@ -2752,12 +2761,12 @@ void CSence3::SendDataToChart1(float fCurPos, float fDensity /*= 0*/)
 		pFrame->SendDataChart1(fCurPos, fDensity);
 	}
 }
-void CSence3::SendError2Data()
+void CSence3::SendError2Data(float fCurPos)
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	if (NULL != pFrame)
 	{
-		pFrame->SendError2DataToChart();
+		pFrame->SendError2DataToChart(fCurPos);
 	}
 }
 void CSence3::SendDataToChart2(float fCurPos, float fDensity /*= 0*/)
