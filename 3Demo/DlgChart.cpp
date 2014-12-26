@@ -385,7 +385,7 @@ void CDlgChart::ExportAdapter(CString& strOut)
 			{
 				SChartXYPoint pt = pPointSeries->GetPoint(i);
 				strTemp.Empty();
-				strTemp.Format(_T("%f02,%f02"), pt.GetX(), pt.GetY());
+				strTemp.Format(_T("%.02f,%.02f,%.2f"), pt.GetX(), pt.GetY(), pt.GetDesity());
 				strTemp += _T("\n");
 				file.WriteString(strTemp);
 			}
@@ -403,9 +403,10 @@ void CDlgChart::AddErrorData1(float fPos)
 	float fYDes = 100 - (fPos/2.0)*(fPos/2.0);
 	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
 
+	float fDesity = fYDes*10+(rand()%10);
 	if (NULL != pPointSeries)
 	{
-		pPointSeries->AddPoint(fXPos, fYDes, RGB(0,0,255));
+		pPointSeries->AddPoint(fXPos, fYDes, fDesity,RGB(0,0,255));
 		m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }
@@ -419,10 +420,12 @@ void CDlgChart::AddData1(float fPos, float fDesity)
 	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100;
 	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
 	
+	//Add simulated density value.
+	fDesity = fYDes*10+(rand()%10);
 	pPointSeries->SetColor(RGB(255,0,0));
 	if (NULL != pPointSeries)
 	{
-		pPointSeries->AddPoint(fXPos, fYDes, RGB(255,0,0));
+		pPointSeries->AddPoint(fXPos, fYDes,fDesity, RGB(255,0,0));
 		m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }
@@ -433,9 +436,10 @@ void CDlgChart::AddErrorData2(float fPos)
 	float fYDes = 100 - (fPos/2.0)*(fPos/2.0) - 20;
 	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
 
+	float fDesity = fYDes*10+(rand()%10);
 	if (NULL != pLineSeries)
 	{
-		pLineSeries->AddPoint(fXPos, fYDes,RGB(255,255,0));
+		pLineSeries->AddPoint(fXPos, fYDes,fDesity,RGB(255,255,0));
 		m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }
@@ -445,10 +449,11 @@ void CDlgChart::AddData2(float fPos, float fDesity)
 	float fYDes = -(fPos-8.0)*(fPos-8.0) + 100 - 30;
 	CChartPointsSerie* pLineSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID/*m_nSecSerieID*/);
 
+	fDesity = fYDes*10+(rand()%10);
 	pLineSeries->SetColor(RGB(0,255,0));
 	if (NULL != pLineSeries)
 	{
-		pLineSeries->AddPoint(fXPos, fYDes,RGB(0,255,0));
+		pLineSeries->AddPoint(fXPos, fYDes, fDesity,RGB(0,255,0));
 		m_ChartCtrlFisrt.RefreshCtrl();
 	}
 }

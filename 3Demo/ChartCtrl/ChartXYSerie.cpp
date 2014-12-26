@@ -47,14 +47,14 @@ bool CChartXYSerie::IsPointExist(double x, double y)
 
 	return bExist;
 }
-void CChartXYSerie::AddPoint(double X, double Y, COLORREF rColor)
+void CChartXYSerie::AddPoint(double X, double Y, double fDesity, COLORREF rColor)
 {
 	if (IsPointExist(X,Y))
 	{
 		return ;
 	}
 
-	SChartXYPoint newPoint(X,Y,rColor);
+	SChartXYPoint newPoint(X,Y,fDesity,rColor);
 	CChartSerieBase<SChartXYPoint>::AddPoint(newPoint);
 }
 

@@ -26,13 +26,14 @@
 struct SChartXYPoint
 {
 	//! Update by wenjie: Add each point with its color value.
-	SChartXYPoint() : X(0.0), Y(0.0),rColor(RGB(0,0,0))  
+	SChartXYPoint() : X(0.0), Y(0.0),fDesity(0.0),rColor(RGB(0,0,0))  
 	{ 
 		#ifndef NO_USER_DATA
 		pUserData = NULL;
 		#endif
 	}
-	SChartXYPoint(double XVal, double YVal, COLORREF rPointColor = RGB(0,0,0)) : X(XVal), Y(YVal) , rColor(rPointColor) 
+	SChartXYPoint(double XVal, double YVal, double desity= 0.0 , COLORREF rPointColor = RGB(0,0,0))
+		: X(XVal), Y(YVal) , fDesity(desity),rColor(rPointColor)
 	{ 
 		#ifndef NO_USER_DATA
 		pUserData = NULL;
@@ -41,6 +42,7 @@ struct SChartXYPoint
 
 	double GetX() const { return X; }
 	double GetY() const { return Y; }
+	double GetDesity() const {	return fDesity;	}
 	double GetXMin() const { return X; }
 	double GetXMax() const { return X; }
 	double GetYMin() const { return Y; }
@@ -54,6 +56,7 @@ struct SChartXYPoint
 
 	//! Updated by wenjie:Add color to each point.
 	COLORREF rColor;
+	double fDesity;
 	#ifndef NO_USER_DATA
 	//! Optional user data.
 	void *pUserData;
@@ -76,7 +79,7 @@ public:
 	virtual ~CChartXYSerie();
 
 	//!update by wenjie:add color to each point.
-	void AddPoint(double X, double Y, COLORREF rColor);
+	void AddPoint(double X, double Y,double fDensity, COLORREF rColor);
 	bool IsPointExist(double x, double y);
 
 
