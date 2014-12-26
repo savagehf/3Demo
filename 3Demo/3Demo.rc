@@ -195,6 +195,8 @@ BEGIN
     END
     POPUP "数据"
     BEGIN
+        MENUITEM "打开数据目录",                      ID_OPEN_EXEC_DIR
+        MENUITEM SEPARATOR
         MENUITEM "导入数据",                        ID_IMPORT_DATA
         MENUITEM "导出数据",                        ID_EXPORT_DATA
     END

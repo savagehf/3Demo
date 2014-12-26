@@ -127,13 +127,15 @@
 #define ID_32800                        32800
 #define ID_IMPORT_DATA                  32801
 #define ID_EXPORT_DATA                  32802
+#define ID_32803                        32803
+#define ID_OPEN_EXEC_DIR                32804
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32803
+#define _APS_NEXT_COMMAND_VALUE         32805
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

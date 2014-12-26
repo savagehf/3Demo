@@ -88,6 +88,8 @@ protected:
 	EDrawS   m_eDrawSence;
 	UINT	 m_uIDRes;
 	BOOL	 m_bDraw3D;
+public:
+	afx_msg void OnOpenExecDir();
 };
 
 #ifndef _DEBUG  // debug version in 3DemoView.cpp

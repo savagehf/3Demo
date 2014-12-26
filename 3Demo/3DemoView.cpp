@@ -54,6 +54,7 @@ BEGIN_MESSAGE_MAP(C3DemoView, CView)
 	ON_COMMAND(ID_BTN_NEXT_PAGE, OnNextPage)
 	ON_COMMAND(ID_IMPORT_DATA, &C3DemoView::OnImportData)
 	ON_COMMAND(ID_EXPORT_DATA, &C3DemoView::OnExportData)
+	ON_COMMAND(ID_OPEN_EXEC_DIR, &C3DemoView::OnOpenExecDir)
 END_MESSAGE_MAP()
 
 
@@ -850,4 +851,12 @@ BOOL C3DemoView::GetCurrentAppPath(CString& strAppPath)
 	strAppPath = strFullFileName.Left(nIndex+1);
 
 	return TRUE;
+}
+
+void C3DemoView::OnOpenExecDir()
+{
+	CString strExeDir;
+	GetCurrentAppPath(strExeDir);
+
+	::ShellExecute(NULL ,NULL , strExeDir, NULL ,NULL ,SW_SHOW); 
 }
