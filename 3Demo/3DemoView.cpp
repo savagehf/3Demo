@@ -807,7 +807,7 @@ void C3DemoView::OnExportData()
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.csv)|*.csv||"), this);
 
 	fileDlg.m_ofn.lpstrInitialDir = strDataFile;
-	fileDlg.m_ofn.lpstrTitle = _T("Save As Bookmark file");
+	fileDlg.m_ofn.lpstrTitle = _T("Save data file as");
 
 	if (fileDlg.DoModal() != IDOK)
 		return;
