@@ -70,6 +70,12 @@ protected:
 	afx_msg void OnPrevPage();
 	afx_msg void OnNextPage();
 
+	afx_msg void OnImportData();
+	afx_msg void OnExportData();
+
+protected:
+	BOOL GetCurrentAppPath(CString& strAppPath);
+
 	DECLARE_MESSAGE_MAP()
 
 
@@ -82,7 +88,6 @@ protected:
 	EDrawS   m_eDrawSence;
 	UINT	 m_uIDRes;
 	BOOL	 m_bDraw3D;
-
 };
 
 #ifndef _DEBUG  // debug version in 3DemoView.cpp

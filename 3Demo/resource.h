@@ -123,13 +123,17 @@
 #define ID_CONTEXT_INTRO_5              32796
 #define ID_CONTEXT_INTRO_6              32797
 #define ID_CONTEXT_INTRO_7              32798
+#define ID_32799                        32799
+#define ID_32800                        32800
+#define ID_IMPORT_DATA                  32801
+#define ID_EXPORT_DATA                  32802
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32799
+#define _APS_NEXT_COMMAND_VALUE         32803
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -193,6 +193,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "启动模拟",                        ID_START_EXPLOSION
     END
+    POPUP "数据"
+    BEGIN
+        MENUITEM "导入数据",                        ID_IMPORT_DATA
+        MENUITEM "导出数据",                        ID_EXPORT_DATA
+    END
 END
 
 IDR_MENU_VIEW_CONTX MENU 

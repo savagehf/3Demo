@@ -52,6 +52,8 @@ BEGIN_MESSAGE_MAP(C3DemoView, CView)
 	ON_COMMAND(ID_CONTEXT_INTRO_7, &C3DemoView::OnContextIntro7)
 	ON_COMMAND(ID_BTN_PREV_PAGE, OnPrevPage)
 	ON_COMMAND(ID_BTN_NEXT_PAGE, OnNextPage)
+	ON_COMMAND(ID_IMPORT_DATA, &C3DemoView::OnImportData)
+	ON_COMMAND(ID_EXPORT_DATA, &C3DemoView::OnExportData)
 END_MESSAGE_MAP()
 
 
@@ -770,4 +772,76 @@ void C3DemoView::StartRightTask2()
 
 		m_pSence3->StartRight2Fly();
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+//Lee: add import & export data feature.
+
+void C3DemoView::OnImportData()
+{
+	CFileDialog	fileDlg(TRUE, _T("csv"), _T(""), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		_T("CSV (Data file)(*.csv)|*.csv||"), this);
+
+	fileDlg.m_ofn.lpstrTitle = _T("Import Data File");
+
+	if (fileDlg.DoModal() != IDOK)
+		return;
+
+	CString strFileName = fileDlg.GetPathName();
+	/*if (NULL != m_pBookmark)
+	{
+		CBookmark::EImportErrorCode errorCode;
+		if( ! m_pBookmark->ImportBookmarks(strFileName, errorCode))
+		{
+
+		}
+	}*/
+}
+
+void C3DemoView::OnExportData()
+{
+	CString strDataFile;
+	GetCurrentAppPath(strDataFile);
+
+	CFileDialog fileDlg(FALSE , _T("csv"), strDataFile,
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.csv)|*.csv||"), this);
+
+	fileDlg.m_ofn.lpstrInitialDir = strDataFile;
+	fileDlg.m_ofn.lpstrTitle = _T("Save As Bookmark file");
+
+	if (fileDlg.DoModal() != IDOK)
+		return;
+
+	CString strDest = fileDlg.GetPathName();
+
+	//If the same file,return directly.
+	if (strDest.CompareNoCase(strDataFile) == 0)
+	{
+		return;
+	}
+
+	BOOL bSucc = ::CopyFile(strDataFile.GetBuffer(), strDest.GetBuffer(), FALSE);
+	if (!bSucc)
+	{
+		int nErrorCode = ::GetLastError();
+		CString strError;
+		strError.Format(_T("Copy data file failed:[%s]is being opened!\Please close it and retry."), strDataFile);
+		AfxMessageBox(strError);
+	}
+}
+
+BOOL C3DemoView::GetCurrentAppPath(CString& strAppPath)
+{
+	TCHAR szFullExeName[MAX_PATH];
+	DWORD nResult = ::GetModuleFileName(NULL, szFullExeName, MAX_PATH);
+	if (0 == nResult)
+	{
+		return FALSE;
+	}
+
+	CString strFullFileName(szFullExeName);
+	UINT nIndex = strFullFileName.ReverseFind('\\');
+	strAppPath = strFullFileName.Left(nIndex+1);
+
+	return TRUE;
 }
