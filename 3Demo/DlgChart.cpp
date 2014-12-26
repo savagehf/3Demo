@@ -280,6 +280,15 @@ void CDlgChart::RemoveAllError2Pts()
 	pPointSeries->ClearSerie();
 }
 
+void CDlgChart::ImportAdapter(CString& strImport)
+{
+
+}
+void CDlgChart::ExportAdapter(CString& strOut)
+{
+
+}
+
 void CDlgChart::AddErrorData1(float fPos)
 {
 	float fXPos = fPos*100;

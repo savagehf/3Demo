@@ -24,6 +24,8 @@ public:
 	void AddData1(float fPos, float fDesity);
 	void AddData2(float fPos, float fDesity);
 	void AddOneBomb(/*float x, float y, float fDesity*/);
+	void ImportAdapter(CString& strImport);
+	void ExportAdapter(CString& strOut);
 
 	struct SDataItem
 	{

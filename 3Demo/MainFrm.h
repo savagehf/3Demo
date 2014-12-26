@@ -36,6 +36,8 @@ public:
 	void SendDataChart1(float fCurPos, float fDensity);
 	void SendDataChart2(float fCurPos, float fDensity);
 	void SendBombPos(/*float fXpos, float fYpos, float fDesity*/);
+	void ImportData(CString& strDataFile);
+	void ExportData(CString& strOutDataFile);
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

@@ -608,23 +608,6 @@ void C3DemoView::OnLButtonDown(UINT nFlags, CPoint point)
  		m_pSence1->Setfire();
  	}
 }
-//void C3DemoView::OnExportTxt()
-//{
-//	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-//	if (NULL != pFrame)
-//	{
-//		pFrame->PostMessage(WM_EXPORT_AS_TEXT);
-//	}
-//}
-
-//void C3DemoView::OnExportCsv()
-//{
-//	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-//	if (NULL != pFrame)
-//	{
-//		pFrame->PostMessage(WM_EXPORT_AS_CSV);
-//	}
-//}
 
 void C3DemoView::LoadSence()
 {
@@ -774,6 +757,25 @@ void C3DemoView::StartRightTask2()
 	}
 }
 
+//void C3DemoView::OnExportTxt()
+//{
+//	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+//	if (NULL != pFrame)
+//	{
+//		pFrame->PostMessage(WM_EXPORT_AS_TEXT);
+//	}
+//}
+
+//void C3DemoView::OnExportCsv()
+//{
+//	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+//	if (NULL != pFrame)
+//	{
+//		pFrame->PostMessage(WM_EXPORT_AS_CSV);
+//	}
+//}
+
+
 //////////////////////////////////////////////////////////////////////////
 //Lee: add import & export data feature.
 
@@ -788,6 +790,12 @@ void C3DemoView::OnImportData()
 		return;
 
 	CString strFileName = fileDlg.GetPathName();
+
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
+	{
+		pFrame->ImportData(strFileName);
+	}
 	/*if (NULL != m_pBookmark)
 	{
 		CBookmark::EImportErrorCode errorCode;

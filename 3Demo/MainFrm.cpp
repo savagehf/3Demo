@@ -504,6 +504,16 @@ void CMainFrame::SendBombPos(/*float fXpos, float fYpos, float fDesity*/)
 {
 	m_wndChartView.AddBombData(/*fXpos, fYpos, fDesity*/);
 }
+
+void CMainFrame::ImportData(CString& strDataFile)
+{
+	m_wndChartView.Import(strDataFile);
+}
+void CMainFrame::ExportData(CString& strOutDataFile)
+{
+	m_wndChartView.Export(strOutDataFile);
+}
+
 LRESULT CMainFrame::OnStartRightTask1(WPARAM w, LPARAM l)
 {
 	C3DemoView* pView = (C3DemoView*)GetActiveView();

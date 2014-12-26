@@ -155,3 +155,18 @@ void CChartView::AddBombData(/*float x, float y, float fDesity*/)
 		m_pChartDlg->AddOneBomb(/*x, y, fDesity*/);
 	}
 }
+void CChartView::Import(CString& strImport)
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->ImportAdapter(strImport);
+	}
+}
+
+void CChartView::Export(CString& strOutFile)
+{
+	if (NULL != m_pChartDlg)
+	{
+		m_pChartDlg->ExportAdapter(strOutFile);
+	}
+}

@@ -16,6 +16,8 @@ public:
 	void AddChart1Data(float fCurPos, float fDensity);
 	void AddChart2Data(float fCurPos, float fDensity);
 	void AddBombData(/*float x, float y, float fDesity*/);
+	void Import(CString& strImport);
+	void Export(CString& strOutFile);
 
 protected:
 	void AdjustLayout();
