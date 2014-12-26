@@ -790,31 +790,21 @@ void C3DemoView::OnImportData()
 		return;
 
 	CString strFileName = fileDlg.GetPathName();
-
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	if (NULL != pFrame)
 	{
 		pFrame->ImportData(strFileName);
 	}
-	/*if (NULL != m_pBookmark)
-	{
-		CBookmark::EImportErrorCode errorCode;
-		if( ! m_pBookmark->ImportBookmarks(strFileName, errorCode))
-		{
-
-		}
-	}*/
 }
 
 void C3DemoView::OnExportData()
 {
 	CString strDataFile;
 	GetCurrentAppPath(strDataFile);
-
 	CFileDialog fileDlg(FALSE , _T("csv"), strDataFile,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.csv)|*.csv||"), this);
 
-	fileDlg.m_ofn.lpstrInitialDir = strDataFile;
+	//fileDlg.m_ofn.lpstrInitialDir = strDataFile;
 	fileDlg.m_ofn.lpstrTitle = _T("Save data file as");
 
 	if (fileDlg.DoModal() != IDOK)
@@ -828,14 +818,22 @@ void C3DemoView::OnExportData()
 		return;
 	}
 
-	BOOL bSucc = ::CopyFile(strDataFile.GetBuffer(), strDest.GetBuffer(), FALSE);
-	if (!bSucc)
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (NULL != pFrame)
 	{
-		int nErrorCode = ::GetLastError();
-		CString strError;
-		strError.Format(_T("Copy data file failed:[%s]is being opened!\Please close it and retry."), strDataFile);
-		AfxMessageBox(strError);
+		pFrame->ExportData(strDest);
 	}
+
+
+
+// 	BOOL bSucc = ::CopyFile(strDataFile.GetBuffer(), strDest.GetBuffer(), FALSE);
+// 	if (!bSucc)
+// 	{
+// 		int nErrorCode = ::GetLastError();
+// 		CString strError;
+// 		strError.Format(_T("Copy data file failed:[%s]is being opened!\Please close it and retry."), strDataFile);
+// 		AfxMessageBox(strError);
+// 	}
 }
 
 BOOL C3DemoView::GetCurrentAppPath(CString& strAppPath)

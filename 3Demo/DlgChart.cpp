@@ -282,11 +282,119 @@ void CDlgChart::RemoveAllError2Pts()
 
 void CDlgChart::ImportAdapter(CString& strImport)
 {
+	if (strImport.IsEmpty())
+	{
+		AfxMessageBox(_T("Imported data file can not be empty!"));
+		return;
+	}
 
+	char* old_locale = _strdup(setlocale(LC_CTYPE, NULL));
+	setlocale(LC_CTYPE, "chs");
+
+	CStdioFile fileCSV;
+	if ( fileCSV.Open(strImport, CFile::modeRead))
+	{ 
+		CString strLine;
+		fileCSV.ReadString(strLine);//read header.
+
+		//4.now read content
+		while( fileCSV.ReadString(strLine))
+		{
+			int nIndex = strLine.Find(',');
+			if (nIndex>=0)
+			{
+				
+			}
+			////Index
+			//int idxIndex = strLine.Find(',', nPerIndex+1);
+			//if (idxIndex > 0)
+			//{
+			//	ColItem indxItem;
+			//	indxItem.strColName = _T("Index");
+			//	indxItem.strColData = strLine.Mid(nPerIndex+1, idxIndex-nPerIndex-1);
+			//	indxItem.strColData.Trim();
+			//	nMsgNumber = _tcstoul(indxItem.strColData.GetBuffer(), NULL, 10);
+			//	OneMsg.push_back(indxItem);
+			//}
+		}
+
+
+		//close file.
+		fileCSV.Close();
+	}
+
+	setlocale(LC_CTYPE, old_locale);
+	free(old_locale);
 }
 void CDlgChart::ExportAdapter(CString& strOut)
 {
+	CChartPointsSerie* pPointSeries = (CChartPointsSerie*)m_ChartCtrlFisrt.GetSerie(m_nFirstSerieID);
+	if (NULL != pPointSeries)
+	{
+		int nPtCount = pPointSeries->GetPointsCount();
+		if (nPtCount > 0 )
+		{
+			////2.show save as txt dialog and create saved file.
+			//strOut = strOut + _T(".CSV");
+			//CFileDialog fileDlg(FALSE , _T("txt"), strOut,
+			//	OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Text Files (*.CSV)|*.CSV||"), this);
 
+			//fileDlg.m_ofn.lpstrInitialDir = strOut;
+			//fileDlg.m_ofn.lpstrTitle = _T("保存为CSV");
+
+			//if (fileDlg.DoModal() != IDOK)
+			//	return;
+
+			//strOut = fileDlg.GetPathName();
+
+			CString strDelimeter(_T(","));
+			CStdioFile file;
+			if(!file.Open(strOut, CFile::modeCreate|CFile::modeWrite))
+			{
+				CString strError;
+				strError.Format("创建文件[%s]失败",strOut);
+				AfxMessageBox(strError);
+				return;
+			}
+
+			CString strTemp;
+			strTemp.Format("%s,%s,%s\n", "经度","纬度",/*"高度",*/ "浓度");
+			file.WriteString(strTemp);
+
+// 			int nCount = m_ctrlResults.GetItemCount();
+// 			if (nCount == 0)
+// 			{
+// 				AfxMessageBox("没有采样数据可以保存！");
+// 				return;
+// 			}
+// 
+// 			for (int nRow=0; nRow<nCount; nRow++)
+// 			{
+// 				strTemp.Empty();
+// 				for (int nCol=0; nCol<3; nCol++)
+// 				{
+// 					CString strItem = m_ctrlResults.GetItemText(nRow, nCol);
+// 					strTemp += strItem;
+// 					strTemp += strDelimeter;
+// 				}
+// 				strTemp += _T("\n");
+// 				file.WriteString(strTemp);
+// 			}
+
+			for (int i=0; i<nPtCount; i++)
+			{
+				SChartXYPoint pt = pPointSeries->GetPoint(i);
+				strTemp.Empty();
+				strTemp.Format(_T("%f02,%f02"), pt.GetX(), pt.GetY());
+				strTemp += _T("\n");
+				file.WriteString(strTemp);
+			}
+
+			file.Close();
+
+			AfxMessageBox(_T("保存成功"));
+		}
+	}
 }
 
 void CDlgChart::AddErrorData1(float fPos)
